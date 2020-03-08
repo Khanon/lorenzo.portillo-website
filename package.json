@@ -15,7 +15,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
 	"eject": "react-scripts eject",
-	"git:push": "git commit -a -m \"new update\" && git push -u kw master"
+	"git:push:master": "git commit -a -m \"new update\" && git push -u kw master",
+	"git:push:dev": "git commit -a -m \"new update\" && git push -u kw developer"
   },
   "eslintConfig": {
     "extends": "react-app"
