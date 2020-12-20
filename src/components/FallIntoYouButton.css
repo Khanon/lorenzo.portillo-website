@@ -1,8 +1,12 @@
 .fall-into-you-button {
-	background-color: red;
 	width: 100px;
 	height: 100px;
+	background-color: red;
 	position: absolute;
 	left: 100px;
 	top: 100px;
+}
+
+.fall-into-you-button::before {
+	content: "$";	
 }
