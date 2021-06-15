@@ -1,22 +1,39 @@
-const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
+const path = require('path');
 const appDirectory = fs.realpathSync(process.cwd());
 
 module.exports = {
     entry: path.resolve(appDirectory, 'src/app.ts'), //path to the main .ts file
     output: {
-        filename: 'js/bundleName.js', //name for the js file that is created/compiled in memory
+        filename: 'js/khanon3d.js', //name for the js file that is created/compiled in memory
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                },
+                extractComments: false,
+                parallel: true,
+            }),
+        ],
     },
     devServer: {
         host: 'localhost',
         port: 8080, //port that we're using for local host (localhost:8080)
         disableHostCheck: true,
-        contentBase: path.resolve(appDirectory, 'public'), //tells webpack to serve from the public folder
+        contentBase: path.resolve(appDirectory, 'public'), // Tells webpack to serve from the public folder
         publicPath: '/',
         hot: true,
         open: true,
@@ -31,6 +48,18 @@ module.exports = {
         ],
     },
     plugins: [
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(appDirectory, 'public'),
+                    globOptions: {
+                        dot: true,
+                        gitignore: true,
+                        ignore: ['**/index.html'],
+                    },
+                },
+            ],
+        }),
         new HtmlWebpackPlugin({
             inject: true,
             template: path.resolve(appDirectory, 'public/index.html'),
