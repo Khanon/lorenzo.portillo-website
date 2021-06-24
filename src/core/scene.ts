@@ -7,11 +7,12 @@ import {
     Mesh,
     MeshBuilder,
     Color4,
+    SceneLoader,
 } from '@babylonjs/core';
 
-import Engine from './engine';
+import { Engine } from './engine';
 
-export default class Scene {
+export class Scene {
     private readonly handler: BabylonJsScene;
     private readonly engine: Engine;
     private readonly canvas: HTMLCanvasElement;
@@ -25,6 +26,15 @@ export default class Scene {
         this.canvas = canvas;
         this.handler = new BabylonJsScene(engine.babylonjs);
         this.handler.clearColor = new Color4(0.0, 0.0, 0.0, 0.0);
+
+        SceneLoader.Append(
+            '../assets/mesh/',
+            'untitled.babylon',
+            this.babylonjs,
+            function (scene) {
+                // do something with the scene
+            }
+        );
 
         const camera: ArcRotateCamera = new ArcRotateCamera(
             'Camera',
@@ -40,11 +50,11 @@ export default class Scene {
             new Vector3(1, 1, 0),
             this.babylonjs
         );
-        const sphere: Mesh = MeshBuilder.CreateSphere(
+        /*const sphere: Mesh = MeshBuilder.CreateSphere(
             'sphere',
             { diameter: 1 },
             this.babylonjs
-        );
+        );*/
 
         window.addEventListener('keydown', (ev) => {
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === 'I') {

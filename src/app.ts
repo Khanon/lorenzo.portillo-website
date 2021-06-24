@@ -2,8 +2,7 @@ import '@babylonjs/core/Debug/debugLayer';
 import '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
 
-import Engine from './wrappers/engine';
-import Scene from './wrappers/scene';
+import { Engine, Scene } from './core';
 
 class App {
     constructor() {

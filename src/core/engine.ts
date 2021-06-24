@@ -1,6 +1,6 @@
 import { Engine as BabylonJsEngine } from '@babylonjs/core';
 
-export default class Engine {
+export class Engine {
     private readonly handler: BabylonJsEngine;
     private readonly canvas: HTMLCanvasElement;
 
