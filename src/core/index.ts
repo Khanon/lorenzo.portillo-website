@@ -1,2 +1,2 @@
-export * from './engine';
+export { Engine } from './engine';
 export { Scene } from './scene';

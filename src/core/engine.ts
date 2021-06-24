@@ -4,7 +4,7 @@ export class Engine {
     private readonly handler: BabylonJsEngine;
     private readonly canvas: HTMLCanvasElement;
 
-    get babylonjs(): BabylonJsEngine {
+    get engineBabylonjs(): BabylonJsEngine {
         return this.handler;
     }
 

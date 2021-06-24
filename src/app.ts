@@ -17,8 +17,8 @@ class App {
         const scene = new Scene(engine, canvas);
 
         // Main render loop
-        engine.babylonjs.runRenderLoop(() => {
-            scene.babylonjs.render();
+        engine.engineBabylonjs.runRenderLoop(() => {
+            scene.sceneBabylonjs.render();
         });
     }
 }
