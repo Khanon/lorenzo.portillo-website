@@ -27,9 +27,10 @@ export class Scene {
         this.handler = new BabylonJsScene(engine.engineBabylonjs);
         this.handler.clearColor = new Color4(0.0, 0.0, 0.0, 0.0);
 
+        /*
         SceneLoader.Append(
-            '../assets/mesh/',
-            'untitled.babylon',
+            'assets/mesh/',
+            'world3d.babylon',
             this.sceneBabylonjs,
             function (scene) {
                 // do something with the scene
@@ -49,7 +50,8 @@ export class Scene {
             'light1',
             new Vector3(1, 1, 0),
             this.sceneBabylonjs
-        );
+        );*/
+
         /*const sphere: Mesh = MeshBuilder.CreateSphere(
             'sphere',
             { diameter: 1 },
