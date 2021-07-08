@@ -10,9 +10,8 @@
     "clean": "rimraf dist",
     "start": "webpack serve --port 8080",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish:patch": "git add . && git commit -m \"[Published %npm_package_version%]\" && git push && npm version patch",
-    "publish:minor": "",
-    "publish:major": ""
+    "upload-ionos": "npm run clean && webpack",
+    "publish": "npm run build && npm run upload-ionos && git add . && git commit -m \"[Published %npm_package_version%]\" && git push"
   },
   "repository": {
     "type": "git",
