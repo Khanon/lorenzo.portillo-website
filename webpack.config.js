@@ -1,7 +1,6 @@
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const path = require('path');
@@ -48,18 +47,6 @@ module.exports = {
         ],
     },
     plugins: [
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: path.resolve(appDirectory, 'public'),
-                    globOptions: {
-                        dot: true,
-                        gitignore: true,
-                        ignore: ['**/index.html'],
-                    },
-                },
-            ],
-        }),
         new HtmlWebpackPlugin({
             inject: true,
             template: path.resolve(appDirectory, 'public/index.html'),

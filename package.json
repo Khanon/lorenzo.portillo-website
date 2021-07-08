@@ -1,20 +1,22 @@
 {
   "name": "khanon-web",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "A view to my personal and professional projects",
   "author": "Lorenzo Portillo",
-  "license": "ISC",
+  "license": "",
   "main": "index.html",
   "scripts": {
-    "build": "npm run clean && webpack",
+    "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack",
+    "build:deploy-ionos": "npm run build && npm run deploy-ionos",
+    "deploy-ionos": "..\\khanon-web-deploy-ionos.bat",
     "clean": "rimraf dist",
     "start": "webpack serve --port 8080",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy-ionos": "..\\khanon-web-deploy-ionos.bat",
     "publish:patch": "npm version patch --no-git-tag-version -f && npm run publish",
     "publish:minor": "npm version minor --no-git-tag-version -f && npm run publish",
     "publish:major": "npm version major --no-git-tag-version -f && npm run publish",
-    "publish": "npm run build && npm run deploy-ionos && git add . && git commit -m \"[Published %npm_package_version%]\" && git push"
+    "publish:git": "git add . && git commit -m \"[Published %npm_package_version%]\" && git push",
+    "publish": "node version.js && npm run build:deploy-ionos && npm run publish:git"
   },
   "repository": {
     "type": "git",
@@ -22,8 +24,8 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "copy-webpack-plugin": "^9.0.0",
     "html-webpack-plugin": "^5.3.1",
+    "recursive-copy": "^2.0.13",
     "rimraf": "^3.0.2",
     "ts-loader": "^9.1.2",
     "typescript": "^4.2.4",
