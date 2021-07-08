@@ -1,6 +1,6 @@
 {
   "name": "khanon-web",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A view to my personal and professional projects",
   "author": "Lorenzo Portillo",
   "license": "ISC",
@@ -11,9 +11,9 @@
     "start": "webpack serve --port 8080",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy-ionos": "..\\khanon-web-deploy-ionos.bat",
-    "publish:patch": "npm update patch && npm run publish",
-    "publish:minor": "npm update minor && npm run publish",
-    "publish:major": "npm update major && npm run publish",
+    "publish:patch": "npm version patch --no-git-tag-version -f && npm run publish",
+    "publish:minor": "npm version minor --no-git-tag-version -f && npm run publish",
+    "publish:major": "npm version major --no-git-tag-version -f && npm run publish",
     "publish": "npm run build && npm run deploy-ionos && git add . && git commit -m \"[Published %npm_package_version%]\" && git push"
   },
   "repository": {
