@@ -1,12 +1,13 @@
 {
   "name": "khanon-web",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A view to my personal and professional projects",
   "author": "Lorenzo Portillo",
   "license": "",
   "main": "index.html",
   "scripts": {
-    "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack",
+    "webpack-bundle-test": "rimraf dist/js/khanon3d.js && webpack --config webpack.prod.js",
+    "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack --config webpack.prod.js",
     "build:deploy-ionos": "npm run build && npm run deploy-ionos",
     "deploy-ionos": "..\\khanon-web-deploy-ionos.bat",
     "clean": "rimraf dist",
