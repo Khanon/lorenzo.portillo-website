@@ -1,15 +1,12 @@
 import { Engine as BabylonJsEngine } from '@babylonjs/core';
 
 export class Engine {
-    private readonly handler: BabylonJsEngine;
-    private readonly canvas: HTMLCanvasElement;
+    readonly babylonjs: BabylonJsEngine;
 
-    get engineBabylonjs(): BabylonJsEngine {
-        return this.handler;
-    }
+    private readonly canvas: HTMLCanvasElement;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
-        this.handler = new BabylonJsEngine(this.canvas, true);
+        this.babylonjs = new BabylonJsEngine(this.canvas, true);
     }
 }

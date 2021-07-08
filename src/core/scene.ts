@@ -13,19 +13,16 @@ import {
 import { Engine } from './engine';
 
 export class Scene {
-    private readonly handler: BabylonJsScene;
+    readonly babylonjs: BabylonJsScene;
+
     private readonly engine: Engine;
     private readonly canvas: HTMLCanvasElement;
-
-    get sceneBabylonjs(): BabylonJsScene {
-        return this.handler;
-    }
 
     constructor(engine: Engine, canvas: HTMLCanvasElement) {
         this.engine = engine;
         this.canvas = canvas;
-        this.handler = new BabylonJsScene(engine.engineBabylonjs);
-        this.handler.clearColor = new Color4(0.0, 0.0, 0.0, 0.0);
+        this.babylonjs = new BabylonJsScene(engine.babylonjs);
+        this.babylonjs.clearColor = new Color4(0.0, 0.0, 0.0, 0.0);
 
         /*
         SceneLoader.Append(
@@ -60,10 +57,10 @@ export class Scene {
 
         window.addEventListener('keydown', (ev) => {
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === 'I') {
-                if (this.sceneBabylonjs.debugLayer.isVisible()) {
-                    this.sceneBabylonjs.debugLayer.hide();
+                if (this.babylonjs.debugLayer.isVisible()) {
+                    this.babylonjs.debugLayer.hide();
                 } else {
-                    this.sceneBabylonjs.debugLayer.show();
+                    this.babylonjs.debugLayer.show();
                 }
             }
         });

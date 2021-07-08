@@ -1,11 +1,17 @@
-import { AssetsManager as BabylonJsAssetsManager } from '@babylonjs/core';
+import {
+    AssetsManager as BabylonJsAssetsManager,
+    SceneLoader,
+} from '@babylonjs/core';
 
 import { Scene } from '.';
 
 export class AssetsManager {
-    private readonly handler: BabylonJsAssetsManager;
+    readonly babylonjs: BabylonJsAssetsManager;
+
+    private readonly sceneLoader: SceneLoader;
 
     constructor(private readonly scene: Scene) {
-        this.handler = new BabylonJsAssetsManager(this.scene.sceneBabylonjs);
+        this.babylonjs = new BabylonJsAssetsManager(this.scene.babylonjs);
+        this.sceneLoader = new SceneLoader();
     }
 }

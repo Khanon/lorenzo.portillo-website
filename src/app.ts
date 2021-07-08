@@ -24,8 +24,8 @@ class App {
         this.assets = new AssetsManager(this.scene);
 
         // Main render loop
-        this.engine.engineBabylonjs.runRenderLoop(() => {
-            this.scene.sceneBabylonjs.render();
+        this.engine.babylonjs.runRenderLoop(() => {
+            this.scene.babylonjs.render();
         });
 
         this.init();
