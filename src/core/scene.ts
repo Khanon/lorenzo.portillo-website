@@ -25,7 +25,7 @@ export class Scene {
         this.babylonjs.clearColor = new Color4(0.0, 0.0, 0.0, 0.0);
 
         SceneLoader.Append(
-            'assets/mesh/',
+            './assets/mesh/',
             'world3d.babylon',
             this.babylonjs,
             function (scene) {
