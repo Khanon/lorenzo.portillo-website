@@ -1,7 +1,3 @@
-import '@babylonjs/core/Debug/debugLayer';
-import '@babylonjs/inspector';
-import '@babylonjs/loaders/glTF';
-
 import { AssetsManager, Engine, Scene, StateMachine } from './core';
 import { StateLoading } from './app/index';
 
@@ -12,6 +8,9 @@ class App {
     assets: AssetsManager;
 
     constructor() {
+        // Log environment mode
+        console.log('Environment mode:', process.env.NODE_ENV);
+
         // Create the canvas HTML element and attach it to #canvas-container
         const canvasContainer = document.getElementById('canvas-container');
         const canvas = document.createElement('canvas');
@@ -20,7 +19,7 @@ class App {
 
         // Initialize babylon.js
         this.engine = new Engine(canvas);
-        this.scene = new Scene(this.engine, canvas);
+        this.scene = new Scene(this.engine, canvas, this.isDevelopmentMode());
         this.assets = new AssetsManager(this.scene);
 
         // Main render loop
@@ -33,6 +32,10 @@ class App {
 
     init(): void {
         this.states.GoTo(new StateLoading(this.scene));
+    }
+
+    isDevelopmentMode(): boolean {
+        return process.env.NODE_ENV === 'development';
     }
 }
 new App();

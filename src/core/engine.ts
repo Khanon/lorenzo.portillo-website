@@ -1,4 +1,4 @@
-import { Engine as BabylonJsEngine } from '@babylonjs/core';
+import { Engine as BabylonJsEngine } from '@babylonjs/core/Engines/engine';
 
 export class Engine {
     readonly babylonjs: BabylonJsEngine;
