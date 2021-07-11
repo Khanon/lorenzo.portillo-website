@@ -8,8 +8,8 @@
   "scripts": {
     "webpack-bundle-test": "rimraf dist/js/khanon3d.js && webpack --config webpack.prod.js",
     "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack --config webpack.prod.js",
-    "build:deploy-ionos": "npm run build && npm run deploy-ionos",
-    "deploy-ionos": "..\\khanon-web-deploy-ionos.bat",
+    "build:deploy": "npm run build && npm run deploy",
+    "deploy": "..\\deploy-ionos.bat",
     "clean": "rimraf dist",
     "start": "webpack serve --port 8080",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,7 +17,7 @@
     "publish:minor": "npm version minor --no-git-tag-version -f && npm run publish",
     "publish:major": "npm version major --no-git-tag-version -f && npm run publish",
     "publish:git": "git add . && git commit -m \"[Published %npm_package_version%]\" && git push",
-    "publish": "node version.js && npm run build && npm run publish:git && npm run deploy-ionos"
+    "publish": "node version.js && npm run build && npm run publish:git && npm run deploy"
   },
   "repository": {
     "type": "git",
