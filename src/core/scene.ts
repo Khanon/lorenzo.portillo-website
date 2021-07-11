@@ -24,11 +24,10 @@ export class Scene {
         this.babylonjs = new BabylonJsScene(engine.babylonjs);
         this.babylonjs.clearColor = new Color4(0.0, 0.0, 0.0, 0.0);
 
-        /*
         SceneLoader.Append(
             'assets/mesh/',
             'world3d.babylon',
-            this.sceneBabylonjs,
+            this.babylonjs,
             function (scene) {
                 // do something with the scene
             }
@@ -40,14 +39,14 @@ export class Scene {
             Math.PI / 2,
             2,
             Vector3.Zero(),
-            this.sceneBabylonjs
+            this.babylonjs
         );
         camera.attachControl(canvas, true);
         const light1: HemisphericLight = new HemisphericLight(
             'light1',
             new Vector3(1, 1, 0),
-            this.sceneBabylonjs
-        );*/
+            this.babylonjs
+        );
 
         /*const sphere: Mesh = MeshBuilder.CreateSphere(
             'sphere',
