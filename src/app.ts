@@ -1,3 +1,7 @@
+import '@babylonjs/core/Loading/loadingScreen';
+import '@babylonjs/core/Loading/Plugins/babylonFileLoader';
+import '@babylonjs/core/Materials/PBR/pbrMaterial';
+
 import { AssetsManager, Engine, Scene, StateMachine } from './core';
 import { StateLoading } from './app/index';
 

@@ -65,6 +65,7 @@ export class Scene {
     }
 
     private debugAllowInspector(): void {
+        // 8a8f descomentar
         window.addEventListener('keydown', (ev) => {
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === 'I') {
                 // @ts-ignore
