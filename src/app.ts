@@ -26,6 +26,11 @@ class App {
         this.scene = new Scene(this.engine, canvas, this.isDevelopmentMode());
         this.assets = new AssetsManager(this.scene);
 
+        // Manage resize
+        window.addEventListener('resize', () => {
+            this.engine.babylonjs.resize();
+        });
+
         this.init();
     }
 
