@@ -60,30 +60,38 @@ export class Scene {
             let lastPointerY: number;
             let pointerDiffX: number;
             let pointerDiffY: number;
-            let click: boolean = false;
+            let click: number = 0;
+            let zoom: boolean;
 
             this.canvas.addEventListener('pointermove', () => {
                 // console.log(Vector3.Zero(), 'aki MOUSE MOVE', this.babylonjs.pointerX, this.babylonjs.pointerY, click);
 
-                if (click) {
-                    pointerDiffX = lastPointerX - this.babylonjs.pointerX;
-                    pointerDiffY = lastPointerY - this.babylonjs.pointerY;
+                if (click === 1) {
+                    if (zoom) {
+                        zoom = false;
+                    } else {
+                        pointerDiffX = lastPointerX - this.babylonjs.pointerX;
+                        pointerDiffY = lastPointerY - this.babylonjs.pointerY;
 
-                    World3D.rotateAround(Vector3.Zero(), new Vector3(0, 1, 0), pointerDiffX * 0.005);
-                    World3D.rotateAround(Vector3.Zero(), new Vector3(0, 0, -1), pointerDiffY * 0.005);
+                        World3D.rotateAround(Vector3.Zero(), new Vector3(0, 1, 0), pointerDiffX * 0.005);
+                        World3D.rotateAround(Vector3.Zero(), new Vector3(0, 0, -1), pointerDiffY * 0.005);
+                    }
                 }
 
                 lastPointerX = this.babylonjs.pointerX;
                 lastPointerY = this.babylonjs.pointerY;
             });
             this.canvas.addEventListener('pointerdown', () => {
-                click = true;
+                click++;
+                if (click > 1) {
+                    zoom = true;
+                }
                 lastPointerX = this.babylonjs.pointerX;
                 lastPointerY = this.babylonjs.pointerY;
                 // console.log('Mouse DOWN!');
             });
             this.canvas.addEventListener('pointerup', () => {
-                click = false;
+                click--;
                 // console.log('Mouse UP!');
             });
 
