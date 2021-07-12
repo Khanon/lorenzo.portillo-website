@@ -26,11 +26,6 @@ class App {
         this.scene = new Scene(this.engine, canvas, this.isDevelopmentMode());
         this.assets = new AssetsManager(this.scene);
 
-        // Main render loop
-        this.engine.babylonjs.runRenderLoop(() => {
-            this.scene.babylonjs.render();
-        });
-
         this.init();
     }
 
