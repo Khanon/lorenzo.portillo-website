@@ -1,7 +1,7 @@
 import { AssetsManager as BabylonJsAssetsManager } from '@babylonjs/core/Misc/assetsManager';
 import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
 
-import { Scene } from '.';
+import { Scene } from '..';
 
 export class AssetsManager {
     readonly babylonjs: BabylonJsAssetsManager;

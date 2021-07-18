@@ -1,5 +1,9 @@
+export * from './assets-manager/assets-manager';
 export * from './engine/engine';
 export * from './scene/scene';
-export * from './assets-manager';
-// export * from './sprite-manager';
-// export * from './sprite';
+export * from './logger/logger';
+export * from './sprite/sprite';
+export * from './sprite/sprite-instance';
+export * from './sprite/sprite-properties';
+export * from './state-machine/state';
+export * from './state-machine/state-machine';

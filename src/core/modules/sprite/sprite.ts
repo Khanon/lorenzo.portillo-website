@@ -9,12 +9,13 @@ import { SpriteProperties } from './sprite-properties';
  */
 
 export class Sprite {
-    private readonly babylonjs: BabylonJsSprite;
+    readonly babylonjs: BabylonJsSprite;
 
     constructor(private readonly spriteInstance: SpriteInstance, private readonly properties: SpriteProperties) {
-        this.babylonjs = new BabylonJsSprite('', spriteInstance.babylonjs);
+        this.babylonjs = new BabylonJsSprite('', this.spriteInstance.babylonjs);
         this.babylonjs.width = 1;
-        this.babylonjs.height = properties.ratio;
+        this.properties.ratio = this.properties.ratio ?? this.properties.height / this.properties.width;
+        this.babylonjs.height = this.properties.ratio;
         this.visible = false;
     }
 
@@ -25,9 +26,9 @@ export class Sprite {
         this.babylonjs.isVisible = visible;
     }
 
-    play(delay: number, loop: boolean): void {
+    play(delay: number, loop: boolean, frameStart: number = 0, frameEnd: number = this.properties.numFrames - 1): void {
         this.visible = true;
-        this.babylonjs.playAnimation(0, this.properties.numFrames - 1, loop, delay);
+        this.babylonjs.playAnimation(frameStart, frameEnd, loop, delay);
     }
 
     stop(): void {

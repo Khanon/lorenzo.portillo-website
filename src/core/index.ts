@@ -1,2 +1,4 @@
+export * from './models';
 export * from './modules';
-export * from './state-machine';
+
+export { Core } from './core';

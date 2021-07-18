@@ -1,4 +1,4 @@
-import { State } from '../../core/state-machine';
+import { State } from '../../core/modules/state-machine';
 
 /**
  * Start World 3D

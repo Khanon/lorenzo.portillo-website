@@ -1,43 +1,33 @@
-import '@babylonjs/core/Loading/loadingScreen';
-import '@babylonjs/core/Loading/Plugins/babylonFileLoader';
-import '@babylonjs/core/Materials/PBR/pbrMaterial';
-
-import { AssetsManager, Engine, Scene, StateMachine } from './core';
+import { AssetsManager, Engine, Scene } from './core';
 import { StateLoading } from './app/index';
+import { Core } from './core/core';
+import { SceneIntro } from './app/scene/scene-loading';
 
 class App {
-    readonly states: StateMachine = new StateMachine();
-    engine: Engine;
-    scene: Scene;
-    assets: AssetsManager;
+    readonly core: Core;
+    // readonly states: StateMachine = new StateMachine();
 
     constructor() {
-        // Log environment mode
-        console.log('Environment mode:', process.env.NODE_ENV);
-
-        // Create the canvas HTML element and attach it to #canvas-container
-        const canvasContainer = document.getElementById('canvas-container');
-        const canvas = document.createElement('canvas');
-        canvas.id = 'canvas';
-        canvasContainer.appendChild(canvas);
-
-        // Initialize babylon.js
-        this.engine = new Engine(canvas);
-        this.scene = new Scene(this.engine, canvas, this.isDevelopmentMode());
-        this.assets = new AssetsManager(this.scene);
-
-        // Manage resize
-        window.addEventListener('resize', () => {
-            this.engine.babylonjs.resize();
-        });
+        // Initialize app
+        this.core = new Core();
+        this.core.createCanvasOnDivElement('canvas-container');
+        this.core.start();
 
         this.init();
     }
 
+    /**
+     * Initialize app
+     */
     init(): void {
-        this.states.GoTo(new StateLoading(this.scene));
+        this.core.setScene(new SceneIntro(), this.isDevelopmentMode());
+        // this.states.GoTo(new StateLoading(this.scene));
     }
 
+    /**
+     * Returns tru on environment development mode
+     * @returns
+     */
     isDevelopmentMode(): boolean {
         return process.env.NODE_ENV === 'development';
     }
