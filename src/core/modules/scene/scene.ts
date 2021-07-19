@@ -17,6 +17,7 @@ export abstract class Scene {
     protected canvas: HTMLCanvasElement;
     protected coreSubscriptions: CoreSubscriptions;
     protected logger: Logger;
+    protected isDevelopmentMode: boolean;
 
     // Subscriptions
     private subscriptions: Subscription[] = [];
@@ -34,13 +35,20 @@ export abstract class Scene {
         this.canvas = properties.canvas;
         this.coreSubscriptions = properties.coreSubscriptions;
         this.logger = properties.logger;
+        this.isDevelopmentMode = properties.isDevelopmentMode;
+
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
 
         this.onLoad();
         this.babylonjs.executeWhenReady(() => {
-            // Once the scene is loaded, register a render loop
+            // Once the scene is loaded, register a render loop // 8a8f possible renderLoops leaks after loading different scenes
             this.engine.babylonjs.runRenderLoop(() => {
                 this.babylonjs.render();
+
+                // ******* Remove after development 8a8f
+                let divFps = document.getElementById('fps');
+                divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
+                // *************************************
             });
 
             // Call child onLoaded

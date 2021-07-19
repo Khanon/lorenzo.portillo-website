@@ -5,14 +5,35 @@ import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
+import { Control } from '@babylonjs/gui/2D/controls/control';
+import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
 import { Scene, Sprite } from '../../core';
 import { DimensionsWH } from '../../core/models/dimensions-wh';
+import { GUI } from '../../core';
 
 export class SceneIntro extends Scene {
     private logo: Sprite;
 
+    // Debug 8a8f delete
+    textCanvasSize: TextBlock;
+
     onLoad(): void {
+        // if (this.isDevelopmentMode) {
+        const gui = new GUI(this);
+        this.textCanvasSize = gui.newTextBlock();
+        this.textCanvasSize.left = 0;
+        this.textCanvasSize.top = 300;
+        this.textCanvasSize.width = '200px';
+        this.textCanvasSize.height = '40px';
+        this.textCanvasSize.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        this.textCanvasSize.textHorizontalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        this.textCanvasSize.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        this.textCanvasSize.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        this.textCanvasSize.text = 'TEXT BLOCK';
+        this.textCanvasSize.color = '#fcf403';
+        // }
+
         SceneLoader.Append('./assets/mesh/', 'world3d.babylon', this.babylonjs, (scene) => {
             // do something with the scene
         });
@@ -54,6 +75,7 @@ export class SceneIntro extends Scene {
 
     onLoaded(canvasDimensions: DimensionsWH): void {
         console.log('aki onLoaded, canvas dimensions:', canvasDimensions);
+        this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height}`;
 
         // Setup the scene
         this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
@@ -133,7 +155,7 @@ export class SceneIntro extends Scene {
     subscribeCanvasResize(): void {
         this.addSubscription(
             this.coreSubscriptions.canvasResize.subscribe((dimensions) => {
-                console.log('aki canvasResize', dimensions);
+                this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height}`;
             })
         );
     }

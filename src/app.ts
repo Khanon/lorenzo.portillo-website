@@ -4,22 +4,24 @@ import { Core } from './core/core';
 import { SceneIntro } from './app/scene/scene-loading';
 
 class App {
-    readonly core: Core;
+    core: Core;
     // readonly states: StateMachine = new StateMachine();
 
     constructor() {
-        // Initialize app
-        this.core = new Core();
-        this.core.createCanvasOnDivElement('canvas-container');
-        this.core.start();
-
-        this.init();
+        setTimeout(() => {
+            this.init();
+        }, 1);
     }
 
     /**
      * Initialize app
      */
     init(): void {
+        // Initialize app
+        this.core = new Core();
+        this.core.createCanvasOnDivElement('canvas-container');
+        this.core.start();
+
         this.core.setScene(new SceneIntro(), this.isDevelopmentMode());
         // this.states.GoTo(new StateLoading(this.scene));
     }
