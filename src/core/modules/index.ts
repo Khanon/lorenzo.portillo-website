@@ -1,3 +1,4 @@
+export * from './actor/actor';
 export * from './actor/actor2d';
 export * from './actor/actor3d';
 export * from './engine/engine';

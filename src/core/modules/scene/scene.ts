@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 /* babylonjs-debugLayer */
 /* babylonjs-inspector */
 
-import { Engine, Mesh, Logger, Sprite, SpriteInstance, SpriteProperties } from '..';
+import { Actor, Engine, Mesh, Sprite, SpriteInstance, SpriteProperties } from '..';
 import { CoreSubscriptions, DimensionsWH } from '../../models';
 import { SceneStart } from './scene-start';
 
@@ -26,6 +26,9 @@ export abstract class Scene {
     // Sprites
     private readonly MAX_SPRITES_PER_INSTANCE = 255;
     private readonly spriteInstances: SpriteInstance[] = [];
+
+    // Actors
+    private readonly actors: Actor[] = [];
 
     /**
      * Create babylonjs scene, trigger onLoad.
@@ -81,6 +84,8 @@ export abstract class Scene {
     }
 
     protected releaseSubscriptions(): void {
+        // 8a8f When should this function be called? After scene switch?
+        // Do state.Delete() for all registered states on actors and scene
         this.subscriptions.forEach((subscription) => {
             subscription.unsubscribe();
         });
@@ -136,6 +141,14 @@ export abstract class Scene {
 
     addMesh(createFunction: () => BabylonJsMesh): Mesh {
         return new Mesh(createFunction());
+    }
+
+    // ------------------------
+    //   Actor methods
+    // ------------------------
+
+    addActor(actor: Actor): void {
+        this.actors.push(actor);
     }
 
     // ------------------------

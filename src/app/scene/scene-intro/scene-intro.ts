@@ -7,22 +7,21 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Mesh, Misc, Scene, Sprite } from '../../../core';
+import { Actor2D, Actor3D, DimensionsWH, GUI, Mesh, Misc, Scene, Sprite } from '../../../core';
+
+import { EarthActor } from './actors/earth/earth-actor';
+import { SunActor } from './actors/sun/sun-actor';
+import { LogoActor } from './actors/logo/logo-actor';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
     private camera: UniversalCamera;
     private light: HemisphericLight;
-    private logo: Sprite;
-    private sun: Sprite;
-    private earth: Mesh;
 
-    // Motion
-    private earthStart = { x: -2.57, y: -0.31 };
-    private earthEnd = { x: -2.72, y: -0.48 };
-    private logoStart = { y: 0.8, z: 1.75 };
-    private sunStart = { y: 1.02, z: -3.16, scale: 0.7 };
-    private sunEnd = { y: 0.3, z: -1.65, scale: 1.15 };
+    // Actors
+    private logo: Actor2D;
+    private sun: Actor2D;
+    private earth: Actor3D;
 
     // ******************
     // Debug 8a8f delete
@@ -59,7 +58,7 @@ export class SceneIntro extends Scene {
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
         // Earth
-        this.earth = this.addMesh(() => {
+        const earthMesh = this.addMesh(() => {
             const flatMaterial = new StandardMaterial('', this.babylonjs);
             flatMaterial.disableLighting = true;
             flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
@@ -69,21 +68,18 @@ export class SceneIntro extends Scene {
             mesh.material = flatMaterial;
             return mesh;
         });
-        this.earth.babylonjs.position.x = this.earthEnd.x;
-        this.earth.babylonjs.position.y = this.earthEnd.y;
+        this.earth = new EarthActor('earth', earthMesh, this.coreSubscriptions.loopUpdate);
+        this.addActor(this.earth);
 
         // Logo
-        this.logo = this.addSprite('logo', './assets/scene-loading/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
-        this.logo.play(50, false);
-        this.logo.babylonjs.position.y = this.logoStart.y;
-        this.logo.babylonjs.position.z = this.logoStart.z;
+        const logoSprite = this.addSprite('logo', './assets/scene-loading/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
+        this.logo = new LogoActor('sun', logoSprite, this.coreSubscriptions.loopUpdate);
+        this.addActor(this.logo);
 
         // Sun
-        this.sun = this.addSprite('sun', './assets/scene-loading/sprites/sun.png', { width: 270, height: 270, numFrames: 1 });
-        this.sun.setFrame(0);
-        this.sun.babylonjs.position.y = this.sunEnd.y;
-        this.sun.babylonjs.position.z = this.sunEnd.z;
-        this.sun.setScale(this.sunEnd.scale);
+        const sunSprite = this.addSprite('sun', './assets/scene-loading/sprites/sun.png', { width: 270, height: 270, numFrames: 1 });
+        this.sun = new SunActor('sun', sunSprite, this.coreSubscriptions.loopUpdate);
+        this.addActor(this.sun);
     }
 
     onLoaded(canvasDimensions: DimensionsWH): void {
@@ -101,6 +97,14 @@ export class SceneIntro extends Scene {
         this.subscribeLoopUpdate();
         this.subscribeCanvasResize();
 
+        // 8a8f Test states
+        this.earth.state.setState('initialize');
+        this.logo.state.setState('initialize');
+        this.sun.state.setState('initialize');
+        this.earth.state.setState('motion');
+        this.logo.state.setState('motion');
+        this.sun.state.setState('motion');
+
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.code, event.code);
@@ -108,40 +112,34 @@ export class SceneIntro extends Scene {
             // const obj = this.earth;
             const obj = this.sun;
             if (event.code === 'Numpad4') {
-                obj.babylonjs.position.z += inc;
-                console.log('aki position:', obj.babylonjs.position.x, obj.babylonjs.position.y, obj.babylonjs.position.z);
+                obj.incZ(inc);
+                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad6') {
-                obj.babylonjs.position.z -= inc;
-                console.log('aki position:', obj.babylonjs.position.x, obj.babylonjs.position.y, obj.babylonjs.position.z);
+                obj.incZ(-inc);
+                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad8') {
-                obj.babylonjs.position.y += inc;
-                console.log('aki position:', obj.babylonjs.position.x, obj.babylonjs.position.y, obj.babylonjs.position.z);
+                obj.incY(inc);
+                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad2') {
-                obj.babylonjs.position.y -= inc;
-                console.log('aki position:', obj.babylonjs.position.x, obj.babylonjs.position.y, obj.babylonjs.position.z);
+                obj.incY(-inc);
+                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad9') {
                 // obj.babylonjs.position.x += inc;
                 obj.setScale(obj.getScale() - inc);
-                console.log('aki position:', obj.babylonjs.position.x, obj.babylonjs.position.y, obj.babylonjs.position.z);
+                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad3') {
                 // obj.babylonjs.position.x -= inc;
                 obj.setScale(obj.getScale() + inc);
-                console.log('aki position:', obj.babylonjs.position.x, obj.babylonjs.position.y, obj.babylonjs.position.z);
+                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'End') {
-                obj.babylonjs.position.y = 0.2699; // Start
-                obj.babylonjs.position.z = -3.4699;
-                // obj.setScale(1.15);
             }
             if (event.code === 'Home') {
-                obj.babylonjs.position.y = 0.8;
-                obj.babylonjs.position.z = -1.9; // End
-                // obj.setScale(0.7);
             }
             if (event.code === 'PageUp') {
                 this.animationTest = 1;
@@ -155,7 +153,6 @@ export class SceneIntro extends Scene {
             if (event.code === 'Delete') {
                 this.animationTest = 2;
             }
-            console.log(obj.getScale());
         });
 
         this.canvas.addEventListener('pointermove', () => {});
@@ -177,7 +174,7 @@ export class SceneIntro extends Scene {
                 const acc = 2;
 
                 // Move sun test from end to start
-                if (this.animationTest === 0) {
+                /*if (this.animationTest === 0) {
                     this.sun.babylonjs.position.y = Misc.Maths.increaseValue(this.sun.babylonjs.position.y, 0.2699, speed);
                     this.sun.babylonjs.position.z = Misc.Maths.increaseValue(this.sun.babylonjs.position.z, -3.4699, speed);
                     this.sun.setScale(Misc.Maths.increaseValue(this.sun.getScale(), 1.15, speed));
@@ -218,7 +215,7 @@ export class SceneIntro extends Scene {
                     this.sun.babylonjs.position.z = result[1];
                     this.sun.setScale(result[2]);
                     // console.log('aki A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
-                }
+                }*/
             })
         );
     }

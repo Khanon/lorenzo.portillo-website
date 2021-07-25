@@ -4,7 +4,7 @@ import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
 import { DisplayObject } from '../../models/display-object';
 
 export class Mesh implements DisplayObject {
-    babylonjs: BabylonJsMesh;
+    readonly babylonjs: BabylonJsMesh;
 
     private scale: number = 1;
 

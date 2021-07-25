@@ -1,6 +1,6 @@
 export namespace Misc {
     export class Maths {
-        static readonly MIN_DISTANCE = 0.00001;
+        static readonly MIN_DISTANCE = 0.00000001;
 
         static increaseValue(from: number, to: number, speed: number, completed?: () => void): number {
             const complete = () => {

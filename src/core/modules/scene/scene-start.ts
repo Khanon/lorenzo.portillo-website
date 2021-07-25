@@ -1,5 +1,5 @@
 import { CoreSubscriptions, DimensionsWH } from '../../models';
-import { Engine, Logger } from '../..';
+import { Engine } from '../..';
 
 export interface SceneStart {
     engine?: Engine;

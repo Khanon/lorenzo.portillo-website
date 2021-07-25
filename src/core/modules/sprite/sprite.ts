@@ -15,7 +15,7 @@ export class Sprite implements DisplayObject {
     private scale: number = 1;
 
     constructor(private readonly name, private readonly spriteInstance: SpriteInstance, private readonly properties: SpriteProperties) {
-        this.babylonjs = new BabylonJsSprite(name, this.spriteInstance.babylonjs);
+        this.babylonjs = new BabylonJsSprite(this.name, this.spriteInstance.babylonjs);
         this.babylonjs.width = 1;
         this.properties.ratio = this.properties.ratio ?? this.properties.height / this.properties.width;
         this.babylonjs.height = this.properties.ratio;
@@ -40,6 +40,9 @@ export class Sprite implements DisplayObject {
 
     setFrame(frame: number): void {
         this.visible = true;
+        if (frame < 0) {
+            frame = this.properties.numFrames - 1;
+        }
         this.babylonjs.cellIndex = frame;
     }
 
