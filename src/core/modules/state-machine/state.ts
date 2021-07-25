@@ -1,4 +1,6 @@
 export interface State {
-    Load(): void;
-    Unload(): void;
+    id: string;
+
+    Start(): void;
+    End(): void;
 }

@@ -1,5 +1,6 @@
 import { Sprite as BabylonJsSprite } from '@babylonjs/core/Sprites/sprite';
 
+import { DisplayObject } from '../../models/display-object';
 import { SpriteInstance } from './sprite-instance';
 import { SpriteProperties } from './sprite-properties';
 
@@ -8,11 +9,13 @@ import { SpriteProperties } from './sprite-properties';
  * TODO: Switch SpriteManager by SpritePackedManager once BabylonJs team implement all missing features // 8a8f
  */
 
-export class Sprite {
+export class Sprite implements DisplayObject {
     readonly babylonjs: BabylonJsSprite;
 
-    constructor(private readonly spriteInstance: SpriteInstance, private readonly properties: SpriteProperties) {
-        this.babylonjs = new BabylonJsSprite('', this.spriteInstance.babylonjs);
+    private scale: number = 1;
+
+    constructor(private readonly name, private readonly spriteInstance: SpriteInstance, private readonly properties: SpriteProperties) {
+        this.babylonjs = new BabylonJsSprite(name, this.spriteInstance.babylonjs);
         this.babylonjs.width = 1;
         this.properties.ratio = this.properties.ratio ?? this.properties.height / this.properties.width;
         this.babylonjs.height = this.properties.ratio;
@@ -38,5 +41,15 @@ export class Sprite {
     setFrame(frame: number): void {
         this.visible = true;
         this.babylonjs.cellIndex = frame;
+    }
+
+    setScale(scale: number): void {
+        this.scale = scale;
+        this.babylonjs.width = this.scale;
+        this.babylonjs.height = this.properties.ratio * this.scale;
+    }
+
+    getScale(): number {
+        return this.scale;
     }
 }

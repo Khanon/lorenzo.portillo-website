@@ -4,22 +4,27 @@ import '@babylonjs/core/Materials/PBR/pbrMaterial';
 
 import { Observable, Subject } from 'rxjs';
 
-import { Logger } from './modules/logger';
-import { Engine, Scene } from './modules';
-import { DimensionsWH, CoreSubscriptions } from './models';
+import { Engine, Scene, SceneStart, Logger } from './modules';
+import { DimensionsWH, CoreProperties, CoreSubscriptions } from './models';
 
 export class Core {
-    private logger: Logger;
     private canvas: HTMLCanvasElement;
 
+    // Loop update
+    private loopUpdateLastMs: number;
+    private loopUpdateFPS: number;
+    private loopUpdateDelay: number;
+
     // BabylonJs
-    engine: Engine;
+    private engine: Engine;
 
     // Events
-    canvasResize: Subject<DimensionsWH> = new Subject<DimensionsWH>();
+    private readonly canvasResize: Subject<DimensionsWH> = new Subject<DimensionsWH>();
+    private readonly loopUpdate: Subject<number> = new Subject<number>();
 
-    constructor() {
-        this.logger = new Logger();
+    constructor(private readonly properties: CoreProperties) {
+        this.loopUpdateDelay = this.properties.delayUpdate ?? 0;
+        this.loopUpdateFPS = 1000 / this.properties.fps;
     }
 
     /**
@@ -40,24 +45,19 @@ export class Core {
     start(): void {
         this.engine = new Engine(this.canvas);
 
+        // Start loop update
+        this.starLoopUpdate();
+
         // Log info on startup
-        this.logger.logInfo('Environment mode:', process.env.NODE_ENV);
+        Logger.info('Environment mode:', process.env.NODE_ENV);
         this.logCanvasSize();
 
         // Manage resize
         window.addEventListener('resize', () => {
             this.engine.babylonjs.resize();
             this.canvasResize.next(this.getCanvasDimensions());
-            this.logCanvasSize();
+            // this.logCanvasSize();
         });
-    }
-
-    /**
-     * Returns loggeer class
-     * @returns
-     */
-    getLogger(): Logger {
-        return this.logger;
     }
 
     /**
@@ -65,7 +65,7 @@ export class Core {
      */
     logCanvasSize(): void {
         const canvasDimensions = this.getCanvasDimensions();
-        this.logger.logInfo('Canvas size:', canvasDimensions.width, canvasDimensions.height);
+        Logger.info('Canvas size:', canvasDimensions.width, canvasDimensions.height);
     }
 
     /**
@@ -87,15 +87,16 @@ export class Core {
     /**
      * Set current scene
      */
-    setScene(scene: Scene, isDevelopmentMode?: boolean): void {
-        scene.start({
+    setScene(scene: Scene, sceneProperties?: SceneStart): void {
+        const properties = {
             engine: this.engine,
             canvas: this.canvas,
             canvasDimensions: this.getCanvasDimensions(),
             coreSubscriptions: this.getCoreSubscriptions(),
-            logger: this.getLogger(),
-            isDevelopmentMode,
-        });
+        };
+        Object.assign(properties, sceneProperties);
+
+        scene.start(properties);
     }
 
     /**
@@ -103,6 +104,25 @@ export class Core {
      * @returns
      */
     getCoreSubscriptions(): CoreSubscriptions {
-        return { canvasResize: this.canvasResize };
+        return {
+            canvasResize: this.canvasResize,
+            loopUpdate: this.loopUpdate,
+        };
+    }
+
+    /**
+     * Call loop update subscribers with a delta time parameter
+     */
+    starLoopUpdate(): void {
+        this.loopUpdateLastMs = performance.now();
+        setInterval(() => {
+            const currentMs = performance.now();
+            const interval = currentMs - this.loopUpdateLastMs;
+            if (interval > this.loopUpdateDelay) {
+                const delta = interval / this.loopUpdateFPS;
+                this.loopUpdate.next(delta);
+                this.loopUpdateLastMs = currentMs;
+            }
+        }, 1);
     }
 }

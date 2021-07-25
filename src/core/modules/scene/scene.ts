@@ -1,12 +1,13 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
+import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
 import { Subscription } from 'rxjs';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */
 /* babylonjs-inspector */
 
-import { Engine, Logger, Sprite, SpriteInstance, SpriteProperties } from '..';
+import { Engine, Mesh, Logger, Sprite, SpriteInstance, SpriteProperties } from '..';
 import { CoreSubscriptions, DimensionsWH } from '../../models';
 import { SceneStart } from './scene-start';
 
@@ -16,8 +17,8 @@ export abstract class Scene {
     protected engine: Engine;
     protected canvas: HTMLCanvasElement;
     protected coreSubscriptions: CoreSubscriptions;
-    protected logger: Logger;
     protected isDevelopmentMode: boolean;
+    protected isExecuted: boolean = false;
 
     // Subscriptions
     private subscriptions: Subscription[] = [];
@@ -34,7 +35,6 @@ export abstract class Scene {
         this.engine = properties.engine;
         this.canvas = properties.canvas;
         this.coreSubscriptions = properties.coreSubscriptions;
-        this.logger = properties.logger;
         this.isDevelopmentMode = properties.isDevelopmentMode;
 
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
@@ -43,12 +43,13 @@ export abstract class Scene {
         this.babylonjs.executeWhenReady(() => {
             // Once the scene is loaded, register a render loop // 8a8f possible renderLoops leaks after loading different scenes
             this.engine.babylonjs.runRenderLoop(() => {
+                this.isExecuted = true;
                 this.babylonjs.render();
 
-                // ******* Remove after development 8a8f
-                let divFps = document.getElementById('fps');
-                divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
-                // *************************************
+                if (properties.fpsContainer) {
+                    let divFps = document.getElementById(properties.fpsContainer);
+                    divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
+                }
             });
 
             // Call child onLoaded
@@ -96,8 +97,8 @@ export abstract class Scene {
      * @param cellSize
      * @returns
      */
-    addSprite(url: string, properties: SpriteProperties): Sprite {
-        return new Sprite(this.getSpriteInstance(url, properties), properties);
+    addSprite(name: string, url: string, properties: SpriteProperties): Sprite {
+        return new Sprite(name, this.getSpriteInstance(url, properties), properties);
     }
 
     /**
@@ -118,7 +119,7 @@ export abstract class Scene {
         const spriteInstance = {
             url,
             babylonjs: new SpriteManager(
-                '',
+                url,
                 url,
                 this.MAX_SPRITES_PER_INSTANCE,
                 ({ width: properties.width, height: properties.height } = properties),
@@ -127,6 +128,14 @@ export abstract class Scene {
         };
         this.spriteInstances.push(spriteInstance);
         return spriteInstance;
+    }
+
+    // ------------------------
+    //   Mesh methods
+    // ------------------------
+
+    addMesh(createFunction: () => BabylonJsMesh): Mesh {
+        return new Mesh(createFunction());
     }
 
     // ------------------------

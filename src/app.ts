@@ -1,7 +1,5 @@
-import { AssetsManager, Engine, Scene } from './core';
-import { StateLoading } from './app/index';
 import { Core } from './core/core';
-import { SceneIntro } from './app/scene/scene-loading';
+import { SceneIntro } from './app/scene/scene-intro/scene-intro';
 
 class App {
     core: Core;
@@ -18,11 +16,11 @@ class App {
      */
     init(): void {
         // Initialize app
-        this.core = new Core();
+        this.core = new Core({ fps: 60 });
         this.core.createCanvasOnDivElement('canvas-container');
         this.core.start();
 
-        this.core.setScene(new SceneIntro(), this.isDevelopmentMode());
+        this.core.setScene(new SceneIntro(), { isDevelopmentMode: this.isDevelopmentMode(), fpsContainer: 'fps-container' }); // 8a8f remve FPS after development
         // this.states.GoTo(new StateLoading(this.scene));
     }
 
