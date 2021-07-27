@@ -1,11 +1,15 @@
 // import { State } from '../../../../core';
 
+// import { SceneIntro } from '../scene-intro';
+
 // /**
 //  * Initial loading
 //  */
-// export class StateInitialize extends State {
+// export class StateInitialize extends State<SceneIntro> {
 //     id: 'initialize';
 
-//     Start(): void {}
-//     End(): void {}
+//     start(): void {
+//         this.parent.logo
+//     }
+//     end(): void {}
 // }

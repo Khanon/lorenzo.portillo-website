@@ -8,7 +8,7 @@ export class SunStateMotion extends State<Actor2D> {
     start(): void {
         setTimeout(() => {
             this.subscribeLoopUpdate();
-        }, 500);
+        }, 700);
     }
 
     end(): void {

@@ -6,7 +6,9 @@ export class EarthStateMotion extends State<Actor3D> {
     readonly endMotion = { x: -2.72, y: -0.48 };
 
     start(): void {
-        this.subscribeLoopUpdate();
+        setTimeout(() => {
+            this.subscribeLoopUpdate();
+        }, 500);
     }
 
     end(): void {

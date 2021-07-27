@@ -5,7 +5,7 @@ export class SunStateInitialize extends State<Actor2D> {
 
     start(): void {
         this.parent.sprite.setFrame(0);
-        this.parent.setY(1.02);
+        this.parent.setY(1.52);
         this.parent.setZ(-3.16);
         this.parent.setScale(0.7);
     }

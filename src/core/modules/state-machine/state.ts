@@ -20,6 +20,7 @@ export abstract class State<T> {
     unsubscribeLoopUpdate(): void {
         if (this.loopUpdateSubscription) {
             this.loopUpdateSubscription.unsubscribe();
+            this.loopUpdateSubscription = undefined;
         }
     }
 }

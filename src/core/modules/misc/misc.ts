@@ -11,7 +11,7 @@ export namespace Misc {
             };
             const dist = Math.abs(to - from);
             if (dist <= this.MIN_DISTANCE) {
-                complete();
+                return complete();
             }
             if (to < from) {
                 from -= speed;
@@ -65,14 +65,15 @@ export namespace Misc {
             }
             let lengthPow2 = 0;
             director.forEach((value) => (lengthPow2 += Math.pow(value, 2)));
-            if (lengthPow2 < this.MIN_DISTANCE) {
+            const length = Math.sqrt(lengthPow2);
+            if (length < this.MIN_DISTANCE) {
                 return complete();
             }
-            const length = Math.sqrt(lengthPow2);
             const directorNormalized = director.map((value) => value / length);
             let result = [];
             for (let i = 0; i < from.length; i++) {
-                result.push(this.increaseValue(from[i], to[i], Math.abs(directorNormalized[i]) * speed));
+                const resultValue = this.increaseValue(from[i], to[i], Math.abs(directorNormalized[i]) * speed);
+                result.push(resultValue);
             }
             return result;
         }
@@ -90,14 +91,15 @@ export namespace Misc {
             }
             let lengthPow2 = 0;
             director.forEach((value) => (lengthPow2 += Math.pow(value, 2)));
-            if (lengthPow2 < this.MIN_DISTANCE) {
+            const length = Math.sqrt(lengthPow2);
+            if (length < this.MIN_DISTANCE) {
                 return complete();
             }
-            const length = Math.sqrt(lengthPow2);
             const directorNormalized = director.map((value) => value / length);
             let result = [];
             for (let i = 0; i < from.length; i++) {
-                result.push(this.increaseValueWithInertia(from[i], to[i], Math.abs(directorNormalized[i]) * speed, acceleration));
+                const resultValue = this.increaseValueWithInertia(from[i], to[i], Math.abs(directorNormalized[i]) * speed, acceleration);
+                result.push(resultValue);
             }
             return result;
         }

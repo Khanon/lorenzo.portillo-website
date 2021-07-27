@@ -48,7 +48,6 @@ export abstract class Scene {
             this.engine.babylonjs.runRenderLoop(() => {
                 this.isExecuted = true;
                 this.babylonjs.render();
-
                 if (properties.fpsContainer) {
                     let divFps = document.getElementById(properties.fpsContainer);
                     divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
@@ -108,7 +107,7 @@ export abstract class Scene {
 
     /**
      *
-     * @param url Create a new instance of SpriteManager or return existing
+     * @param url Returns existing instance of SpriteManager or create a new one
      * @param properties
      * @returns
      */

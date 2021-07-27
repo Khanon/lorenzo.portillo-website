@@ -19,9 +19,9 @@ export class SceneIntro extends Scene {
     private light: HemisphericLight;
 
     // Actors
-    private logo: Actor2D;
-    private sun: Actor2D;
-    private earth: Actor3D;
+    logo: Actor2D;
+    sun: Actor2D;
+    earth: Actor3D;
 
     // ******************
     // Debug 8a8f delete

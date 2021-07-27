@@ -1,6 +1,4 @@
 export class Logger {
-    constructor() {}
-
     static info(msg: string, ...params: any[]): void {
         console.log(this.msgParams(msg, params));
     }
