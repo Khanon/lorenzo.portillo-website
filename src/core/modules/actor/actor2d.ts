@@ -1,16 +1,24 @@
-import { Actor, Scene, Sprite } from '../';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+
+import { Actor } from '../actor/actor';
+import { Sprite } from '../sprite/sprite';
+import { ActorProperties } from './actor-properties';
 
 export abstract class Actor2D extends Actor {
-    protected readonly displayObject: Sprite;
+    protected _sprite: Sprite;
 
-    constructor(readonly name: string, protected readonly scene: Scene) {
-        super(name, scene);
+    constructor(readonly name: string, protected readonly properties?: ActorProperties) {
+        super(name, properties);
     }
 
-    abstract addToScene(): Sprite;
+    abstract createDisplayObject(babylonJsScene: BabylonJsScene): Sprite;
     abstract initialize(): void;
 
+    protected setChildDisplayObject(displayObject: Sprite): void {
+        this._sprite = displayObject;
+    }
+
     get sprite(): Sprite {
-        return this.displayObject;
+        return this._sprite;
     }
 }

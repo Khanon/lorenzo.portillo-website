@@ -5,7 +5,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Actor2D, Actor3D, DimensionsWH, GUI, Scene } from '../../../core';
+import { Actor, Actor2D, Actor3D, DimensionsWH, GUI, Scene } from '../../../core/index';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
@@ -58,10 +58,10 @@ export class SceneIntro extends Scene {
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
         // Actors
-        this.earth = new EarthActor('earth', this);
-        this.logo = new LogoActor('sun', this);
-        this.sun = new SunActor('sun', this);
-        this.robocillo = new RobocilloActor('sun', this);
+        this.earth = this.addActor3D(new EarthActor('earth', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.logo = this.addActor2D(new LogoActor('logo'));
+        this.sun = this.addActor2D(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.robocillo = this.addActor2D(new RobocilloActor('robocillo', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
     }
 
     onLoaded(canvasDimensions: DimensionsWH): void {
@@ -149,7 +149,7 @@ export class SceneIntro extends Scene {
         // this.sun.setScale(0.7);
 
         this.addSubscription(
-            this.coreSubscriptions.loopUpdate.subscribe((delta) => {
+            this.coreSubscriptions.loopUpdate$.subscribe((delta) => {
                 const speed = 0.1 * delta;
                 const acc = 2;
 

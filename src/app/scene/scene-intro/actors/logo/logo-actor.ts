@@ -1,10 +1,10 @@
-import { Actor2D, Sprite } from '../../../../../core';
+import { Actor2D, Sprite } from '../../../../../core/index';
 
 import { LogoStateMotion } from './logo-state-motion';
 
 export class LogoActor extends Actor2D {
-    addToScene(): Sprite {
-        return this.scene.addSprite('logo', './assets/scene-loading/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
+    createDisplayObject(): Sprite {
+        return new Sprite(this.name, { url: './assets/scene-loading/sprites/logo.png', width: 453, height: 115, numFrames: 59 });
     }
 
     initialize(): void {

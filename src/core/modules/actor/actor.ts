@@ -1,17 +1,26 @@
-import { Scene, StateMachine } from '..';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+
+import { StateMachine } from '../state-machine/state-machine';
 import { DisplayObject } from '../../models/display-object';
+import { ActorProperties } from './actor-properties';
 
 export abstract class Actor {
     state: StateMachine<Actor> = new StateMachine<Actor>();
-    protected readonly displayObject: DisplayObject;
+    private displayObject: DisplayObject;
 
-    constructor(readonly name: string, protected readonly scene: Scene) {
-        this.displayObject = this.addToScene();
-        this.scene.addActor(this);
-    }
+    constructor(readonly name: string, protected readonly properties?: ActorProperties) {}
 
-    abstract addToScene(): DisplayObject;
+    protected abstract createDisplayObject(babylonJsScene: BabylonJsScene): DisplayObject;
+    protected abstract setChildDisplayObject(displayObject: DisplayObject): void;
     abstract initialize(): void;
+
+    getDisplayObject(babylonJsScene: BabylonJsScene): DisplayObject {
+        if (!this.displayObject) {
+            this.displayObject = this.createDisplayObject(babylonJsScene);
+            this.setChildDisplayObject(this.displayObject);
+        }
+        return this.displayObject;
+    }
 
     setX(value: number): void {
         this.displayObject.babylonjs.position.x = value;

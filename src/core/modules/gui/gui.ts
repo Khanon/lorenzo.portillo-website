@@ -2,7 +2,7 @@ import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Scene } from '../';
+import { Scene } from '../scene/scene';
 
 /**
  * Only one fullscreen GUI is allowed per scene

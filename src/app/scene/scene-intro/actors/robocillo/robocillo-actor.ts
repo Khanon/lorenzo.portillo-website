@@ -1,8 +1,8 @@
-import { Actor2D, Sprite } from '../../../../../core';
+import { Actor2D, Sprite } from '../../../../../core/index';
 
 export class RobocilloActor extends Actor2D {
-    addToScene(): Sprite {
-        return this.scene.addSprite('robocillo', './assets/scene-loading/sprites/robocillo.png', { width: 34, height: 34, numFrames: 32 });
+    createDisplayObject(): Sprite {
+        return new Sprite(this.name, { url: './assets/scene-loading/sprites/robocillo.png', width: 34, height: 34, numFrames: 32 });
     }
 
     initialize(): void {

@@ -10,23 +10,27 @@ import { SpriteProperties } from './sprite-properties';
  */
 
 export class Sprite implements DisplayObject {
-    readonly babylonjs: BabylonJsSprite;
+    babylonjs: BabylonJsSprite;
+    private spriteInstance: SpriteInstance;
 
     private scale: number = 1;
 
-    constructor(private readonly name, private readonly spriteInstance: SpriteInstance, private readonly properties: SpriteProperties) {
-        this.babylonjs = new BabylonJsSprite(this.name, this.spriteInstance.babylonjs);
-        this.babylonjs.width = 1;
-        this.properties.ratio = this.properties.ratio ?? this.properties.height / this.properties.width;
-        this.babylonjs.height = this.properties.ratio;
-        this.visible = false;
-    }
+    constructor(private readonly name, readonly properties: SpriteProperties) {}
 
     get visible(): boolean {
         return this.babylonjs.isVisible;
     }
     set visible(visible: boolean) {
         this.babylonjs.isVisible = visible;
+    }
+
+    assignInstance(spriteInstance: SpriteInstance): void {
+        this.spriteInstance = spriteInstance;
+        this.babylonjs = new BabylonJsSprite(this.name, this.spriteInstance.babylonjs);
+        this.babylonjs.width = 1;
+        this.properties.ratio = this.properties.ratio ?? this.properties.height / this.properties.width;
+        this.babylonjs.height = this.properties.ratio;
+        this.visible = false;
     }
 
     play(delay: number, loop: boolean, frameStart: number = 0, frameEnd: number = this.properties.numFrames - 1): void {

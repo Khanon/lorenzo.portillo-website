@@ -1,4 +1,4 @@
-import { Actor2D, Misc, State } from '../../../../../core';
+import { Actor2D, Misc, State } from '../../../../../core/index';
 
 export class SunStateMotion extends State<Actor2D> {
     readonly endMotion = { y: 0.3, z: -1.65, scale: 1.15 };

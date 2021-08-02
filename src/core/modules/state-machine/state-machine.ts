@@ -1,5 +1,5 @@
-import { State } from '.';
-import { Logger } from '../';
+import { State } from './state';
+import { Logger } from '../logger/logger';
 
 export class StateMachine<T> {
     currentState: State<T>;

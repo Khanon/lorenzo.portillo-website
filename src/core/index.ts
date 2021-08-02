@@ -1,4 +1,4 @@
-export * from './models';
-export * from './modules';
+export * from './models/index';
+export * from './modules/index';
 
 export { Core } from './core';

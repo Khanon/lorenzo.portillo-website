@@ -4,8 +4,13 @@ import '@babylonjs/core/Materials/PBR/pbrMaterial';
 
 import { Observable, Subject } from 'rxjs';
 
-import { Engine, Scene, SceneStart, Logger } from './modules';
-import { DimensionsWH, CoreProperties, CoreSubscriptions } from './models';
+import { Engine } from './modules/engine/engine';
+import { Logger } from './modules/logger/logger';
+import { Scene } from './modules/scene/scene';
+import { SceneStart } from './modules/scene/scene-start';
+import { DimensionsWH } from './models/dimensions-wh';
+import { CoreProperties } from './models/core-properties';
+import { CoreSubscriptions } from './models/core-subscriptions';
 
 export class Core {
     private canvas: HTMLCanvasElement;
@@ -106,7 +111,7 @@ export class Core {
     getCoreSubscriptions(): CoreSubscriptions {
         return {
             canvasResize: this.canvasResize,
-            loopUpdate: this.loopUpdate,
+            loopUpdate$: this.loopUpdate,
         };
     }
 

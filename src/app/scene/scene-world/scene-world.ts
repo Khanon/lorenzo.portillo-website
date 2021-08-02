@@ -8,9 +8,9 @@ import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Scene, Sprite } from '../../../core';
+import { Scene, Sprite } from '../../../core/index';
 import { DimensionsWH } from '../../../core/models/dimensions-wh';
-import { GUI } from '../../../core';
+import { GUI } from '../../../core/index';
 
 export class SceneWorld extends Scene {
     private logo: Sprite;
@@ -59,9 +59,9 @@ export class SceneWorld extends Scene {
         sphere.position.y = -1;
 
         // Logo
-        this.logo = this.addSprite('', './assets/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
+        // this.logo = this.addSprite('', './assets/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
         // logo.setFrame(50);
-        this.logo.play(50, false);
+        // this.logo.play(50, false);
 
         // const actionManager: ActionManager = new ActionManager(this.babylonjs)
         // actionManager.registerAction()

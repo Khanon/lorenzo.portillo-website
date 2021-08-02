@@ -1,32 +1,33 @@
 import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
+import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 
-import { Actor3D, Mesh } from '../../../../../core';
+import { Actor3D } from '../../../../../core';
 
-import { EarthStateMotion } from './earth-state-motion';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
+import { EarthStateMotion } from './earth-state-motion';
+import { Mesh } from '../../../../../core/modules/mesh/mesh';
+
 export class EarthActor extends Actor3D {
-    addToScene(): Mesh {
-        return this.scene.addMesh(() => {
-            const flatMaterial = new StandardMaterial('', this.scene.babylonjs);
-            flatMaterial.disableLighting = true;
-            flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
-            const mesh = MeshBuilder.CreateDisc('earth', {
-                radius: 7.5,
-                tessellation: 200,
-            });
-            mesh.material = flatMaterial;
-            return mesh;
+    createDisplayObject(babylonJsScene: BabylonSceneJs): Mesh {
+        const flatMaterial = new StandardMaterial('', babylonJsScene);
+        flatMaterial.disableLighting = true;
+        flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
+        const meshBjs = MeshBuilder.CreateDisc('earth', {
+            radius: 7.5,
+            tessellation: 200,
         });
+        meshBjs.material = flatMaterial;
+
+        return new Mesh(this.name, meshBjs);
     }
 
     initialize(): void {
-        this.state.registerState(new EarthStateMotion('motion', this, this.scene.getLoopUpdate()));
+        this.state.registerState(new EarthStateMotion('motion', this, this.properties.loopUpdate$));
 
-        this.displayObject.babylonjs.rotate(new Vector3(0, 1, 0), Math.PI / 2);
-
+        this.mesh.babylonjs.rotate(new Vector3(0, 1, 0), Math.PI / 2);
         this.setScale(1.2);
         this.setY(-6.9);
     }

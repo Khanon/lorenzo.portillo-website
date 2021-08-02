@@ -1,15 +1,24 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
-import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
 import { Observable, Subscription } from 'rxjs';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */
 /* babylonjs-inspector */
 
-import { Actor, Engine, Mesh, Sprite, SpriteInstance, SpriteProperties } from '..';
-import { CoreSubscriptions, DimensionsWH } from '../../models';
+import { Actor } from '../actor/actor';
+import { Actor2D } from '../actor/actor2d';
+import { Actor3D } from '../actor/actor3d';
+import { CoreSubscriptions } from '../../models/core-subscriptions';
+import { DimensionsWH } from '../../models/dimensions-wh';
+import { Engine } from '../engine/engine';
+import { Mesh } from '../mesh/mesh';
+import { Sprite } from '../sprite/sprite';
+import { SpriteInstance } from '../sprite/sprite-instance';
+import { SpriteProperties } from '../sprite/sprite-properties';
 import { SceneStart } from './scene-start';
+import { DisplayObject } from '../../models/display-object';
+import { Logger } from '../logger/logger';
 
 export abstract class Scene {
     babylonjs: BabylonJsScene;
@@ -28,6 +37,10 @@ export abstract class Scene {
     private readonly spriteInstances: SpriteInstance[] = [];
 
     // Actors
+    private readonly meshes: Mesh[] = [];
+    private readonly sprites: Sprite[] = [];
+
+    // Actors
     private readonly actors: Actor[] = [];
 
     /**
@@ -43,6 +56,24 @@ export abstract class Scene {
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
 
         this.onLoad();
+
+        // Create display objects for any actor added to the scene
+        this.actors.forEach((actor) => {
+            const displayObject: DisplayObject = actor.getDisplayObject(this.babylonjs);
+            if (displayObject instanceof Sprite) {
+                this.sprites.push(displayObject);
+            } else if (displayObject instanceof Mesh) {
+                this.meshes.push(displayObject);
+            } else {
+                Logger.error('Unknown DisplayObject instance -', actor.name);
+            }
+        });
+
+        // Assign sprite instances to sprites
+        this.sprites.forEach((sprite) => {
+            sprite.assignInstance(this.getSpriteInstance(sprite.properties));
+        });
+
         this.babylonjs.executeWhenReady(() => {
             // Once the scene is loaded, register a render loop // 8a8f possible renderLoops leaks after loading different scenes
             this.engine.babylonjs.runRenderLoop(() => {
@@ -81,10 +112,6 @@ export abstract class Scene {
     //   Subscriptions
     // ------------------------
 
-    getLoopUpdate(): Observable<number> {
-        return this.coreSubscriptions.loopUpdate;
-    }
-
     protected addSubscription(subscription: Subscription): void {
         this.subscriptions.push(subscription);
     }
@@ -103,36 +130,25 @@ export abstract class Scene {
     // ------------------------
 
     /**
-     * Create a new Sprite using the corresponding instance.
-     * If assigned to an actor, needs to be created from actor 'addToScene' method.
-     * @param url
-     * @param cellSize
-     * @returns
-     */
-    addSprite(name: string, url: string, properties: SpriteProperties): Sprite {
-        return new Sprite(name, this.getSpriteInstance(url, properties), properties);
-    }
-
-    /**
      *
      * @param url Returns existing instance of SpriteManager or create a new one
      * @param properties
      * @returns
      */
-    private getSpriteInstance(url: string, properties: SpriteProperties): SpriteInstance {
+    private getSpriteInstance(properties: SpriteProperties): SpriteInstance {
         // Search and return existing instance
         this.spriteInstances.forEach((spriteInstance) => {
-            if (spriteInstance.url === url) {
+            if (spriteInstance.url === properties.url) {
                 return spriteInstance.babylonjs;
             }
         });
 
         // Create and return a new instance if not found
         const spriteInstance = {
-            url,
+            url: properties.url,
             babylonjs: new SpriteManager(
-                url,
-                url,
+                properties.url,
+                properties.url,
                 this.MAX_SPRITES_PER_INSTANCE,
                 ({ width: properties.width, height: properties.height } = properties),
                 this.babylonjs
@@ -143,29 +159,17 @@ export abstract class Scene {
     }
 
     // ------------------------
-    //   Mesh methods
-    // ------------------------
-
-    /**
-     * Create a mesh.
-     * If assigned to an actor, needs to be created from application actor 'addToScene' method.
-     * @param createFunction
-     * @returns
-     */
-    addMesh(createFunction: () => BabylonJsMesh): Mesh {
-        return new Mesh(createFunction());
-    }
-
-    // ------------------------
     //   Actor methods
     // ------------------------
 
-    /**
-     * Actors are added to the scene automatically from 'Actor' constructor
-     * @param actor
-     */
-    addActor(actor: Actor): void {
+    addActor2D(actor: Actor2D): Actor2D {
         this.actors.push(actor);
+        return actor;
+    }
+
+    addActor3D(actor: Actor3D): Actor3D {
+        this.actors.push(actor);
+        return actor;
     }
 
     // ------------------------

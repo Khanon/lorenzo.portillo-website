@@ -8,7 +8,7 @@ export class Mesh implements DisplayObject {
 
     private scale: number = 1;
 
-    constructor(babylonJsMesh: BabylonJsMesh) {
+    constructor(private readonly name, babylonJsMesh: BabylonJsMesh) {
         this.babylonjs = babylonJsMesh;
     }
 

@@ -1,14 +1,14 @@
-import { Actor2D, Sprite } from '../../../../../core';
+import { Actor2D, Sprite } from '../../../../../core/index';
 
 import { SunStateMotion } from './sun-state-motion';
 
 export class SunActor extends Actor2D {
-    addToScene(): Sprite {
-        return this.scene.addSprite('sun', './assets/scene-loading/sprites/sun.png', { width: 270, height: 270, numFrames: 1 });
+    createDisplayObject(): Sprite {
+        return new Sprite(this.name, { url: './assets/scene-loading/sprites/sun.png', width: 270, height: 270, numFrames: 1 });
     }
 
     initialize(): void {
-        this.state.registerState(new SunStateMotion('motion', this, this.scene.getLoopUpdate()));
+        this.state.registerState(new SunStateMotion('motion', this, this.properties.loopUpdate$));
 
         this.sprite.setFrame(0);
         this.setX(0.01);
