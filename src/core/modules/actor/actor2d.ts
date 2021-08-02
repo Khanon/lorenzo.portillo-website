@@ -1,13 +1,14 @@
-import { Observable } from 'rxjs';
+import { Actor, Scene, Sprite } from '../';
 
-import { Actor, Sprite } from '../';
+export abstract class Actor2D extends Actor {
+    protected readonly displayObject: Sprite;
 
-export class Actor2D extends Actor {
-    constructor(readonly name: string, protected readonly displayObject: Sprite, protected readonly loopUpdate$: Observable<number>) {
-        super(name, displayObject, loopUpdate$);
+    constructor(readonly name: string, protected readonly scene: Scene) {
+        super(name, scene);
     }
 
-    registerStates(): void {}
+    abstract addToScene(): Sprite;
+    abstract initialize(): void;
 
     get sprite(): Sprite {
         return this.displayObject;

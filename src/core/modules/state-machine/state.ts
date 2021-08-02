@@ -1,10 +1,9 @@
 import { Observable, Subscription } from 'rxjs';
 
 export abstract class State<T> {
-    abstract id: string;
     loopUpdateSubscription: Subscription;
 
-    constructor(protected readonly parent: T, protected readonly loopUpdate$?: Observable<number>) {}
+    constructor(readonly id: string, protected readonly parent: T, protected readonly loopUpdate$?: Observable<number>) {}
 
     abstract start(): void;
     abstract end(): void;

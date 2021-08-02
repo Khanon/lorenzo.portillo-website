@@ -1,15 +1,17 @@
-import { Observable } from 'rxjs';
-
-import { Mesh, Sprite, StateMachine } from '..';
+import { Scene, StateMachine } from '..';
+import { DisplayObject } from '../../models/display-object';
 
 export abstract class Actor {
     state: StateMachine<Actor> = new StateMachine<Actor>();
+    protected readonly displayObject: DisplayObject;
 
-    constructor(readonly name: string, protected readonly displayObject: Sprite | Mesh, protected readonly loopUpdate$: Observable<number>) {
-        this.registerStates();
+    constructor(readonly name: string, protected readonly scene: Scene) {
+        this.displayObject = this.addToScene();
+        this.scene.addActor(this);
     }
 
-    abstract registerStates(): void;
+    abstract addToScene(): DisplayObject;
+    abstract initialize(): void;
 
     setX(value: number): void {
         this.displayObject.babylonjs.position.x = value;

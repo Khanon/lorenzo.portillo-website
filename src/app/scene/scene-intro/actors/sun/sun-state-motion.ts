@@ -1,8 +1,6 @@
 import { Actor2D, Misc, State } from '../../../../../core';
 
 export class SunStateMotion extends State<Actor2D> {
-    id: string = 'motion';
-
     readonly endMotion = { y: 0.3, z: -1.65, scale: 1.15 };
 
     start(): void {

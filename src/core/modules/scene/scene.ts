@@ -1,7 +1,7 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
 import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */
@@ -54,6 +54,9 @@ export abstract class Scene {
                 }
             });
 
+            // Initialize actors
+            this.actors.forEach((actor) => actor.initialize());
+
             // Call child onLoaded
             this.onLoaded(properties.canvasDimensions);
         });
@@ -78,6 +81,10 @@ export abstract class Scene {
     //   Subscriptions
     // ------------------------
 
+    getLoopUpdate(): Observable<number> {
+        return this.coreSubscriptions.loopUpdate;
+    }
+
     protected addSubscription(subscription: Subscription): void {
         this.subscriptions.push(subscription);
     }
@@ -96,7 +103,8 @@ export abstract class Scene {
     // ------------------------
 
     /**
-     * Create a new Sprite using the corresponding instance
+     * Create a new Sprite using the corresponding instance.
+     * If assigned to an actor, needs to be created from actor 'addToScene' method.
      * @param url
      * @param cellSize
      * @returns
@@ -138,6 +146,12 @@ export abstract class Scene {
     //   Mesh methods
     // ------------------------
 
+    /**
+     * Create a mesh.
+     * If assigned to an actor, needs to be created from application actor 'addToScene' method.
+     * @param createFunction
+     * @returns
+     */
     addMesh(createFunction: () => BabylonJsMesh): Mesh {
         return new Mesh(createFunction());
     }
@@ -146,6 +160,10 @@ export abstract class Scene {
     //   Actor methods
     // ------------------------
 
+    /**
+     * Actors are added to the scene automatically from 'Actor' constructor
+     * @param actor
+     */
     addActor(actor: Actor): void {
         this.actors.push(actor);
     }

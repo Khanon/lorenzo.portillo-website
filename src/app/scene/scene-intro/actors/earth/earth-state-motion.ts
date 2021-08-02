@@ -1,9 +1,7 @@
 import { Actor3D, Misc, State } from '../../../../../core';
 
 export class EarthStateMotion extends State<Actor3D> {
-    id: string = 'motion';
-
-    readonly endMotion = { x: -2.72, y: -0.48 };
+    readonly endMotion = { y: -7.13, scale: 0.98 };
 
     start(): void {
         setTimeout(() => {
@@ -13,17 +11,23 @@ export class EarthStateMotion extends State<Actor3D> {
 
     end(): void {
         this.unsubscribeLoopUpdate();
-        this.parent.setX(this.endMotion.x);
         this.parent.setY(this.endMotion.y);
+        this.parent.setScale(this.endMotion.scale);
     }
 
     loopUpdate(delta: number): void {
-        const speed = 0.05 * delta;
+        const speed = 0.03 * delta;
         const acc = 2;
-        const step = Misc.Maths.increaseVectorWithInertia([this.parent.getX(), this.parent.getY()], [this.endMotion.x, this.endMotion.y], speed, acc, () => {
-            this.end();
-        });
-        this.parent.setX(step[0]);
-        this.parent.setY(step[1]);
+        const step = Misc.Maths.increaseVectorWithInertia(
+            [this.parent.getY(), this.parent.getScale()],
+            [this.endMotion.y, this.endMotion.scale],
+            speed,
+            acc,
+            () => {
+                this.end();
+            }
+        );
+        this.parent.setY(step[0]);
+        this.parent.setScale(step[1]);
     }
 }

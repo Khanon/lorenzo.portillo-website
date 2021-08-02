@@ -1,13 +1,14 @@
-import { Observable } from 'rxjs';
+import { Actor, Mesh, Scene } from '../';
 
-import { Actor, Mesh } from '../';
+export abstract class Actor3D extends Actor {
+    protected readonly displayObject: Mesh;
 
-export class Actor3D extends Actor {
-    constructor(readonly name: string, protected readonly displayObject: Mesh, protected readonly loopUpdate$: Observable<number>) {
-        super(name, displayObject, loopUpdate$);
+    constructor(readonly name: string, protected readonly scene: Scene) {
+        super(name, scene);
     }
 
-    registerStates(): void {}
+    abstract addToScene(): Mesh;
+    abstract initialize(): void;
 
     get mesh(): Mesh {
         return this.displayObject;

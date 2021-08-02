@@ -1,17 +1,16 @@
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
-import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
+import { Color4 } from '@babylonjs/core/Maths/math.color';
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Actor2D, Actor3D, DimensionsWH, GUI, Mesh, Misc, Scene, Sprite } from '../../../core';
+import { Actor2D, Actor3D, DimensionsWH, GUI, Scene } from '../../../core';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
+import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -22,6 +21,7 @@ export class SceneIntro extends Scene {
     logo: Actor2D;
     sun: Actor2D;
     earth: Actor3D;
+    robocillo: Actor2D;
 
     // ******************
     // Debug 8a8f delete
@@ -37,7 +37,7 @@ export class SceneIntro extends Scene {
         this.textCanvasSize = this.gui.newTextBlock();
         this.textCanvasSize.left = 0;
         this.textCanvasSize.top = 500;
-        this.textCanvasSize.width = '200px';
+        this.textCanvasSize.width = '500px';
         this.textCanvasSize.height = '40px';
         this.textCanvasSize.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         this.textCanvasSize.textHorizontalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
@@ -57,29 +57,11 @@ export class SceneIntro extends Scene {
         // Light in front of scene
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
-        // Earth
-        const earthMesh = this.addMesh(() => {
-            const flatMaterial = new StandardMaterial('', this.babylonjs);
-            flatMaterial.disableLighting = true;
-            flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
-            const mesh = MeshBuilder.CreateSphere('earth', {
-                segments: 128,
-            });
-            mesh.material = flatMaterial;
-            return mesh;
-        });
-        this.earth = new EarthActor('earth', earthMesh, this.coreSubscriptions.loopUpdate);
-        this.addActor(this.earth);
-
-        // Logo
-        const logoSprite = this.addSprite('logo', './assets/scene-loading/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
-        this.logo = new LogoActor('sun', logoSprite, this.coreSubscriptions.loopUpdate);
-        this.addActor(this.logo);
-
-        // Sun
-        const sunSprite = this.addSprite('sun', './assets/scene-loading/sprites/sun.png', { width: 270, height: 270, numFrames: 1 });
-        this.sun = new SunActor('sun', sunSprite, this.coreSubscriptions.loopUpdate);
-        this.addActor(this.sun);
+        // Actors
+        this.earth = new EarthActor('earth', this);
+        this.logo = new LogoActor('sun', this);
+        this.sun = new SunActor('sun', this);
+        this.robocillo = new RobocilloActor('sun', this);
     }
 
     onLoaded(canvasDimensions: DimensionsWH): void {
@@ -98,19 +80,17 @@ export class SceneIntro extends Scene {
         this.subscribeCanvasResize();
 
         // 8a8f Test states
-        this.earth.state.setState('initialize');
-        this.logo.state.setState('initialize');
-        this.sun.state.setState('initialize');
-        this.earth.state.setState('motion');
-        this.logo.state.setState('motion');
-        this.sun.state.setState('motion');
+        this.earth.state.set('motion');
+        this.logo.state.set('motion');
+        this.sun.state.set('motion');
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.code, event.code);
             const inc = event.altKey ? (event.ctrlKey ? 0.0001 : 0.001) : 0.01;
             // const obj = this.earth;
-            const obj = this.sun;
+            // const obj = this.sun;
+            const obj = this.robocillo;
             if (event.code === 'Numpad4') {
                 obj.incZ(inc);
                 console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
