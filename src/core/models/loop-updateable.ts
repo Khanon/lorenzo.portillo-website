@@ -1,7 +1,7 @@
 import { Observable, Subscription } from 'rxjs';
 
 export class LoopUpdateable {
-    loopUpdateSubscription: Subscription;
+    private loopUpdateSubscription: Subscription;
 
     constructor(protected readonly loopUpdate$?: Observable<number>) {}
 
