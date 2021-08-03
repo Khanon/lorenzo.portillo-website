@@ -3,6 +3,10 @@ export class Logger {
         console.log(this.msgParams(msg, params));
     }
 
+    static warn(msg: string, ...params: any[]): void {
+        console.log('Warning - ' + this.msgParams(msg, params));
+    }
+
     static error(msg: string, ...params: any[]): void {
         console.log('Error - ' + this.msgParams(msg, params));
     }

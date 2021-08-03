@@ -14,7 +14,7 @@ export abstract class Actor3D extends Actor {
     abstract createDisplayObject(babylonJsScene: BabylonJsScene): Mesh;
     abstract initialize(): void;
 
-    protected setChildDisplayObject(displayObject: Mesh): void {
+    protected setDisplayObject(displayObject: Mesh): void {
         this._mesh = displayObject;
     }
 

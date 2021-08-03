@@ -10,7 +10,7 @@ export class EarthStateMotion extends State<Actor3D> {
     }
 
     end(): void {
-        this.unsubscribeLoopUpdate();
+        this.unSubscribeLoopUpdate();
         this.parent.setY(this.endMotion.y);
         this.parent.setScale(this.endMotion.scale);
     }

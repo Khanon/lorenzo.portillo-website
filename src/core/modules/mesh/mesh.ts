@@ -3,12 +3,13 @@ import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
 
 import { DisplayObject } from '../../models/display-object';
 
-export class Mesh implements DisplayObject {
+export class Mesh extends DisplayObject {
     readonly babylonjs: BabylonJsMesh;
 
     private scale: number = 1;
 
-    constructor(private readonly name, babylonJsMesh: BabylonJsMesh) {
+    constructor(protected readonly name, babylonJsMesh: BabylonJsMesh) {
+        super(name);
         this.babylonjs = babylonJsMesh;
     }
 

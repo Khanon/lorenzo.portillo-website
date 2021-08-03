@@ -1,12 +1,13 @@
 import { State } from './state';
 import { Logger } from '../logger/logger';
+import { Misc } from '../misc/misc';
 
 export class StateMachine<T> {
     currentState: State<T>;
-    states: { id: string; state: State<T> }[] = [];
+    states: Misc.KeyValue<string, State<T>> = new Misc.KeyValue<string, State<T>>();
 
     registerState(state: State<T>): State<T> {
-        this.states.push({ id: state.id, state });
+        this.states.add(state.id, state);
         return state;
     }
 
@@ -20,11 +21,12 @@ export class StateMachine<T> {
     }
 
     get(stateId: string): State<T> {
-        const state = this.states.find((state) => state.id === stateId).state;
-        if (!state) {
+        const pair = this.states.get(stateId);
+        if (!pair) {
             Logger.error('State not found:', stateId);
+            return undefined;
         }
-        return state;
+        return pair.value;
     }
 
     getCurrentState(): State<T> {

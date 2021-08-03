@@ -9,13 +9,15 @@ import { SpriteProperties } from './sprite-properties';
  * TODO: Switch SpriteManager by SpritePackedManager once BabylonJs team implement all missing features // 8a8f
  */
 
-export class Sprite implements DisplayObject {
+export class Sprite extends DisplayObject {
     babylonjs: BabylonJsSprite;
     private spriteInstance: SpriteInstance;
 
     private scale: number = 1;
 
-    constructor(private readonly name, readonly properties: SpriteProperties) {}
+    constructor(protected readonly name: string, readonly properties: SpriteProperties) {
+        super(name);
+    }
 
     get visible(): boolean {
         return this.babylonjs.isVisible;

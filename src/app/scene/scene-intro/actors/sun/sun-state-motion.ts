@@ -10,7 +10,7 @@ export class SunStateMotion extends State<Actor2D> {
     }
 
     end(): void {
-        this.unsubscribeLoopUpdate();
+        this.unSubscribeLoopUpdate();
         this.parent.setY(this.endMotion.y);
         this.parent.setZ(this.endMotion.z);
         this.parent.setScale(this.endMotion.scale);

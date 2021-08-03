@@ -1,25 +1,12 @@
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
-export abstract class State<T> {
-    loopUpdateSubscription: Subscription;
+import { LoopUpdateable } from '../../models/loop-updateable';
 
-    constructor(readonly id: string, protected readonly parent: T, protected readonly loopUpdate$?: Observable<number>) {}
+export abstract class State<T> extends LoopUpdateable {
+    constructor(readonly id: string, protected readonly parent: T, protected readonly loopUpdate$?: Observable<number>) {
+        super(loopUpdate$);
+    }
 
     abstract start(): void;
     abstract end(): void;
-
-    loopUpdate(delta: number): void {}
-
-    subscribeLoopUpdate(): void {
-        if (this.loopUpdate$) {
-            this.loopUpdateSubscription = this.loopUpdate$.subscribe((delta) => this.loopUpdate(delta));
-        }
-    }
-
-    unsubscribeLoopUpdate(): void {
-        if (this.loopUpdateSubscription) {
-            this.loopUpdateSubscription.unsubscribe();
-            this.loopUpdateSubscription = undefined;
-        }
-    }
 }

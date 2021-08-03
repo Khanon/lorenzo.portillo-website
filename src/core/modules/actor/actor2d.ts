@@ -14,7 +14,7 @@ export abstract class Actor2D extends Actor {
     abstract createDisplayObject(babylonJsScene: BabylonJsScene): Sprite;
     abstract initialize(): void;
 
-    protected setChildDisplayObject(displayObject: Sprite): void {
+    protected setDisplayObject(displayObject: Sprite): void {
         this._sprite = displayObject;
     }
 

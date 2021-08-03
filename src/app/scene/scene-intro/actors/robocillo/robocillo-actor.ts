@@ -1,4 +1,5 @@
 import { Actor2D, Sprite } from '../../../../../core/index';
+import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
 
 export class RobocilloActor extends Actor2D {
     createDisplayObject(): Sprite {
@@ -6,10 +7,14 @@ export class RobocilloActor extends Actor2D {
     }
 
     initialize(): void {
+        this.action.registerAction(new RobocilloActionGoTo('goto', this, this.properties.loopUpdate$));
+
         this.setScale(0.17);
         this.setX(-0.01);
         this.setY(0.5);
         this.setZ(0.0);
         this.sprite.play(50, true);
+
+        this.action.play<IRobocilloActionGoTo>('goto', { x: 0 });
     }
 }
