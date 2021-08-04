@@ -2,10 +2,10 @@ import { Observable, Subscription } from 'rxjs';
 
 import { LoopUpdateable } from '../../models/loop-updateable';
 
-export abstract class ActorAction<T, P> extends LoopUpdateable {
+export abstract class Action<T, P> extends LoopUpdateable {
     protected properties: P;
 
-    constructor(readonly id: string, protected readonly actor: T, protected readonly loopUpdate$?: Observable<number>) {
+    constructor(readonly id: string, protected readonly target: T, protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
     }
 

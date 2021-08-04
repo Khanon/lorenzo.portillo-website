@@ -8,7 +8,7 @@ export class Logger {
     }
 
     static error(msg: string, ...params: any[]): void {
-        console.log('Error - ' + this.msgParams(msg, params));
+        console.log('Error!! - ' + this.msgParams(msg, params));
     }
 
     private static msgParams(msg: string, params: any[]): string {

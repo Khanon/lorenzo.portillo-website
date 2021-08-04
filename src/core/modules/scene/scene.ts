@@ -9,6 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Actor } from '../actor/actor';
 import { Actor2D } from '../actor/actor2d';
 import { Actor3D } from '../actor/actor3d';
+import { ActionsManager } from '../actions/actions-manager';
 import { CoreSubscriptions } from '../../models/core-subscriptions';
 import { DimensionsWH } from '../../models/dimensions-wh';
 import { Engine } from '../engine/engine';
@@ -42,6 +43,9 @@ export abstract class Scene {
 
     // Actors
     private readonly actors: Actor[] = [];
+
+    // Actions
+    protected readonly actions: ActionsManager<any> = new ActionsManager<any>();
 
     /**
      * Create babylonjs scene, trigger onLoad.

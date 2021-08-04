@@ -2,7 +2,7 @@ import { Logger } from '../logger/logger';
 
 export namespace Misc {
     export class Maths {
-        static readonly MIN_DISTANCE = 0.00000001;
+        static readonly MIN_VALUE = 0.00000001;
 
         static increaseValue(from: number, to: number, speed: number, completed?: () => void): number {
             const complete = () => {
@@ -12,7 +12,7 @@ export namespace Misc {
                 return to;
             };
             const dist = Math.abs(to - from);
-            if (dist <= this.MIN_DISTANCE) {
+            if (dist <= this.MIN_VALUE) {
                 return complete();
             }
             if (to < from) {
@@ -37,7 +37,7 @@ export namespace Misc {
                 return to;
             };
             const dist = Math.abs(to - from);
-            if (dist <= this.MIN_DISTANCE) {
+            if (dist <= this.MIN_VALUE) {
                 return complete();
             }
             if (to < from) {
@@ -68,7 +68,7 @@ export namespace Misc {
             let lengthPow2 = 0;
             director.forEach((value) => (lengthPow2 += Math.pow(value, 2)));
             const length = Math.sqrt(lengthPow2);
-            if (length < this.MIN_DISTANCE) {
+            if (length < this.MIN_VALUE) {
                 return complete();
             }
             const directorNormalized = director.map((value) => value / length);
@@ -94,7 +94,7 @@ export namespace Misc {
             let lengthPow2 = 0;
             director.forEach((value) => (lengthPow2 += Math.pow(value, 2)));
             const length = Math.sqrt(lengthPow2);
-            if (length < this.MIN_DISTANCE) {
+            if (length < this.MIN_VALUE) {
                 return complete();
             }
             const directorNormalized = director.map((value) => value / length);
@@ -113,7 +113,11 @@ export namespace Misc {
         protected readonly keys: K[] = [];
         protected readonly values: V[] = [];
 
-        get(key: K): { key: K; value: V } {
+        get(key: K): V {
+            return this.search<K>(key, this.keys)?.value;
+        }
+
+        getByKey(key: K): { key: K; value: V } {
             return this.search<K>(key, this.keys);
         }
 
@@ -126,7 +130,7 @@ export namespace Misc {
 
     export class KeyValue<K, V> extends KeyValueBase<K, V> {
         add(key: K, value: V) {
-            if (this.get(key) !== undefined) {
+            if (this.getByKey(key) !== undefined) {
                 Logger.warn("Can't repeat key value -", key);
                 return;
             }

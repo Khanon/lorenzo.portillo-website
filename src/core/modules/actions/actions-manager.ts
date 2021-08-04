@@ -1,18 +1,18 @@
 import { Misc } from '../misc/misc';
-import { ActorAction } from './actor-action';
+import { Action } from './action';
 import { Logger } from '../logger/logger';
 
-export class ActorActionsManager<T> {
-    private registeredActions: Misc.KeyValue<string, ActorAction<T, any>> = new Misc.KeyValue<string, ActorAction<T, any>>();
-    private runningActions: Misc.KeyValue<string, ActorAction<T, any>> = new Misc.KeyValue<string, ActorAction<T, any>>();
+export class ActionsManager<T> {
+    private registeredActions: Misc.KeyValue<string, Action<T, any>> = new Misc.KeyValue<string, Action<T, any>>();
+    private runningActions: Misc.KeyValue<string, Action<T, any>> = new Misc.KeyValue<string, Action<T, any>>();
 
-    registerAction(actorAction: ActorAction<T, any>): void {
-        this.registeredActions.add(actorAction.id, actorAction);
+    registerAction(action: Action<T, any>): void {
+        this.registeredActions.add(action.id, action);
     }
 
     play<P>(actionId: string, properties?: P): void {
         if (!this.isPlaying(actionId)) {
-            const actionPair = this.registeredActions.get(actionId);
+            const actionPair = this.registeredActions.getByKey(actionId);
             if (!actionPair) {
                 Logger.warn('Action already running -', actionId);
                 return;
@@ -24,7 +24,7 @@ export class ActorActionsManager<T> {
     }
 
     stop(actionId: string): void {
-        const actionPair = this.registeredActions.get(actionId);
+        const actionPair = this.registeredActions.getByKey(actionId);
         if (actionPair) {
             this.runningActions.del(actionPair.key);
             actionPair.value.stop();

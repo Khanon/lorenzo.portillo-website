@@ -1,4 +1,5 @@
 import { Actor2D, Sprite } from '../../../../../core/index';
+import { ActorModifierList } from '../../../../../core/modules/actor/modifiers/actor-modifiers-list';
 import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
 
 export class RobocilloActor extends Actor2D {
@@ -8,6 +9,7 @@ export class RobocilloActor extends Actor2D {
 
     initialize(): void {
         this.action.registerAction(new RobocilloActionGoTo('goto', this, this.properties.loopUpdate$));
+        this.modifier.add(ActorModifierList.SimpleMovement);
 
         this.setScale(0.17);
         this.setX(-0.01);

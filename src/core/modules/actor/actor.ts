@@ -1,15 +1,18 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 import { StateMachine } from '../state-machine/state-machine';
 import { DisplayObject } from '../../models/display-object';
 import { ActorProperties } from './actor-properties';
-import { ActorActionsManager } from '../actor-actions/actor-actions-manager';
+import { ActionsManager } from '../actions/actions-manager';
+import { ActorModifiers } from './modifiers/actor-modifiers';
 
 export abstract class Actor {
     private displayObject: DisplayObject;
 
-    state: StateMachine<Actor> = new StateMachine<Actor>();
-    action: ActorActionsManager<Actor> = new ActorActionsManager<Actor>();
+    readonly state: StateMachine<Actor> = new StateMachine<Actor>();
+    readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
+    readonly modifier: ActorModifiers = new ActorModifiers();
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {}
 
@@ -50,6 +53,20 @@ export abstract class Actor {
     // ----------------------------
     //  Operators
     // ----------------------------
+
+    setPosition(position: Vector3): void {
+        this.displayObject.setPosition(position);
+    }
+
+    incPosition(position: Vector3): void {
+        this.displayObject.incX(position.x);
+        this.displayObject.incY(position.y);
+        this.displayObject.incZ(position.z);
+    }
+
+    getPosition(): Vector3 {
+        return this.displayObject.getPosition();
+    }
 
     setX(value: number): void {
         this.displayObject.setX(value);

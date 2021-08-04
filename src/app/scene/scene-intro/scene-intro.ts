@@ -5,12 +5,13 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Actor, Actor2D, Actor3D, DimensionsWH, GUI, Scene } from '../../../core/index';
+import { Actor2D, Actor3D, DimensionsWH, GUI, Scene } from '../../../core/index';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
+import { SceneIntroActionGravity } from './actions/action-gravity';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -22,6 +23,9 @@ export class SceneIntro extends Scene {
     sun: Actor2D;
     earth: Actor3D;
     robocillo: Actor2D;
+
+    // Actions
+    gravity: SceneIntroActionGravity;
 
     // ******************
     // Debug 8a8f delete
@@ -62,6 +66,11 @@ export class SceneIntro extends Scene {
         this.logo = this.addActor2D(new LogoActor('logo'));
         this.sun = this.addActor2D(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
         this.robocillo = this.addActor2D(new RobocilloActor('robocillo', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+
+        // Actions
+        this.gravity = new SceneIntroActionGravity('gravity', this.earth, this.coreSubscriptions.loopUpdate$);
+        this.actions.registerAction(this.gravity);
+        this.gravity.addActor(this.robocillo);
     }
 
     onLoaded(canvasDimensions: DimensionsWH): void {
@@ -79,10 +88,13 @@ export class SceneIntro extends Scene {
         this.subscribeLoopUpdate();
         this.subscribeCanvasResize();
 
-        // 8a8f Test states
+        // Start motions
         this.earth.state.set('motion');
         this.logo.state.set('motion');
         this.sun.state.set('motion');
+
+        // Start actions
+        setTimeout(() => this.actions.play('gravity'), 3000);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {

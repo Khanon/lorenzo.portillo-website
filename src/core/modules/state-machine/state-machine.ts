@@ -21,12 +21,12 @@ export class StateMachine<T> {
     }
 
     get(stateId: string): State<T> {
-        const pair = this.states.get(stateId);
-        if (!pair) {
+        const state = this.states.get(stateId);
+        if (!state) {
             Logger.error('State not found:', stateId);
             return undefined;
         }
-        return pair.value;
+        return state;
     }
 
     getCurrentState(): State<T> {
