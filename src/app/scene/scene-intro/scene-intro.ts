@@ -12,6 +12,7 @@ import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 import { SceneIntroActionGravity } from './actions/action-gravity';
+import { SimplePhysics } from '../../../core/modules/physics/simple-physics';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -19,10 +20,10 @@ export class SceneIntro extends Scene {
     private light: HemisphericLight;
 
     // Actors
-    logo: Actor2D;
-    sun: Actor2D;
-    earth: Actor3D;
-    robocillo: Actor2D;
+    logo: LogoActor;
+    sun: SunActor;
+    earth: EarthActor;
+    robocillo: RobocilloActor;
 
     // Actions
     gravity: SceneIntroActionGravity;
@@ -70,7 +71,6 @@ export class SceneIntro extends Scene {
         // Actions
         this.gravity = new SceneIntroActionGravity('gravity', this.earth, this.coreSubscriptions.loopUpdate$);
         this.actions.registerAction(this.gravity);
-        this.gravity.addActor(this.robocillo);
     }
 
     onLoaded(canvasDimensions: DimensionsWH): void {
@@ -94,7 +94,8 @@ export class SceneIntro extends Scene {
         this.sun.state.set('motion');
 
         // Start actions
-        setTimeout(() => this.actions.play('gravity'), 3000);
+        this.gravity.addActor(this.robocillo);
+        // setTimeout(() => this.actions.play('gravity'), 3000);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
@@ -103,19 +104,27 @@ export class SceneIntro extends Scene {
             // const obj = this.earth;
             // const obj = this.sun;
             const obj = this.robocillo;
-            if (event.code === 'Numpad4') {
+            if (event.code === 'Space') {
+                if (this.actions.isPlaying('gravity')) {
+                    this.actions.stop('gravity');
+                } else {
+                    (this.robocillo.modifier.get('simple-physics') as SimplePhysics).applyForce(new Vector3(0, 0, -0.01));
+                    this.actions.play('gravity');
+                }
+            }
+            if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {
                 obj.incZ(inc);
                 console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
-            if (event.code === 'Numpad6') {
+            if (event.code === 'Numpad6' || event.code === 'ArrowRight') {
                 obj.incZ(-inc);
                 console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
-            if (event.code === 'Numpad8') {
+            if (event.code === 'Numpad8' || event.code === 'ArrowUp') {
                 obj.incY(inc);
                 console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
-            if (event.code === 'Numpad2') {
+            if (event.code === 'Numpad2' || event.code === 'ArrowDown') {
                 obj.incY(-inc);
                 console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }

@@ -1,15 +1,17 @@
+import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
+
 import { Actor2D, Sprite } from '../../../../../core/index';
-import { ActorModifierList } from '../../../../../core/modules/actor/modifiers/actor-modifiers-list';
 import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
+import { SimplePhysics } from '../../../../../core/modules/physics/simple-physics';
 
 export class RobocilloActor extends Actor2D {
-    createDisplayObject(): Sprite {
+    createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
         return new Sprite(this.name, { url: './assets/scene-loading/sprites/robocillo.png', width: 34, height: 34, numFrames: 32 });
     }
 
     initialize(): void {
         this.action.registerAction(new RobocilloActionGoTo('goto', this, this.properties.loopUpdate$));
-        this.modifier.add(ActorModifierList.SimpleMovement);
+        this.modifier.add(new SimplePhysics(this, this.properties.loopUpdate$));
 
         this.setScale(0.17);
         this.setX(-0.01);

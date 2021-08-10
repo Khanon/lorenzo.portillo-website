@@ -5,14 +5,14 @@ import { StateMachine } from '../state-machine/state-machine';
 import { DisplayObject } from '../../models/display-object';
 import { ActorProperties } from './actor-properties';
 import { ActionsManager } from '../actions/actions-manager';
-import { ActorModifiers } from './modifiers/actor-modifiers';
+import { Modifiers } from '../modifiers/modifiers';
 
 export abstract class Actor {
     private displayObject: DisplayObject;
 
     readonly state: StateMachine<Actor> = new StateMachine<Actor>();
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
-    readonly modifier: ActorModifiers = new ActorModifiers();
+    readonly modifier: Modifiers = new Modifiers();
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {}
 

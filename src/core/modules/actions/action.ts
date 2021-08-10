@@ -1,4 +1,4 @@
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { LoopUpdateable } from '../../models/loop-updateable';
 
@@ -11,6 +11,10 @@ export abstract class Action<T, P> extends LoopUpdateable {
 
     abstract play(): void;
     abstract stop(): void;
+
+    get isPlaying(): boolean {
+        return !!this.loopUpdateSubscription;
+    }
 
     setProperties(properties: P): void {
         this.properties = properties;

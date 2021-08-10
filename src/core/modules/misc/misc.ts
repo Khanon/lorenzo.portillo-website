@@ -1,8 +1,36 @@
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+
 import { Logger } from '../logger/logger';
 
 export namespace Misc {
+    export class Vectors {
+        static vectorialProjectionToLine(vector: Vector3, line: Vector3): Vector3 {
+            return line.scale(Vector3.Dot(vector, line) / Vector3.Dot(line, line));
+        }
+
+        static scalarProjectionToLine(vector: Vector3, line: Vector3): number {
+            return vector.length() * this.angleBetweenLines(vector, line);
+        }
+
+        /*static vectorialProjectionToPlane(vector: Vector3, line: Vector3): Vector3 {
+            return new Vector3();
+        }
+
+        static scalarProjectionToPlane(vector: Vector3, line: Vector3): Vector3 {
+            return new Vector3();
+        }*/
+
+        static angleBetweenLines(lineA: Vector3, lineB: Vector3): number {
+            return Math.acos(Misc.Maths.clamp(Vector3.Dot(lineA, lineB) / (lineA.length() * lineB.length()), -1, 1));
+        }
+    }
+
     export class Maths {
         static readonly MIN_VALUE = 0.00000001;
+
+        static clamp(value: number, min: number, max: number): number {
+            return Math.min(Math.max(value, min), max);
+        }
 
         static increaseValue(from: number, to: number, speed: number, completed?: () => void): number {
             const complete = () => {
@@ -113,6 +141,10 @@ export namespace Misc {
         protected readonly keys: K[] = [];
         protected readonly values: V[] = [];
 
+        abstract add(key: K, value: V): void;
+        abstract del(key: K): void;
+        protected abstract search<T>(keyvalue: T, arrSeach: T[]): any;
+
         get(key: K): V {
             return this.search<K>(key, this.keys)?.value;
         }
@@ -124,12 +156,10 @@ export namespace Misc {
         getByValue(value: V): { key: K; value: V } {
             return this.search<V>(value, this.values);
         }
-
-        protected abstract search<T>(keyvalue: T, arrSeach: T[]): any;
     }
 
     export class KeyValue<K, V> extends KeyValueBase<K, V> {
-        add(key: K, value: V) {
+        add(key: K, value: V): void {
             if (this.getByKey(key) !== undefined) {
                 Logger.warn("Can't repeat key value -", key);
                 return;

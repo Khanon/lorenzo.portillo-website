@@ -1,9 +1,10 @@
-import { Actor2D, Sprite } from '../../../../../core/index';
+import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
 
+import { Actor2D, Sprite } from '../../../../../core/index';
 import { LogoStateMotion } from './logo-state-motion';
 
 export class LogoActor extends Actor2D {
-    createDisplayObject(): Sprite {
+    createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
         return new Sprite(this.name, { url: './assets/scene-loading/sprites/logo.png', width: 453, height: 115, numFrames: 59 });
     }
 
