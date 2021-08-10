@@ -2,24 +2,13 @@ import { Observable } from 'rxjs';
 
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Modifier } from '../modifiers/modifier';
 import { LoopUpdateable } from '../../models/loop-updateable';
 import { Actor } from '../actor/actor';
+import { Modifier } from '../modifiers/modifier';
 
-// 8a8f intentar hacer esto con decorador, sacar el subject loopUpdate de core a un static para no tener que pasarlo por toda la aplicación
-// https://cloudsoft.io/blog/level-up-your-typescript-game
-
-/*function Init(args: any) {
-    return <T extends { new (...args: any[]): {} }>(constructor: T) => {
-        return class extends constructor {
-            fuel = args.fuel || 0;
-        };
-    };
-}*/
-
-// @Init(this)
 export class SimplePhysics extends LoopUpdateable implements Modifier {
-    id: string = 'simple-physics';
+    static id: string = 'simple-physics';
+    id: string = SimplePhysics.id;
 
     private readonly SIDE_VEL_DECREASE_FACTOR = 0.05;
 

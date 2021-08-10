@@ -6,11 +6,11 @@ export interface IRobocilloActionGoTo {
 }
 
 export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
-    play() {
+    onPlay() {
         // this.subscribeLoopUpdate();
     }
 
-    stop() {
+    onStop() {
         // this.unSubscribeLoopUpdate();
     }
 

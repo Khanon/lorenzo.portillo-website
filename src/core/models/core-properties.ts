@@ -4,5 +4,5 @@ export interface CoreProperties {
     /** Don't update before this delay */
     delayUpdate?: number;
     /** Don't return a 'delta' bigger than this */
-    fpxMaxValue?: number;
+    deltaMaxValue?: number;
 }

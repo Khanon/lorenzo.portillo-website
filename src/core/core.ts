@@ -82,14 +82,6 @@ export class Core {
     }
 
     /**
-     * Canvas resize subscription
-     * @returns
-     */
-    canvasResize$(): Observable<DimensionsWH> {
-        return this.canvasResize;
-    }
-
-    /**
      * Set current scene
      */
     setScene(scene: Scene, sceneProperties?: SceneStart): void {
@@ -124,7 +116,10 @@ export class Core {
             const currentMs = performance.now();
             const interval = currentMs - this.loopUpdateLastMs;
             if (interval > this.loopUpdateDelay) {
-                const delta = interval / this.loopUpdateFPS;
+                let delta = interval / this.loopUpdateFPS;
+                if (this.properties.deltaMaxValue && delta > this.properties.deltaMaxValue) {
+                    delta = this.properties.deltaMaxValue;
+                }
                 this.loopUpdate.next(delta);
                 this.loopUpdateLastMs = currentMs;
             }

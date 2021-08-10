@@ -3,6 +3,24 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Logger } from '../logger/logger';
 
 export namespace Misc {
+    export class Strings {
+        static hash(text: string): number {
+            let hash = 0;
+            let chr: number;
+            if (text.length === 0) {
+                return hash;
+            }
+            for (let i: number = 0; i < text.length; i++) {
+                chr = text.charCodeAt(i);
+                hash = (hash << 5) - hash + chr;
+                hash |= 0;
+            }
+            return hash;
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------
+
     export class Vectors {
         static vectorialProjectionToLine(vector: Vector3, line: Vector3): Vector3 {
             return line.scale(Vector3.Dot(vector, line) / Vector3.Dot(line, line));
@@ -24,6 +42,8 @@ export namespace Misc {
             return Math.acos(Misc.Maths.clamp(Vector3.Dot(lineA, lineB) / (lineA.length() * lineB.length()), -1, 1));
         }
     }
+
+    // ---------------------------------------------------------------------------------------
 
     export class Maths {
         static readonly MIN_VALUE = 0.00000001;
@@ -158,6 +178,9 @@ export namespace Misc {
         }
     }
 
+    /**
+     * Non repeatable Key-Value
+     */
     export class KeyValue<K, V> extends KeyValueBase<K, V> {
         add(key: K, value: V): void {
             if (this.getByKey(key) !== undefined) {
@@ -186,8 +209,9 @@ export namespace Misc {
         }
     }
 
-    // ---------------------------------------------------------------------------------------
-
+    /**
+     * Repeatable Key-Value
+     */
     export class RKeyValue<K, V> extends KeyValueBase<K, V> {
         add(key: K, value: V) {
             this.keys.push(key);

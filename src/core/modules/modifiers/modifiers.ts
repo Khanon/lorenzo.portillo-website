@@ -1,7 +1,6 @@
 /**
- * Modifiers are meant to add functionalities to Actor, Scenarios or whatever.
- * Adding a modifier will add a class that belongs to the object.
- * This class brings new capabilities to the object.
+ * Modifiers are meant to add functionalities or modify properties of Actors, Scenes, or whatever.
+ * Modifeiers can be used from outer the container.
  */
 
 import { Misc } from '../misc/misc';

@@ -166,12 +166,7 @@ export abstract class Scene {
     //   Actor methods
     // ------------------------
 
-    addActor2D(actor: Actor2D): Actor2D {
-        this.actors.push(actor);
-        return actor;
-    }
-
-    addActor3D(actor: Actor3D): Actor3D {
+    addActor(actor: Actor): any {
         this.actors.push(actor);
         return actor;
     }

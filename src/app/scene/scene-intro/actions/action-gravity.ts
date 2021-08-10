@@ -11,11 +11,11 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     private readonly actorsMovement: ActorMovement[] = [];
 
-    play(): void {
+    onPlay(): void {
         this.subscribeLoopUpdate();
     }
 
-    stop(): void {
+    onStop(): void {
         this.unSubscribeLoopUpdate();
         this.actorsMovement.forEach((actorMovement) => {
             //8a8f eliminar
@@ -24,7 +24,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
     }
 
     addActor(actor: Actor) {
-        this.actorsMovement.push({ actor, simpleMovement: actor.modifier.get('simple-physics') });
+        this.actorsMovement.push({ actor, simpleMovement: actor.modifier.get(SimplePhysics.id) });
     }
 
     loopUpdate(delta: number): void {
