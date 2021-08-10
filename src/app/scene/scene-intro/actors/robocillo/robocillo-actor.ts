@@ -23,7 +23,7 @@ export class RobocilloActor extends Actor2D {
         this.setX(-0.01);
         this.setY(0.5);
         this.setZ(0.0);
-        this.sprite.play(50, true);
+        this.sprite.play(50, true, 23, 30);
 
         this.action.play<IRobocilloActionGoTo>('goto', { x: 0 });
     }

@@ -2,6 +2,11 @@ import { Misc } from '../misc/misc';
 import { Action } from './action';
 import { Logger } from '../logger/logger';
 
+/**
+ * Actions add functionalities to actors or scenes.
+ * A single instance can run any number of actions.
+ */
+
 export class ActionsManager<T> {
     private registeredActions: Misc.KeyValue<string, Action<T, any>> = new Misc.KeyValue<string, Action<T, any>>();
 

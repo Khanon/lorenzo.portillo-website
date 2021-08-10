@@ -1,6 +1,6 @@
 /**
- * Modifiers are meant to add functionalities or modify properties of Actors, Scenes, or whatever.
- * Modifeiers can be used from outer the container.
+ * Modifiers are meant to add functionalities or modify properties of Actors or Scenes.
+ * Modifeiers can be used from outer the container and also be combined with other modifiers.
  */
 
 import { Misc } from '../misc/misc';
