@@ -30,10 +30,11 @@ export namespace Misc {
             return vector.length() * this.angleBetweenLines(vector, line);
         }
 
-        /*static vectorialProjectionToPlane(vector: Vector3, line: Vector3): Vector3 {
-            return new Vector3();
+        static vectorialProjectionToPlane(vector: Vector3, planeNormal: Vector3): Vector3 {
+            return vector.subtract(Misc.Vectors.vectorialProjectionToLine(vector, planeNormal));
         }
 
+        /*
         static scalarProjectionToPlane(vector: Vector3, line: Vector3): Vector3 {
             return new Vector3();
         }*/

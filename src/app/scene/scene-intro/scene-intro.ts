@@ -12,7 +12,7 @@ import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 import { SceneIntroActionGravity } from './actions/action-gravity';
-import { SimplePhysics } from '../../../core/modules/physics/simple-physics';
+import { SimpleActorPhysics } from '../../../core/modules/physics/simple-actor-physics';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -108,7 +108,7 @@ export class SceneIntro extends Scene {
                 if (this.actions.isPlaying('gravity')) {
                     this.actions.stop('gravity');
                 } else {
-                    (this.robocillo.modifier.get('simple-physics') as SimplePhysics).applyForce(new Vector3(0, 0, -0.01));
+                    (this.robocillo.modifier.get('simple-actor-physics') as SimpleActorPhysics).applyForce(new Vector3(0, 0, 0.01));
                     this.actions.play('gravity');
                 }
             }

@@ -5,7 +5,7 @@ import { LogoStateMotion } from './logo-state-motion';
 
 export class LogoActor extends Actor2D {
     createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-loading/sprites/logo.png', width: 453, height: 115, numFrames: 59 });
+        return new Sprite(this.name, { url: './assets/scene-intro/sprites/logo.png', width: 453, height: 115, numFrames: 59 });
     }
 
     initialize(): void {

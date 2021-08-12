@@ -6,7 +6,7 @@ import { SunStateMotion } from './sun-state-motion';
 
 export class SunActor extends Actor2D {
     createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-loading/sprites/sun.png', width: 270, height: 270, numFrames: 1 });
+        return new Sprite(this.name, { url: './assets/scene-intro/sprites/sun.png', width: 270, height: 270, numFrames: 1 });
     }
 
     initialize(): void {

@@ -10,12 +10,13 @@ import { Logger } from '../logger/logger';
 export class Modifiers {
     private readonly modifiers: Misc.KeyValue<string, Modifier> = new Misc.KeyValue<string, Modifier>();
 
-    add(modifier: Modifier): void {
+    add(modifier: Modifier): Modifier {
         if (this.modifiers.get(modifier.id)) {
             Logger.warn(`Can't add modifier, Id already exists: ${modifier.id}`);
             return undefined;
         }
         this.modifiers.add(modifier.id, modifier);
+        return modifier;
     }
 
     get(modifierId: string): any {
