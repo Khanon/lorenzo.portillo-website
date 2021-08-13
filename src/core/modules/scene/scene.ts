@@ -1,14 +1,12 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */
 /* babylonjs-inspector */
 
 import { Actor } from '../actor/actor';
-import { Actor2D } from '../actor/actor2d';
-import { Actor3D } from '../actor/actor3d';
 import { ActionsManager } from '../actions/actions-manager';
 import { CoreSubscriptions } from '../../models/core-subscriptions';
 import { DimensionsWH } from '../../models/dimensions-wh';

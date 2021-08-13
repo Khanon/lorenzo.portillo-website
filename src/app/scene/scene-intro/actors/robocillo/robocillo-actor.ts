@@ -18,10 +18,7 @@ export class RobocilloActor extends Actor2D {
         const physics = this.modifier.add(new SimpleActorPhysics(this, this.properties.loopUpdate$)) as SimpleActorPhysics;
 
         this.setScale(0.17);
-        // physics.setTranslationFromFloat(-0.01, 0.5, 0.0);
-        this.setX(-0.01);
-        this.setY(0.5);
-        this.setZ(0.0);
+        physics.setTranslationFromFloat(-0.01, 0.5, 0.0);
         this.sprite.play(75, true, 23, 30);
 
         this.action.play<IRobocilloActionGoTo>('goto', { x: 0 });
