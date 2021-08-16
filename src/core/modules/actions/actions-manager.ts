@@ -3,7 +3,7 @@ import { Action } from './action';
 import { Logger } from '../logger/logger';
 
 /**
- * Actions add functionalities to actors or scenes.
+ * Actions to be applied to actors or scenes.
  * A single instance can run any number of actions.
  */
 

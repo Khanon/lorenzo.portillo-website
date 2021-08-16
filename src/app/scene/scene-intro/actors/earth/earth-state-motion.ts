@@ -1,7 +1,7 @@
-import { Actor3D, Misc, State } from '../../../../../core/index';
+import { Actor3D, Misc, State } from '../../../../../core';
 
 export class EarthStateMotion extends State<Actor3D> {
-    readonly endMotion = { y: -7.13, scale: 0.98 };
+    private readonly endMotion = { y: -7.13, scale: 0.98 };
 
     start(): void {
         setTimeout(() => {

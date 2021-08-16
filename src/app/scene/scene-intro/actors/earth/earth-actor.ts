@@ -2,13 +2,11 @@ import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-
-import { Actor3D } from '../../../../../core';
-
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
+import { Actor3D, Mesh } from '../../../../../core';
+
 import { EarthStateMotion } from './earth-state-motion';
-import { Mesh } from '../../../../../core/modules/mesh/mesh';
 
 export class EarthActor extends Actor3D {
     createDisplayObject(babylonJsScene: BabylonSceneJs): Mesh {

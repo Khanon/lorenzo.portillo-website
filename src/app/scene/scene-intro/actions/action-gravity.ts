@@ -1,9 +1,6 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { Misc } from '../../../../core';
-import { Action } from '../../../../core/modules/actions/action';
-import { Actor } from '../../../../core/modules/actor/actor';
-import { ActorSimplePhysics } from '../../../../core/modules/physics/actor-simple-physics';
-import { Actor2D } from '../../../../core/modules/actor/actor2d';
+
+import { Action, Actor, ActorSimplePhysics, Misc } from '../../../../core';
 
 export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly GRAVITY_POWER: number = 0.001;
@@ -14,7 +11,6 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly actorsMovement: Misc.KeyValue<Actor, ActorSimplePhysics> = new Misc.KeyValue<Actor, ActorSimplePhysics>();
 
     onPlay(): void {
-        console.log('aki gravity onPlay');
         this.subscribeLoopUpdate();
     }
 
@@ -31,7 +27,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     loopUpdate(delta: number): void {
         this.actorsMovement.getPairs().forEach((actorMovement) => {
-            const actor = actorMovement.key as Actor2D;
+            const actor = actorMovement.key;
             const physics = actorMovement.value;
             const vToCenter = this.target.getPosition().subtract(actor.getPosition());
             const hSlowDownVector = Misc.Vectors.vectorialProjectionToPlane(physics.getVelocity(), vToCenter).negate();

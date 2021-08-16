@@ -5,14 +5,13 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Actor2D, Actor3D, DimensionsWH, GUI, Scene } from '../../../core/index';
+import { ActorSimplePhysics, DimensionsWH, GUI, Scene } from '../../../core/index';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 import { SceneIntroActionGravity } from './actions/action-gravity';
-import { ActorSimplePhysics } from '../../../core/modules/physics/actor-simple-physics';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
