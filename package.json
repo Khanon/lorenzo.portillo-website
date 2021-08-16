@@ -27,6 +27,7 @@
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "html-webpack-plugin": "^5.3.1",
+    "npm-quick-run": "^1.18.0",
     "recursive-copy": "^2.0.13",
     "rimraf": "^3.0.2",
     "string-replace-loader": "^3.0.3",
