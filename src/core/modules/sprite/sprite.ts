@@ -1,3 +1,4 @@
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Sprite as BabylonJsSprite } from '@babylonjs/core/Sprites/sprite';
 
 import { DisplayObject } from '../../models/display-object';
@@ -50,6 +51,19 @@ export class Sprite extends DisplayObject {
             frame = this.properties.numFrames - 1;
         }
         this.babylonjs.cellIndex = frame;
+    }
+
+    /**
+     * Since sprites are always facing camera, only rotation allowed is on x axis
+     *
+     * @param rotation
+     */
+    setRotation(rotation: Vector3): void {
+        this.babylonjs.angle = rotation.x;
+    }
+
+    getRotation(): Vector3 {
+        return new Vector3(this.babylonjs.angle, 0, 0);
     }
 
     setScale(scale: number): void {

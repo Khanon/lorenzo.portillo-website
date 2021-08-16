@@ -58,6 +58,10 @@ export abstract class Actor {
         this.displayObject.setPosition(position);
     }
 
+    setPositionFromFloats(x: number, y: number, z: number): void {
+        this.displayObject.setPositionFromFloats(x, y, z);
+    }
+
     incPosition(position: Vector3): void {
         this.displayObject.incX(position.x);
         this.displayObject.incY(position.y);
@@ -102,6 +106,14 @@ export abstract class Actor {
 
     getZ(): number {
         return this.displayObject.getZ();
+    }
+
+    setRotation(rotation: Vector3): void {
+        this.displayObject.setRotation(rotation);
+    }
+
+    getRotation(): Vector3 {
+        return this.displayObject.getRotation();
     }
 
     setScale(scale: number): void {

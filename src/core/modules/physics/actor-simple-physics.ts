@@ -7,13 +7,14 @@ import { Actor } from '../actor/actor';
 import { Modifier } from '../modifiers/modifier';
 import { Misc } from '../misc/misc';
 
-export class SimpleActorPhysics extends LoopUpdateable implements Modifier {
-    static id: string = 'simple-actor-physics';
-    id: string = SimpleActorPhysics.id;
+export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
+    static id: string = 'actor-simple-physics';
+    id: string = ActorSimplePhysics.id;
 
-    velocity: Vector3 = new Vector3();
+    private velocity: Vector3 = new Vector3();
 
-    private matrix: Matrix = new Matrix();
+    private translationMatrix: Matrix = new Matrix();
+    private rotationVector: Vector3 = new Vector3();
     private maxVelocity: number = Number.MAX_VALUE;
 
     constructor(private readonly actor: Actor, protected readonly loopUpdate$?: Observable<number>) {
@@ -23,15 +24,27 @@ export class SimpleActorPhysics extends LoopUpdateable implements Modifier {
     }
 
     setTranslation(translation: Vector3): void {
-        this.matrix.setTranslation(translation);
+        this.translationMatrix.setTranslation(translation);
     }
 
     setTranslationFromFloat(x: number, y: number, z: number): void {
-        this.matrix.setTranslationFromFloats(x, y, z);
+        this.translationMatrix.setTranslationFromFloats(x, y, z);
     }
 
     getTranslation(): Vector3 {
-        return this.matrix.getTranslation();
+        return this.translationMatrix.getTranslation();
+    }
+
+    setRotation(rotation: Vector3): void {
+        this.rotationVector.set(rotation.x, rotation.y, rotation.z);
+    }
+
+    setRotationFromFloats(x: number, y: number, z: number): void {
+        this.rotationVector.set(x, y, z);
+    }
+
+    getRotation(): Vector3 {
+        return this.rotationVector;
     }
 
     applyForce(force: Vector3): void {
@@ -41,8 +54,21 @@ export class SimpleActorPhysics extends LoopUpdateable implements Modifier {
         }
     }
 
+    applyForceFromFloats(x: number, y: number, z: number): void {
+        this.velocity.x += x;
+        this.velocity.y += y;
+        this.velocity.z += z;
+        if (this.velocity.length() > this.maxVelocity) {
+            this.velocity.normalize().scale(this.maxVelocity);
+        }
+    }
+
     setMaxVelocity(maxVelocity: number): void {
         this.maxVelocity = maxVelocity;
+    }
+
+    getVelocity(): Vector3 {
+        return this.velocity;
     }
 
     reset(): void {
@@ -62,7 +88,8 @@ export class SimpleActorPhysics extends LoopUpdateable implements Modifier {
         }
 
         // Appyl velocity to position
-        this.matrix.addTranslationFromFloats(this.velocity.x * delta, this.velocity.y * delta, this.velocity.z * delta);
+        this.translationMatrix.addTranslationFromFloats(this.velocity.x * delta, this.velocity.y * delta, this.velocity.z * delta);
         this.actor.setPosition(this.getTranslation());
+        this.actor.setRotation(this.getRotation());
     }
 }

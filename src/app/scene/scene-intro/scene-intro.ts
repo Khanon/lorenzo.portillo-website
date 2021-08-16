@@ -12,7 +12,7 @@ import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 import { SceneIntroActionGravity } from './actions/action-gravity';
-import { SimpleActorPhysics } from '../../../core/modules/physics/simple-actor-physics';
+import { ActorSimplePhysics } from '../../../core/modules/physics/actor-simple-physics';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -95,7 +95,7 @@ export class SceneIntro extends Scene {
 
         // Start actions
         this.gravity.addActor(this.robocillo);
-        // setTimeout(() => this.actions.play('gravity'), 3000);
+        setTimeout(() => this.actions.play('gravity'), 2500);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
@@ -104,21 +104,26 @@ export class SceneIntro extends Scene {
             // const obj = this.earth;
             // const obj = this.sun;
             const obj = this.robocillo;
+            const robocilloPhysics = this.robocillo.modifier.get(ActorSimplePhysics.id) as ActorSimplePhysics;
             if (event.code === 'Space') {
                 if (this.actions.isPlaying('gravity')) {
                     this.actions.stop('gravity');
                 } else {
-                    (this.robocillo.modifier.get('simple-actor-physics') as SimpleActorPhysics).applyForce(new Vector3(0, 0, 0.01));
+                    robocilloPhysics.applyForce(new Vector3(0, 0, 0.01));
                     this.actions.play('gravity');
                 }
             }
             if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {
                 obj.incZ(inc);
-                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
+                const leftVector = Vector3.Cross(this.earth.getPosition().subtract(this.robocillo.getPosition()), new Vector3(1, 0, 0)).normalize();
+                robocilloPhysics.applyForce(leftVector.scale(0.001));
+                // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad6' || event.code === 'ArrowRight') {
                 obj.incZ(-inc);
-                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
+                const rightVector = Vector3.Cross(this.earth.getPosition().subtract(this.robocillo.getPosition()), new Vector3(1, 0, 0)).negate().normalize();
+                robocilloPhysics.applyForce(rightVector.scale(0.001));
+                // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad8' || event.code === 'ArrowUp') {
                 obj.incY(inc);

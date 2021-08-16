@@ -42,6 +42,24 @@ export namespace Misc {
         static angleBetweenLines(lineA: Vector3, lineB: Vector3): number {
             return Math.acos(Misc.Maths.clamp(Vector3.Dot(lineA, lineB) / (lineA.length() * lineB.length()), -1, 1));
         }
+
+        static angleXBetweenLines(lineA: Vector3, lineB: Vector3): number {
+            const angleA = Math.atan2(lineA.y, lineA.z);
+            const angleB = Math.atan2(lineB.y, lineB.z);
+            return angleA - angleB;
+        }
+
+        static angleYBetweenLines(lineA: Vector3, lineB: Vector3): number {
+            const angleA = Math.atan2(lineA.x, lineA.z);
+            const angleB = Math.atan2(lineB.x, lineB.z);
+            return angleA - angleB;
+        }
+
+        static angleZBetweenLines(lineA: Vector3, lineB: Vector3): number {
+            const angleA = Math.atan2(lineA.x, lineA.y);
+            const angleB = Math.atan2(lineB.x, lineB.y);
+            return angleA - angleB;
+        }
     }
 
     // ---------------------------------------------------------------------------------------
@@ -159,6 +177,7 @@ export namespace Misc {
     // ---------------------------------------------------------------------------------------
 
     abstract class KeyValueBase<K, V> {
+        protected readonly pairs: { key: K; value: V }[] = [];
         protected readonly keys: K[] = [];
         protected readonly values: V[] = [];
 
@@ -168,6 +187,18 @@ export namespace Misc {
 
         get(key: K): V {
             return this.search<K>(key, this.keys)?.value;
+        }
+
+        getPairs(): { key: K; value: V }[] {
+            return this.pairs;
+        }
+
+        getKeys(): K[] {
+            return this.keys;
+        }
+
+        getValues(): V[] {
+            return this.values;
         }
 
         getByKey(key: K): { key: K; value: V } {
@@ -180,7 +211,7 @@ export namespace Misc {
     }
 
     /**
-     * Non repeatable Key-Value
+     * Non repeatable Key-Value (keys are unique in the array)
      */
     export class KeyValue<K, V> extends KeyValueBase<K, V> {
         add(key: K, value: V): void {
@@ -188,6 +219,7 @@ export namespace Misc {
                 Logger.warn("Can't repeat key value -", key);
                 return;
             }
+            this.pairs.push({ key, value });
             this.keys.push(key);
             this.values.push(value);
         }
@@ -195,6 +227,7 @@ export namespace Misc {
         del(key: K): void {
             const index = this.keys.indexOf(key);
             if (index >= 0) {
+                this.pairs.splice(index, 1);
                 this.keys.splice(index, 1);
                 this.values.splice(index, 1);
             }
@@ -211,10 +244,11 @@ export namespace Misc {
     }
 
     /**
-     * Repeatable Key-Value
+     * Repeatable Key-Value (keys can be repeated in the array)
      */
     export class RKeyValue<K, V> extends KeyValueBase<K, V> {
         add(key: K, value: V) {
+            this.pairs.push({ key, value });
             this.keys.push(key);
             this.values.push(value);
         }
@@ -222,6 +256,7 @@ export namespace Misc {
         del(key: K): void {
             for (let i = this.keys.length - 1; i >= 0; i--) {
                 if (this.keys[i] === key) {
+                    this.pairs.splice(i, 1);
                     this.keys.splice(i, 1);
                     this.values.splice(i, 1);
                 }

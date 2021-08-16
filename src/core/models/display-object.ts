@@ -12,6 +12,12 @@ export abstract class DisplayObject {
         this.babylonjs.position = position;
     }
 
+    setPositionFromFloats(x: number, y: number, z: number): void {
+        this.babylonjs.position.x = x;
+        this.babylonjs.position.y = y;
+        this.babylonjs.position.z = z;
+    }
+
     getPosition(): Vector3 {
         return this.babylonjs.position;
     }
@@ -51,6 +57,9 @@ export abstract class DisplayObject {
     getZ(): number {
         return this.babylonjs.position.z;
     }
+
+    abstract setRotation(rotation: Vector3): void;
+    abstract getRotation(): Vector3;
 
     abstract setScale(scale: number): void;
     abstract getScale(): number;

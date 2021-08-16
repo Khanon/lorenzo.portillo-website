@@ -20,6 +20,16 @@ export class Mesh extends DisplayObject {
         this.babylonjs.isVisible = visible;
     }
 
+    setRotation(rotation: Vector3): void {
+        // 8a8f TODO
+        // this.babylonjs.rotate = rotation;
+    }
+
+    getRotation(): Vector3 {
+        // 8a8f TODO
+        return new Vector3(0, 0, 0);
+    }
+
     setScale(scale: number): void {
         this.scale = scale;
         this.babylonjs.scaling = new Vector3(this.scale, this.scale, this.scale);
