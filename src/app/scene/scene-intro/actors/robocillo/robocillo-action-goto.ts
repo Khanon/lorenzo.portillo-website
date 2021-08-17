@@ -2,7 +2,7 @@ import { Action } from '../../../../../core';
 import { Actor2D } from '../../../../../core/modules/actor/actor2d';
 
 export interface IRobocilloActionGoTo {
-    x: number;
+    angle: number;
 }
 
 export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {

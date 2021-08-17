@@ -28,8 +28,8 @@ export class RobocilloActor extends Actor2D {
     }
 
     initialize(): void {
-        this.action.registerAction(new RobocilloActionGoTo(RobocilloActions.GOTO, this, this.properties.loopUpdate$));
         const physics = this.modifier.add<ActorSimplePhysics>(new ActorSimplePhysics(this, this.properties.loopUpdate$));
+        this.action.registerAction(new RobocilloActionGoTo(RobocilloActions.GOTO, this, this.properties.loopUpdate$));
 
         this.addAnimation(RobocilloAnimations.STOP_SIDE, { delay: 75, frameStart: 0, frameEnd: 0 });
         this.addAnimation(RobocilloAnimations.PAPER_TAKE, { delay: 75, frameStart: 8, frameEnd: 15 });
