@@ -3,6 +3,7 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { Actor } from '../actor/actor';
 import { Sprite } from '../sprite/sprite';
 import { ActorProperties } from './actor-properties';
+import { ActorAnimation2D } from './actor-animation-2d';
 
 export abstract class Actor2D extends Actor {
     protected _sprite: Sprite;
@@ -11,14 +12,18 @@ export abstract class Actor2D extends Actor {
         super(name, properties);
     }
 
+    get sprite(): Sprite {
+        return this._sprite;
+    }
+
     abstract createDisplayObject(babylonJsScene: BabylonJsScene): Sprite;
-    abstract initialize(): void;
 
     protected setDisplayObject(displayObject: Sprite): void {
         this._sprite = displayObject;
     }
 
-    get sprite(): Sprite {
-        return this._sprite;
+    setAnimation(name: string, loop: boolean = true, completed?: () => void): void {
+        const animation = this.animations.get<ActorAnimation2D>(name);
+        this.sprite.play(animation.delay, loop, animation.frameStart, animation.frameEnd, completed);
     }
 }

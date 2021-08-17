@@ -185,7 +185,7 @@ export namespace Misc {
         abstract del(key: K): void;
         protected abstract search<T>(keyvalue: T, arrSeach: T[]): any;
 
-        get(key: K): V {
+        get<T = V>(key: K): T {
             return this.search<K>(key, this.keys)?.value;
         }
 

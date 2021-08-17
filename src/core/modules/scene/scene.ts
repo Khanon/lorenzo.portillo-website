@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
+
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
-import { Subscription } from 'rxjs';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */

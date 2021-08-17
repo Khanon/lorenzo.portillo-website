@@ -4,7 +4,7 @@ export class Logger {
     }
 
     static warn(msg: string, ...params: any[]): void {
-        console.log('Warning - ' + this.msgParams(msg, params));
+        console.log('Warning!! - ' + this.msgParams(msg, params));
     }
 
     static error(msg: string, ...params: any[]): void {

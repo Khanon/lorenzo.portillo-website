@@ -5,29 +5,60 @@ import { StateMachine } from '../state-machine/state-machine';
 import { DisplayObject } from '../../models/display-object';
 import { ActorProperties } from './actor-properties';
 import { ActionsManager } from '../actions/actions-manager';
-import { Modifiers } from '../modifiers/modifiers';
+import { ModifiersManager } from '../modifiers/modifiers-manager';
+import { ActorAnimation2D } from './actor-animation-2d';
+import { ActorAnimation3D } from './actor-animation-3d';
+import { Misc } from '../misc/misc';
 
 export abstract class Actor {
+    // Private / Protected
     private displayObject: DisplayObject;
+    protected readonly animations: Misc.KeyValue<string, ActorAnimation2D | ActorAnimation3D> = new Misc.KeyValue<
+        string,
+        ActorAnimation2D | ActorAnimation3D
+    >();
 
+    // Public
     readonly state: StateMachine<Actor> = new StateMachine<Actor>();
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
-    readonly modifier: Modifiers = new Modifiers();
+    readonly modifier: ModifiersManager = new ModifiersManager();
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {}
 
     /**
-     * To be implemented by app actor.
      * Invoked on getDisplayObject from scene loading.
+     * To be implemented by app actor.
+     *
      * @param babylonJsScene
      */
     protected abstract createDisplayObject(babylonJsScene: BabylonJsScene): DisplayObject;
 
     /**
      * To be implemented by generic actors (Actor2D, Actor3D,..).
+     *
      * @param displayObject
      */
     protected abstract setDisplayObject(displayObject: DisplayObject): void;
+
+    /**
+     * Adds an animation to the list.
+     *
+     * @param name
+     * @param properties
+     */
+    addAnimation(name: string, properties: ActorAnimation2D | ActorAnimation3D): void {
+        this.animations.add(name, properties);
+    }
+
+    /**
+     * Sets animation.
+     * To be implemented by generic actors (Actor2D, Actor3D,..).
+     *
+     * @param name
+     * @param loop
+     * @param completed
+     */
+    abstract setAnimation(name: string, loop?: boolean, completed?: () => void): void;
 
     /**
      * To be implemented by app actor.
@@ -39,6 +70,7 @@ export abstract class Actor {
      * Retrieves display object instance (not Mesh or Sprite).
      * To be used on scene loading.
      * Mesh or Sprite instances retrieving is implemented by generic actors (Actor2D, Actor3D,..).
+     *
      * @param babylonJsScene
      * @returns
      */
@@ -49,6 +81,16 @@ export abstract class Actor {
         }
         return this.displayObject;
     }
+
+    // ----------------------------
+    //  Callbacks
+    // ----------------------------
+
+    /**
+     * To be called by physics engine after physics update
+     * To be implemented by app actor.
+     */
+    afterPhysicsUpdate(): void {}
 
     // ----------------------------
     //  Operators

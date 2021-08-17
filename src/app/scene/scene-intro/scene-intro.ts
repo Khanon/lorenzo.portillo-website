@@ -5,12 +5,12 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { ActorSimplePhysics, DimensionsWH, GUI, Scene } from '../../../core/index';
+import { ActorSimplePhysics, DimensionsWH, GUI, Scene } from '../../../core';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
-import { RobocilloActor } from './actors/robocillo/robocillo-actor';
+import { RobocilloActor, RobocilloAnimations } from './actors/robocillo/robocillo-actor';
 import { SceneIntroActionGravity } from './actions/action-gravity';
 
 export class SceneIntro extends Scene {
@@ -103,7 +103,7 @@ export class SceneIntro extends Scene {
             // const obj = this.earth;
             // const obj = this.sun;
             const obj = this.robocillo;
-            const robocilloPhysics = this.robocillo.modifier.get(ActorSimplePhysics.id) as ActorSimplePhysics;
+            const robocilloPhysics = this.robocillo.modifier.get<ActorSimplePhysics>(ActorSimplePhysics.id);
             if (event.code === 'Space') {
                 if (this.actions.isPlaying('gravity')) {
                     this.actions.stop('gravity');
@@ -157,6 +157,39 @@ export class SceneIntro extends Scene {
             }
             if (event.code === 'Delete') {
                 this.animationTest = 2;
+            }
+            if (event.code === 'Digit1') {
+                this.robocillo.setAnimation(RobocilloAnimations.STOP_SIDE, false);
+            }
+            if (event.code === 'Digit2') {
+                this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false);
+            }
+            if (event.code === 'Digit3') {
+                this.robocillo.setAnimation(RobocilloAnimations.PAPER_CHECK);
+            }
+            if (event.code === 'Digit4') {
+                this.robocillo.setAnimation(RobocilloAnimations.PAPER_THROW, false);
+            }
+            if (event.code === 'Digit5') {
+                this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
+            }
+            if (event.code === 'Digit6') {
+                this.robocillo.setAnimation(RobocilloAnimations.FRONT_TO_SIDE, false);
+            }
+            if (event.code === 'Digit7') {
+                this.robocillo.setAnimation(RobocilloAnimations.STOP_FRONT, false);
+            }
+            if (event.code === 'Digit8') {
+                this.robocillo.setAnimation(RobocilloAnimations.WALK);
+            }
+            if (event.code === 'Digit9') {
+                this.robocillo.setAnimation(RobocilloAnimations.MOVE_HANDS);
+            }
+            if (event.code === 'Digit0') {
+                this.robocillo.setAnimation(RobocilloAnimations.RAISE_HANDS);
+            }
+            if (event.code === 'Minus') {
+                this.robocillo.setAnimation(RobocilloAnimations.JUMP_FRONT, false);
             }
         });
 

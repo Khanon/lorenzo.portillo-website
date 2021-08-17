@@ -91,5 +91,6 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
         this.translationMatrix.addTranslationFromFloats(this.velocity.x * delta, this.velocity.y * delta, this.velocity.z * delta);
         this.actor.setPosition(this.getTranslation());
         this.actor.setRotation(this.getRotation());
+        this.actor.afterPhysicsUpdate();
     }
 }

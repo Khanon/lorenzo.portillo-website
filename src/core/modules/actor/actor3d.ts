@@ -11,14 +11,15 @@ export abstract class Actor3D extends Actor {
         super(name, properties);
     }
 
+    get mesh(): Mesh {
+        return this._mesh;
+    }
+
     abstract createDisplayObject(babylonJsScene: BabylonJsScene): Mesh;
-    abstract initialize(): void;
 
     protected setDisplayObject(displayObject: Mesh): void {
         this._mesh = displayObject;
     }
 
-    get mesh(): Mesh {
-        return this._mesh;
-    }
+    setAnimation(name: string, loop: boolean = true, completed?: () => void): void {}
 }

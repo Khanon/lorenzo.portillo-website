@@ -7,19 +7,19 @@ import { Misc } from '../misc/misc';
 import { Modifier } from './modifier';
 import { Logger } from '../logger/logger';
 
-export class Modifiers {
-    private readonly modifiers: Misc.KeyValue<string, Modifier> = new Misc.KeyValue<string, Modifier>();
+export class ModifiersManager {
+    private readonly modifiers: Misc.KeyValue<string, any> = new Misc.KeyValue<string, any>();
 
-    add(modifier: Modifier): Modifier {
+    add<T>(modifier: Modifier): T {
         if (this.modifiers.get(modifier.id)) {
             Logger.warn(`Can't add modifier, Id already exists: ${modifier.id}`);
             return undefined;
         }
         this.modifiers.add(modifier.id, modifier);
-        return modifier;
+        return this.modifiers.get(modifier.id);
     }
 
-    get(modifierId: string): any {
+    get<T>(modifierId: string): T {
         const modifier = this.modifiers.get(modifierId);
         if (!modifier) {
             Logger.error('Modifier not found:', modifierId);
