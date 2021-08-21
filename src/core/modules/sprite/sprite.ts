@@ -36,9 +36,9 @@ export class Sprite extends DisplayObject {
         this.visible = false;
     }
 
-    play(delay: number, loop: boolean, frameStart: number = 0, frameEnd: number = this.properties.numFrames - 1, completed?: () => void): void {
+    play(delay: number, loop: boolean, frameStart: number = 0, frameEnd: number = this.properties.numFrames - 1, onDone?: () => void): void {
         this.visible = true;
-        this.babylonjs.playAnimation(frameStart, frameEnd, loop, delay, completed ? completed : undefined);
+        this.babylonjs.playAnimation(frameStart, frameEnd, loop, delay, onDone ? onDone : undefined);
     }
 
     stop(): void {

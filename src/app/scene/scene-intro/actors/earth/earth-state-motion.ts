@@ -11,15 +11,15 @@ export class EarthStateMotion extends State<Actor3D> {
 
     end(): void {
         this.unSubscribeLoopUpdate();
-        this.parent.setY(this.endMotion.y);
-        this.parent.setScale(this.endMotion.scale);
+        this.target.setY(this.endMotion.y);
+        this.target.setScale(this.endMotion.scale);
     }
 
     loopUpdate(delta: number): void {
         const speed = 0.03 * delta;
         const acc = 2;
         const step = Misc.Maths.increaseVectorWithInertia(
-            [this.parent.getY(), this.parent.getScale()],
+            [this.target.getY(), this.target.getScale()],
             [this.endMotion.y, this.endMotion.scale],
             speed,
             acc,
@@ -27,7 +27,7 @@ export class EarthStateMotion extends State<Actor3D> {
                 this.end();
             }
         );
-        this.parent.setY(step[0]);
-        this.parent.setScale(step[1]);
+        this.target.setY(step[0]);
+        this.target.setScale(step[1]);
     }
 }

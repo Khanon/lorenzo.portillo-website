@@ -9,6 +9,7 @@ import { ModifiersManager } from '../modifiers/modifiers-manager';
 import { ActorAnimation2D } from './actor-animation-2d';
 import { ActorAnimation3D } from './actor-animation-3d';
 import { Misc } from '../misc/misc';
+import { ActorSimplePhysics } from '../physics/actor-simple-physics';
 
 export abstract class Actor {
     // Private / Protected
@@ -22,8 +23,13 @@ export abstract class Actor {
     readonly state: StateMachine<Actor> = new StateMachine<Actor>();
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
     readonly modifier: ModifiersManager = new ModifiersManager();
+    readonly physics: ActorSimplePhysics;
 
-    constructor(readonly name: string, protected readonly properties?: ActorProperties) {}
+    constructor(readonly name: string, protected readonly properties?: ActorProperties) {
+        if (this.properties?.usePhysics) {
+            this.physics = new ActorSimplePhysics(this.properties.loopUpdate$);
+        }
+    }
 
     /**
      * Invoked on getDisplayObject from scene loading.
@@ -78,19 +84,12 @@ export abstract class Actor {
         if (!this.displayObject) {
             this.displayObject = this.createDisplayObject(babylonJsScene);
             this.setDisplayObject(this.displayObject);
+            if (this.physics) {
+                this.physics.start(this.displayObject);
+            }
         }
         return this.displayObject;
     }
-
-    // ----------------------------
-    //  Callbacks
-    // ----------------------------
-
-    /**
-     * To be called by physics engine after physics update
-     * To be implemented by app actor.
-     */
-    afterPhysicsUpdate(): void {}
 
     // ----------------------------
     //  Operators

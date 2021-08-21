@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { Vector3, Matrix } from '@babylonjs/core/Maths/math.vector';
 
 import { LoopUpdateable } from '../../models/loop-updateable';
-import { Actor } from '../actor/actor';
 import { Modifier } from '../modifiers/modifier';
 import { Misc } from '../misc/misc';
+import { DisplayObject } from '../../models/display-object';
 
 export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
     static id: string = 'actor-simple-physics';
@@ -16,10 +16,14 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
     private translationMatrix: Matrix = new Matrix();
     private rotationVector: Vector3 = new Vector3();
     private maxVelocity: number = Number.MAX_VALUE;
+    private displayObject: DisplayObject;
 
-    constructor(private readonly actor: Actor, protected readonly loopUpdate$?: Observable<number>) {
+    constructor(protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
-        this.setTranslation(this.actor.getPosition());
+    }
+
+    start(displayObject: DisplayObject): void {
+        this.displayObject = displayObject;
         this.subscribeLoopUpdate();
     }
 
@@ -71,6 +75,12 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
         return this.velocity;
     }
 
+    scaleVelocity(scale: number): void {
+        this.velocity.x *= scale;
+        this.velocity.y *= scale;
+        this.velocity.z *= scale;
+    }
+
     reset(): void {
         this.velocity.set(0, 0, 0);
     }
@@ -89,8 +99,7 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
 
         // Appyl velocity to position
         this.translationMatrix.addTranslationFromFloats(this.velocity.x * delta, this.velocity.y * delta, this.velocity.z * delta);
-        this.actor.setPosition(this.getTranslation());
-        this.actor.setRotation(this.getRotation());
-        this.actor.afterPhysicsUpdate();
+        this.displayObject.setPosition(this.getTranslation());
+        this.displayObject.setRotation(this.getRotation());
     }
 }

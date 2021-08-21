@@ -1,6 +1,8 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Action, Actor, ActorSimplePhysics, Misc } from '../../../../core';
+import { Action, Actor, Misc } from '../../../../core';
+
+import { SceneIntroShared } from './../scene-intro-shared';
 
 export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly GRAVITY_POWER: number = 0.001;
@@ -8,7 +10,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly HORIZONTAL_DECREASE_FACTOR = 0.05;
     private readonly RESTITUTION_OVER_FACTOR = 0.01;
 
-    private readonly actorsMovement: Misc.KeyValue<Actor, ActorSimplePhysics> = new Misc.KeyValue<Actor, ActorSimplePhysics>();
+    private readonly actors: Misc.KeyValue<Actor, null> = new Misc.KeyValue<Actor, null>();
 
     onPlay(): void {
         this.subscribeLoopUpdate();
@@ -16,46 +18,44 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     onStop(): void {
         this.unSubscribeLoopUpdate();
-        this.actorsMovement.getValues().forEach((physics) => {
-            physics.reset();
+        this.actors.getKeys().forEach((actor) => {
+            actor.physics.reset();
         });
     }
 
     addActor(actor: Actor) {
-        this.actorsMovement.add(actor, actor.modifier.get(ActorSimplePhysics.id));
+        this.actors.add(actor, null);
     }
 
     loopUpdate(delta: number): void {
-        this.actorsMovement.getPairs().forEach((actorMovement) => {
-            const actor = actorMovement.key;
-            const physics = actorMovement.value;
-            const vToCenter = this.target.getPosition().subtract(actor.getPosition());
-            const hSlowDownVector = Misc.Vectors.vectorialProjectionToPlane(physics.getVelocity(), vToCenter).negate();
+        this.actors.getKeys().forEach((actor) => {
+            const vToCenter = SceneIntroShared.earth.getPosition().subtract(actor.getPosition());
+            const hSlowDownVector = Misc.Vectors.vectorialProjectionToPlane(actor.physics.getVelocity(), vToCenter).negate();
 
             // Horizontal slow down factor
             if (hSlowDownVector.length() > Misc.Maths.MIN_VALUE) {
-                physics.applyForce(hSlowDownVector.scale(delta * this.HORIZONTAL_DECREASE_FACTOR));
+                actor.physics.applyForce(hSlowDownVector.scale(delta * this.HORIZONTAL_DECREASE_FACTOR));
             }
 
             // Gravity factor
             if (vToCenter.length() > this.FLOOR_LENGTH + Misc.Maths.MIN_VALUE) {
                 // Apply gravity
                 vToCenter.normalize();
-                physics.applyForce(vToCenter.scale(delta * this.GRAVITY_POWER));
+                actor.physics.applyForce(vToCenter.scale(delta * this.GRAVITY_POWER));
             } else {
                 // Floor contact
-                physics.setTranslation(this.target.getPosition().add(vToCenter.negate().normalize().scale(this.FLOOR_LENGTH)));
+                actor.physics.setTranslation(SceneIntroShared.earth.getPosition().add(vToCenter.negate().normalize().scale(this.FLOOR_LENGTH)));
 
                 // Restitution on floor contact
-                const restitutionVector = Misc.Vectors.vectorialProjectionToLine(physics.getVelocity(), vToCenter).negate();
+                const restitutionVector = Misc.Vectors.vectorialProjectionToLine(actor.physics.getVelocity(), vToCenter).negate();
                 if (restitutionVector.length() > this.RESTITUTION_OVER_FACTOR) {
-                    physics.applyForce(restitutionVector.scale(1.5));
+                    actor.physics.applyForce(restitutionVector.scale(1.5));
                 }
             }
 
             // Rotate the actor according to angle with earth center
-            const angleToCenter = Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
-            physics.setRotationFromFloats(angleToCenter, 0, 0);
+            const earthAngle = Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
+            actor.physics.setRotationFromFloats(earthAngle, 0, 0);
         });
     }
 }

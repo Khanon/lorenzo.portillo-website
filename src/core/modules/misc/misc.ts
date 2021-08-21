@@ -71,6 +71,10 @@ export namespace Misc {
             return Math.min(Math.max(value, min), max);
         }
 
+        static randomInt(minValue: number, maxValue: number): number {
+            return Math.trunc(minValue + Math.random() * (maxValue - minValue + 0.9999));
+        }
+
         static increaseValue(from: number, to: number, speed: number, completed?: () => void): number {
             const complete = () => {
                 if (completed) {

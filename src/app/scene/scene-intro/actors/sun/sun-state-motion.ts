@@ -11,15 +11,15 @@ export class SunStateMotion extends State<Actor2D> {
 
     end(): void {
         this.unSubscribeLoopUpdate();
-        this.parent.setY(this.endMotion.y);
-        this.parent.setZ(this.endMotion.z);
-        this.parent.setScale(this.endMotion.scale);
+        this.target.setY(this.endMotion.y);
+        this.target.setZ(this.endMotion.z);
+        this.target.setScale(this.endMotion.scale);
     }
 
     loopUpdate(delta: number): void {
         const speed = 0.05 * delta;
         const step = Misc.Maths.increaseVectorWithInertia(
-            [this.parent.getY(), this.parent.getZ(), this.parent.getScale()],
+            [this.target.getY(), this.target.getZ(), this.target.getScale()],
             [this.endMotion.y, this.endMotion.z, this.endMotion.scale],
             speed,
             1,
@@ -27,8 +27,8 @@ export class SunStateMotion extends State<Actor2D> {
                 this.end();
             }
         );
-        this.parent.setY(step[0]);
-        this.parent.setZ(step[1]);
-        this.parent.setScale(step[2]);
+        this.target.setY(step[0]);
+        this.target.setZ(step[1]);
+        this.target.setScale(step[2]);
     }
 }

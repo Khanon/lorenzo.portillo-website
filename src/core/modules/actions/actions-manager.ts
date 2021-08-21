@@ -14,26 +14,25 @@ export class ActionsManager<T> {
         this.registeredActions.add(action.id, action);
     }
 
-    play<P>(actionId: string, properties?: P): void {
+    play<P>(actionId: string, properties?: P, onDone?: () => void): void {
         if (!this.isPlaying(actionId)) {
-            const actionPair = this.registeredActions.getByKey(actionId);
-            if (!actionPair) {
-                Logger.warn('Action already running -', actionId);
-                return;
-            }
-            actionPair.value.setProperties(properties);
-            actionPair.value.play();
+            const action = this.registeredActions.get(actionId);
+            action.setProperties(properties);
+            action.play(onDone);
+        } else {
+            Logger.warn('Action already running -', actionId);
+            return;
         }
     }
 
     stop(actionId: string): void {
-        const actionPair = this.registeredActions.getByKey(actionId);
-        if (actionPair) {
-            actionPair.value.stop();
+        const action = this.registeredActions.get(actionId);
+        if (action) {
+            action.stop();
         }
     }
 
     isPlaying(actionId: string): boolean {
-        return this.registeredActions.get(actionId).isPlaying;
+        return this.registeredActions.get(actionId)?.isPlaying;
     }
 }

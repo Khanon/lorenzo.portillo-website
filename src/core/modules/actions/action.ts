@@ -5,6 +5,7 @@ import { LoopUpdateable } from '../../models/loop-updateable';
 export abstract class Action<T, P> extends LoopUpdateable {
     isPlaying: boolean = false;
     protected properties: P;
+    private onDone: () => void;
 
     constructor(readonly id: string, protected readonly target: T, protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
@@ -13,8 +14,9 @@ export abstract class Action<T, P> extends LoopUpdateable {
     /**
      * Don't override
      */
-    play(): void {
+    play(onDone?: () => void): void {
         this.isPlaying = true;
+        this.onDone = onDone;
         this.onPlay();
     }
 
@@ -24,6 +26,15 @@ export abstract class Action<T, P> extends LoopUpdateable {
     stop(): void {
         this.isPlaying = false;
         this.onStop();
+    }
+
+    /**
+     * Don't override
+     */
+    done(): void {
+        if (this.onDone) {
+            this.onDone();
+        }
     }
 
     abstract onPlay(): void;

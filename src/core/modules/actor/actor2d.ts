@@ -22,8 +22,8 @@ export abstract class Actor2D extends Actor {
         this._sprite = displayObject;
     }
 
-    setAnimation(name: string, loop: boolean = true, completed?: () => void): void {
+    setAnimation(name: string, loop: boolean = true, onDone?: () => void): void {
         const animation = this.animations.get<ActorAnimation2D>(name);
-        this.sprite.play(animation.delay, loop, animation.frameStart, animation.frameEnd, completed);
+        this.sprite.play(animation.delay, loop, animation.frameStart, animation.frameEnd, onDone);
     }
 }

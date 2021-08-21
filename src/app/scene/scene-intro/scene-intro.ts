@@ -10,13 +10,19 @@ import { ActorSimplePhysics, DimensionsWH, GUI, Scene } from '../../../core';
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
-import { RobocilloActor, RobocilloAnimations } from './actors/robocillo/robocillo-actor';
+import { RobocilloActor } from './actors/robocillo/robocillo-actor';
+import { RobocilloAnimations } from './actors/robocillo/robocillo-animations';
 import { SceneIntroActionGravity } from './actions/action-gravity';
+import { SceneIntroShared } from './scene-intro-shared';
+import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
     private camera: UniversalCamera;
     private light: HemisphericLight;
+
+    // Shared instances
+    sceneIntroShared: SceneIntroShared = new SceneIntroShared();
 
     // Actors
     logo: LogoActor;
@@ -65,10 +71,13 @@ export class SceneIntro extends Scene {
         this.earth = this.addActor(new EarthActor('earth', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
         this.logo = this.addActor(new LogoActor('logo'));
         this.sun = this.addActor(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
-        this.robocillo = this.addActor(new RobocilloActor('robocillo', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.robocillo = this.addActor(new RobocilloActor('robocillo', { loopUpdate$: this.coreSubscriptions.loopUpdate$, usePhysics: true }));
+
+        // Shared actors
+        SceneIntroShared.earth = this.earth;
 
         // Actions
-        this.gravity = new SceneIntroActionGravity('gravity', this.earth, this.coreSubscriptions.loopUpdate$);
+        this.gravity = new SceneIntroActionGravity('gravity', null, this.coreSubscriptions.loopUpdate$);
         this.actions.registerAction(this.gravity);
     }
 
@@ -94,7 +103,10 @@ export class SceneIntro extends Scene {
 
         // Start actions
         this.gravity.addActor(this.robocillo);
-        setTimeout(() => this.actions.play('gravity'), 2500);
+        this.actions.play('gravity');
+
+        // Start robocillo intro
+        setTimeout(() => this.robocillo.state.set(RobocilloStateIntro.id), 1500);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
