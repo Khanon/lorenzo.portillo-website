@@ -10,7 +10,7 @@ export interface IRobocilloActionGoTo {
 }
 
 export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
-    static id: string = 'goto';
+    static id: string = 'RobocilloActionGoTo';
 
     private vDirection: Vector3;
     private gotoAngle: number;

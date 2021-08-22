@@ -8,7 +8,7 @@ import { Misc } from '../misc/misc';
 import { DisplayObject } from '../../models/display-object';
 
 export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
-    static id: string = 'actor-simple-physics';
+    static id: string = 'ActorSimplePhysics';
     id: string = ActorSimplePhysics.id;
 
     private velocity: Vector3 = new Vector3();
