@@ -1,5 +1,5 @@
 /**
- * Needed to keep file stimestamps and avoid undesired uploads to server
+ * Needed to keep files timestamps and avoid undesired uploads to server
  */
 
 var copy = require('recursive-copy');

@@ -13,7 +13,7 @@ export class EarthActor extends Actor3D {
         const flatMaterial = new StandardMaterial('', babylonJsScene);
         flatMaterial.disableLighting = true;
         flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
-        const meshBjs = MeshBuilder.CreateDisc('earth', {
+        const meshBjs = MeshBuilder.CreateDisc(this.name, {
             radius: 7.5,
             tessellation: 200,
         });

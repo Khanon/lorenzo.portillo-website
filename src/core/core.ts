@@ -2,7 +2,7 @@ import '@babylonjs/core/Loading/loadingScreen';
 import '@babylonjs/core/Loading/Plugins/babylonFileLoader';
 import '@babylonjs/core/Materials/PBR/pbrMaterial';
 
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { Engine } from './modules/engine/engine';
 import { Logger } from './modules/logger/logger';
@@ -20,12 +20,12 @@ export class Core {
     private loopUpdateFPS: number;
     private loopUpdateDelay: number;
 
-    // BabylonJs
+    // Engine
     private engine: Engine;
 
     // Events
     private readonly canvasResize: Subject<DimensionsWH> = new Subject<DimensionsWH>();
-    private readonly loopUpdate: Subject<number> = new Subject<number>();
+    private readonly loopUpdate$: Subject<number> = new Subject<number>();
 
     constructor(private readonly properties: CoreProperties) {
         this.loopUpdateDelay = this.properties.delayUpdate ?? 0;
@@ -51,7 +51,7 @@ export class Core {
         this.engine = new Engine(this.canvas);
 
         // Start loop update
-        this.starLoopUpdate();
+        this.loopUpdate();
 
         // Log info on startup
         Logger.info('Environment mode:', process.env.NODE_ENV);
@@ -103,14 +103,14 @@ export class Core {
     getCoreSubscriptions(): CoreSubscriptions {
         return {
             canvasResize: this.canvasResize,
-            loopUpdate$: this.loopUpdate,
+            loopUpdate$: this.loopUpdate$,
         };
     }
 
     /**
      * Call loop update subscribers with a delta time parameter
      */
-    starLoopUpdate(): void {
+    loopUpdate(): void {
         this.loopUpdateLastMs = performance.now();
         setInterval(() => {
             const currentMs = performance.now();
@@ -120,7 +120,7 @@ export class Core {
                 if (this.properties.deltaMaxValue && delta > this.properties.deltaMaxValue) {
                     delta = this.properties.deltaMaxValue;
                 }
-                this.loopUpdate.next(delta);
+                this.loopUpdate$.next(delta);
                 this.loopUpdateLastMs = currentMs;
             }
         }, 1);

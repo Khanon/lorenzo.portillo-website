@@ -1,4 +1,4 @@
-import { Actor2D, State } from '../../../../../core/index';
+import { Actor2D, State } from '../../../../../core';
 
 export class LogoStateMotion extends State<Actor2D> {
     start(): void {

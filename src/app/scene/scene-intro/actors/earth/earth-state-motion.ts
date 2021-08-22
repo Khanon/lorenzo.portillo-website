@@ -23,9 +23,7 @@ export class EarthStateMotion extends State<Actor3D> {
             [this.endMotion.y, this.endMotion.scale],
             speed,
             acc,
-            () => {
-                this.end();
-            }
+            () => this.end()
         );
         this.target.setY(step[0]);
         this.target.setScale(step[1]);

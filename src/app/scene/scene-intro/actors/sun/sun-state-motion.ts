@@ -1,4 +1,4 @@
-import { Actor2D, Misc, State } from '../../../../../core/index';
+import { Actor2D, Misc, State } from '../../../../../core';
 
 export class SunStateMotion extends State<Actor2D> {
     readonly endMotion = { y: 0.3, z: -1.65, scale: 1.15 };
@@ -23,9 +23,7 @@ export class SunStateMotion extends State<Actor2D> {
             [this.endMotion.y, this.endMotion.z, this.endMotion.scale],
             speed,
             1,
-            () => {
-                this.end();
-            }
+            () => this.end()
         );
         this.target.setY(step[0]);
         this.target.setZ(step[1]);

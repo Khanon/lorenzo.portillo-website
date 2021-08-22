@@ -27,17 +27,17 @@ export namespace Misc {
         }
 
         static scalarProjectionToLine(vector: Vector3, line: Vector3): number {
-            return vector.length() * this.angleBetweenLines(vector, line);
+            // return vector.length() * this.angleBetweenLines(vector, line);
+            return this.vectorialProjectionToLine(vector, line).length();
         }
 
         static vectorialProjectionToPlane(vector: Vector3, planeNormal: Vector3): Vector3 {
             return vector.subtract(Misc.Vectors.vectorialProjectionToLine(vector, planeNormal));
         }
 
-        /*
-        static scalarProjectionToPlane(vector: Vector3, line: Vector3): Vector3 {
-            return new Vector3();
-        }*/
+        static scalarProjectionToPlane(vector: Vector3, line: Vector3): number {
+            return this.vectorialProjectionToPlane(vector, line).length();
+        }
 
         static angleBetweenLines(lineA: Vector3, lineB: Vector3): number {
             return Math.acos(Misc.Maths.clamp(Vector3.Dot(lineA, lineB) / (lineA.length() * lineB.length()), -1, 1));
@@ -72,7 +72,7 @@ export namespace Misc {
         }
 
         static randomInt(minValue: number, maxValue: number): number {
-            return Math.trunc(minValue + Math.random() * (maxValue - minValue + 0.9999));
+            return Math.trunc(minValue + Math.random() * (maxValue - minValue + 0.9999999));
         }
 
         static increaseValue(from: number, to: number, speed: number, completed?: () => void): number {

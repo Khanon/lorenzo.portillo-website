@@ -1,6 +1,6 @@
 import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
 
-import { Actor2D, Sprite } from '../../../../../core/index';
+import { Actor2D, Sprite } from '../../../../../core';
 
 import { SunStateMotion } from './sun-state-motion';
 

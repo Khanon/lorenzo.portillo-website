@@ -106,7 +106,7 @@ export class SceneIntro extends Scene {
         this.actions.play('gravity');
 
         // Start robocillo intro
-        setTimeout(() => this.robocillo.state.set(RobocilloStateIntro.id), 1500);
+        setTimeout(() => this.robocillo.state.set(RobocilloStateIntro.id), 2000);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {

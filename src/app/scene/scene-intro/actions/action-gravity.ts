@@ -18,9 +18,6 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     onStop(): void {
         this.unSubscribeLoopUpdate();
-        this.actors.getKeys().forEach((actor) => {
-            actor.physics.reset();
-        });
     }
 
     addActor(actor: Actor) {

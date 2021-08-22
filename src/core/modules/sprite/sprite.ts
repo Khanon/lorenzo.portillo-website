@@ -54,7 +54,7 @@ export class Sprite extends DisplayObject {
     }
 
     /**
-     * Since sprites are always facing camera, only rotation allowed is on x axis
+     * Since sprites are always facing camera, the only rotation allowed is on x axis
      *
      * @param rotation
      */

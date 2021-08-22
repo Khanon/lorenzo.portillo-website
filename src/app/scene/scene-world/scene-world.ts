@@ -8,9 +8,7 @@ import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { Scene, Sprite } from '../../../core/index';
-import { DimensionsWH } from '../../../core/models/dimensions-wh';
-import { GUI } from '../../../core/index';
+import { DimensionsWH, GUI, Scene, Sprite } from '../../../core';
 
 export class SceneWorld extends Scene {
     private logo: Sprite;

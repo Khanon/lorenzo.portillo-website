@@ -1,4 +1,5 @@
-import { Core } from './core/core';
+import { Core } from './core';
+
 import { SceneIntro } from './app/scene/scene-intro/scene-intro';
 
 class App {

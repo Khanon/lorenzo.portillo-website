@@ -31,6 +31,8 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
     }
 
     onStop() {
+        this.target.physics.scaleVelocity(0.3);
+        this.target.setAnimation(RobocilloAnimations.STOP_SIDE, false);
         this.unSubscribeLoopUpdate();
     }
 
