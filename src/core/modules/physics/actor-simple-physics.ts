@@ -18,8 +18,10 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
     private maxVelocity: number = Number.MAX_VALUE;
     private displayObject: DisplayObject;
 
-    constructor(protected readonly loopUpdate$?: Observable<number>) {
-        super(loopUpdate$);
+    onFloor: boolean = false;
+
+    constructor(protected readonly physicsUpdate$?: Observable<number>) {
+        super(physicsUpdate$);
     }
 
     start(displayObject: DisplayObject): void {
@@ -31,7 +33,7 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
         this.translationMatrix.setTranslation(translation);
     }
 
-    setTranslationFromFloat(x: number, y: number, z: number): void {
+    setTranslationFromFloats(x: number, y: number, z: number): void {
         this.translationMatrix.setTranslationFromFloats(x, y, z);
     }
 
@@ -81,7 +83,7 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
         this.velocity.z *= scale;
     }
 
-    reset(): void {
+    resetVelocity(): void {
         this.velocity.set(0, 0, 0);
     }
 

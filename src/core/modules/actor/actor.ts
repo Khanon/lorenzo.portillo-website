@@ -27,7 +27,7 @@ export abstract class Actor {
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {
         if (this.properties?.usePhysics) {
-            this.physics = new ActorSimplePhysics(this.properties.loopUpdate$);
+            this.physics = new ActorSimplePhysics(this.properties.physicsUpdate$);
         }
     }
 

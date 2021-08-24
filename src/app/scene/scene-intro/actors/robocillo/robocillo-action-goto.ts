@@ -36,16 +36,16 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
         this.unSubscribeLoopUpdate();
     }
 
+    getEarthAngle(): number {
+        const vToCenter = SceneIntroShared.earth.getPosition().subtract(this.target.getPosition());
+        return Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
+    }
+
     loopUpdate(delta: number): void {
         this.target.physics.applyForce(this.vDirection.scale(0.0001));
         if (Math.abs(this.getEarthAngle() - this.gotoAngle) < 0.01) {
             this.done();
             this.stop();
         }
-    }
-
-    getEarthAngle(): number {
-        const vToCenter = SceneIntroShared.earth.getPosition().subtract(this.target.getPosition());
-        return Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
     }
 }

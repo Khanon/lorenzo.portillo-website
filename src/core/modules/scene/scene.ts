@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs';
 
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
-import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */
@@ -19,6 +18,7 @@ import { SpriteProperties } from '../sprite/sprite-properties';
 import { SceneStart } from './scene-start';
 import { DisplayObject } from '../../models/display-object';
 import { Logger } from '../logger/logger';
+import { Misc } from '../misc/misc';
 
 export abstract class Scene {
     babylonjs: BabylonJsScene;
@@ -33,8 +33,7 @@ export abstract class Scene {
     private subscriptions: Subscription[] = [];
 
     // Sprites
-    private readonly MAX_SPRITES_PER_INSTANCE = 255;
-    private readonly spriteInstances: SpriteInstance[] = [];
+    private readonly spriteInstances: Misc.KeyValue<string, SpriteInstance> = new Misc.KeyValue<string, SpriteInstance>();
 
     // Actors
     private readonly meshes: Mesh[] = [];
@@ -133,6 +132,8 @@ export abstract class Scene {
     // ------------------------
 
     /**
+     * Since assets are loaded by scene, the sprite assets are stored here.
+     * TODO: Maybe switching to an external manager in the future.
      *
      * @param url Returns existing instance of SpriteManager or create a new one
      * @param properties
@@ -140,24 +141,14 @@ export abstract class Scene {
      */
     private getSpriteInstance(properties: SpriteProperties): SpriteInstance {
         // Search and return existing instance
-        this.spriteInstances.forEach((spriteInstance) => {
-            if (spriteInstance.url === properties.url) {
-                return spriteInstance.babylonjs;
-            }
-        });
+        let spriteInstance: SpriteInstance = this.spriteInstances.get(properties.url);
+        if (spriteInstance) {
+            return spriteInstance;
+        }
 
         // Create and return a new instance if not found
-        const spriteInstance = {
-            url: properties.url,
-            babylonjs: new SpriteManager(
-                properties.url,
-                properties.url,
-                this.MAX_SPRITES_PER_INSTANCE,
-                ({ width: properties.width, height: properties.height } = properties),
-                this.babylonjs
-            ),
-        };
-        this.spriteInstances.push(spriteInstance);
+        spriteInstance = new SpriteInstance(properties, this.babylonjs);
+        this.spriteInstances.add(properties.url, spriteInstance);
         return spriteInstance;
     }
 

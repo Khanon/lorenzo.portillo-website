@@ -28,7 +28,7 @@ export class RobocilloActor extends Actor2D {
         this.addAnimation(RobocilloAnimations.JUMP_FRONT, { delay: 75, frameStart: 80, frameEnd: 85 });
 
         this.setScale(0.17);
-        this.physics.setTranslationFromFloat(-0.01, -0.32, -2.96);
-        this.setAnimation(RobocilloAnimations.WALK);
+        this.physics.setTranslationFromFloats(-0.01, -0.32, -2.96);
+        this.setAnimation(RobocilloAnimations.STOP_FRONT);
     }
 }

@@ -26,6 +26,7 @@ export class Core {
     // Events
     private readonly canvasResize: Subject<DimensionsWH> = new Subject<DimensionsWH>();
     private readonly loopUpdate$: Subject<number> = new Subject<number>();
+    private readonly physicsUpdate$: Subject<number> = new Subject<number>();
 
     constructor(private readonly properties: CoreProperties) {
         this.loopUpdateDelay = this.properties.delayUpdate ?? 0;
@@ -104,6 +105,7 @@ export class Core {
         return {
             canvasResize: this.canvasResize,
             loopUpdate$: this.loopUpdate$,
+            physicsUpdate$: this.physicsUpdate$,
         };
     }
 
@@ -121,6 +123,7 @@ export class Core {
                     delta = this.properties.deltaMaxValue;
                 }
                 this.loopUpdate$.next(delta);
+                this.physicsUpdate$.next(delta);
                 this.loopUpdateLastMs = currentMs;
             }
         }, 1);
