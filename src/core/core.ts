@@ -94,7 +94,7 @@ export class Core {
         };
         Object.assign(properties, sceneProperties);
 
-        scene.start(properties);
+        scene.load(properties);
     }
 
     /**

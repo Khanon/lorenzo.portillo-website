@@ -13,12 +13,12 @@ enum Happiness {
 export class RobocilloStateIntro extends State<Actor2D> {
     static id: string = 'RobocilloStateIntro';
 
-    private readonly ANGLE_SUN = -0.216;
+    private readonly ANGLE_SUN = -0.213;
     private readonly ANGLE_CENTER = 0;
 
     private robocillo: Actor2D;
 
-    private gameLoaded: boolean = false; // 8a8f eliminar
+    private gameLoaded: boolean = false; // TODO:  eliminar
 
     start(): void {
         this.robocillo = this.target;
@@ -46,7 +46,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
         this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
         setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false), 500);
         setTimeout(() => this.checkPaper(), 500);
-        setTimeout(() => (this.gameLoaded = true), 2500); // 8a8f eliminar
+        setTimeout(() => (this.gameLoaded = true), 2500); // TODO: eliminar
     }
 
     checkPaper(): void {

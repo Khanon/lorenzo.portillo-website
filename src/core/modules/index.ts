@@ -14,7 +14,7 @@ export * from './scene/scene-start';
 export * from './logger/logger';
 export * from './mesh/mesh';
 export * from './misc/misc';
-export * from './physics/actor-simple-physics';
+export * from './physics/simple-physics/actor-simple-physics';
 export * from './sprite/sprite';
 export * from './sprite/sprite-instance';
 export * from './sprite/sprite-properties';

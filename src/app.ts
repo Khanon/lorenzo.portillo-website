@@ -21,7 +21,7 @@ class App {
         this.core.createCanvasOnDivElement('canvas-container');
         this.core.start();
 
-        this.core.setScene(new SceneIntro(), { isDevelopmentMode: this.isDevelopmentMode(), fpsContainer: 'fps-container' }); // 8a8f remve FPS after development
+        this.core.setScene(new SceneIntro(), { isDevelopmentMode: this.isDevelopmentMode(), fpsContainer: 'fps-container' }); // TODO: remve FPS after development
         // this.states.GoTo(new StateLoading(this.scene));
     }
 

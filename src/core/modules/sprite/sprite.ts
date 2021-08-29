@@ -3,11 +3,13 @@ import { Sprite as BabylonJsSprite } from '@babylonjs/core/Sprites/sprite';
 
 import { DisplayObject } from '../../models/display-object';
 import { SpriteInstance } from './sprite-instance';
+import { SpriteKeyFrameCallback } from './sprite-keyframe-callback';
 import { SpriteProperties } from './sprite-properties';
+import { Logger } from '../logger/logger';
 
 /**
  * Class based on BabylonJs SpriteManager
- * TODO: Switch SpriteManager by SpritePackedManager once BabylonJs team implement all missing features // 8a8f
+ * TODO: Switch SpriteManager by SpritePackedManager once BabylonJs team implement all missing features
  */
 
 export class Sprite extends DisplayObject {
@@ -15,8 +17,9 @@ export class Sprite extends DisplayObject {
     private spriteInstance: SpriteInstance;
 
     private scale: number = 1;
+    private keyFramesTimeouts: NodeJS.Timeout[] = [];
 
-    constructor(protected readonly name: string, readonly properties: SpriteProperties) {
+    constructor(readonly name: string, readonly properties: SpriteProperties) {
         super(name);
     }
 
@@ -36,16 +39,56 @@ export class Sprite extends DisplayObject {
         this.visible = false;
     }
 
-    play(delay: number, loop: boolean, frameStart: number = 0, frameEnd: number = this.properties.numFrames - 1, onDone?: () => void): void {
+    play(
+        delay: number,
+        loop: boolean,
+        frameStart: number = 0,
+        frameEnd: number = this.properties.numFrames - 1,
+        completed?: () => void,
+        keyFrames?: SpriteKeyFrameCallback
+    ): void {
+        const playAnimation = () => {
+            this.babylonjs.playAnimation(frameStart, frameEnd, false, delay, completed || loop ? onCompleted : undefined);
+            setKeyframesTimeouts();
+        };
+
+        const setKeyframesTimeouts = () => {
+            this.keyFramesTimeouts = [];
+            if (keyFrames) {
+                keyFrames.keyframes.forEach((frame) => {
+                    if (frame >= frameStart && frame <= frameEnd) {
+                        const timeout = setTimeout(() => keyFrames.callback(frame), (frame - frameStart) * delay);
+                        this.keyFramesTimeouts.push(timeout);
+                    } else {
+                        Logger.error(`Keyframe out of bounds. Frame: ${frame}, Frame start: ${frameStart}, Sprite: ${this.name}`);
+                    }
+                });
+            }
+        };
+
+        // To support 'keyframes' and 'completed' callback for each loop tt is neccesary to do the loop manually since BabylonJs only notify the first end of animation
+        // Otherwise would need to use setInterval for keyframes, which would't be synchronized after some loops
+        const onCompleted = () => {
+            if (completed) {
+                completed();
+            }
+            if (loop) {
+                playAnimation();
+            }
+        };
+
         this.visible = true;
-        this.babylonjs.playAnimation(frameStart, frameEnd, loop, delay, onDone ? onDone : undefined);
+        this.removeAnimationKeyFrames();
+        playAnimation();
     }
 
     stop(): void {
+        this.removeAnimationKeyFrames();
         this.babylonjs.stopAnimation();
     }
 
     setFrame(frame: number): void {
+        this.stop();
         this.visible = true;
         if (frame < 0) {
             frame = this.properties.numFrames - 1;
@@ -74,5 +117,10 @@ export class Sprite extends DisplayObject {
 
     getScale(): number {
         return this.scale;
+    }
+
+    private removeAnimationKeyFrames(): void {
+        this.keyFramesTimeouts.forEach((timeout) => clearTimeout(timeout));
+        this.keyFramesTimeouts = [];
     }
 }

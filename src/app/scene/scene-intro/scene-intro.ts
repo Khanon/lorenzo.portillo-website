@@ -35,7 +35,7 @@ export class SceneIntro extends Scene {
     gravity: SceneIntroActionGravity;
 
     // ******************
-    // Debug 8a8f delete
+    // Debug TODO: delete
     gui: GUI;
     textCanvasSize: TextBlock;
     animationTest: number = -1;

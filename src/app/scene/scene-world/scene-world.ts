@@ -14,7 +14,7 @@ export class SceneWorld extends Scene {
     private logo: Sprite;
 
     // ******************
-    // Debug 8a8f delete
+    // Debug TODO: delete
     gui: GUI;
     textCanvasSize: TextBlock;
     // ******************

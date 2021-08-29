@@ -19,6 +19,7 @@ import { SceneStart } from './scene-start';
 import { DisplayObject } from '../../models/display-object';
 import { Logger } from '../logger/logger';
 import { Misc } from '../misc/misc';
+import { ParticlesFactory } from '../particle/particles-factory';
 
 export abstract class Scene {
     babylonjs: BabylonJsScene;
@@ -45,15 +46,20 @@ export abstract class Scene {
     // Actions
     protected readonly actions: ActionsManager<any> = new ActionsManager<any>();
 
+    // Particles
+    protected readonly particles: ParticlesFactory = new ParticlesFactory();
+
     /**
      * Create babylonjs scene, trigger onLoad.
      * @param properties
      */
-    start(properties: SceneStart): void {
+    load(properties: SceneStart): void {
+        this.release();
         this.engine = properties.engine;
         this.canvas = properties.canvas;
         this.coreSubscriptions = properties.coreSubscriptions;
         this.isDevelopmentMode = properties.isDevelopmentMode;
+        this.isExecuted = false;
 
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
 
@@ -63,21 +69,17 @@ export abstract class Scene {
         this.actors.forEach((actor) => {
             const displayObject: DisplayObject = actor.getDisplayObject(this.babylonjs);
             if (displayObject instanceof Sprite) {
-                this.sprites.push(displayObject);
+                const sprite = this.addSprite(displayObject);
+                sprite.assignInstance(this.getSpriteInstance(sprite.properties));
             } else if (displayObject instanceof Mesh) {
-                this.meshes.push(displayObject);
+                this.addMesh(displayObject);
             } else {
-                Logger.error('Unknown DisplayObject instance -', actor.name);
+                Logger.error('Unknown DisplayObject instance on actor -', actor.name);
             }
         });
 
-        // Assign sprite instances to sprites
-        this.sprites.forEach((sprite) => {
-            sprite.assignInstance(this.getSpriteInstance(sprite.properties));
-        });
-
         this.babylonjs.executeWhenReady(() => {
-            // Once the scene is loaded, register a render loop // 8a8f possible renderLoops leaks after loading different scenes
+            // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
             this.engine.babylonjs.runRenderLoop(() => {
                 this.isExecuted = true;
                 this.babylonjs.render();
@@ -100,6 +102,10 @@ export abstract class Scene {
         }
     }
 
+    release(): void {
+        // TODO
+    }
+
     // ------------------------
     //   Load and Release
     // ------------------------
@@ -119,7 +125,7 @@ export abstract class Scene {
     }
 
     protected releaseSubscriptions(): void {
-        // 8a8f When should this function be called? After scene switch?
+        // TODO: When should this function be called? After scene switch?
         // Do state.Delete() for all registered states on actors and scene
         this.subscriptions.forEach((subscription) => {
             subscription.unsubscribe();
@@ -130,6 +136,11 @@ export abstract class Scene {
     // ------------------------
     //   Sprite methods
     // ------------------------
+
+    addSprite(sprite: Sprite): Sprite {
+        this.sprites.push(sprite);
+        return sprite;
+    }
 
     /**
      * Since assets are loaded by scene, the sprite assets are stored here.
@@ -150,6 +161,15 @@ export abstract class Scene {
         spriteInstance = new SpriteInstance(properties, this.babylonjs);
         this.spriteInstances.add(properties.url, spriteInstance);
         return spriteInstance;
+    }
+
+    // ------------------------
+    //   Mesh methods
+    // ------------------------
+
+    addMesh(mesh: Mesh): Mesh {
+        this.meshes.push(mesh);
+        return mesh;
     }
 
     // ------------------------

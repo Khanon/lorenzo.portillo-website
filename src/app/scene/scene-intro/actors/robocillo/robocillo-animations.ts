@@ -11,3 +11,9 @@ export enum RobocilloAnimations {
     RAISE_HANDS = 'raise_hands',
     JUMP_FRONT = 'jump_front',
 }
+
+export const RobocilloKeyframes = {
+    walk: {
+        floor_contact: [56, 60],
+    },
+};

@@ -8,7 +8,7 @@ export class Mesh extends DisplayObject {
 
     private scale: number = 1;
 
-    constructor(protected readonly name, babylonJsMesh: BabylonJsMesh) {
+    constructor(readonly name, babylonJsMesh: BabylonJsMesh) {
         super(name);
         this.babylonjs = babylonJsMesh;
     }
@@ -21,12 +21,12 @@ export class Mesh extends DisplayObject {
     }
 
     setRotation(rotation: Vector3): void {
-        // 8a8f TODO
+        // TODO
         // this.babylonjs.rotate = rotation;
     }
 
     getRotation(): Vector3 {
-        // 8a8f TODO
+        // TODO
         return new Vector3(0, 0, 0);
     }
 

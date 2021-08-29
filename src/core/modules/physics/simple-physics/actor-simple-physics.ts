@@ -2,10 +2,10 @@ import { Observable } from 'rxjs';
 
 import { Vector3, Matrix } from '@babylonjs/core/Maths/math.vector';
 
-import { LoopUpdateable } from '../../models/loop-updateable';
-import { Modifier } from '../modifiers/modifier';
-import { Misc } from '../misc/misc';
-import { DisplayObject } from '../../models/display-object';
+import { LoopUpdateable } from '../../../models/loop-updateable';
+import { Modifier } from '../../modifiers/modifier';
+import { Misc } from '../../misc/misc';
+import { DisplayObject } from '../../../models/display-object';
 
 export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
     static id: string = 'ActorSimplePhysics';

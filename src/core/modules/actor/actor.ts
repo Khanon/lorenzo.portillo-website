@@ -9,7 +9,8 @@ import { ModifiersManager } from '../modifiers/modifiers-manager';
 import { ActorAnimation2D } from './actor-animation-2d';
 import { ActorAnimation3D } from './actor-animation-3d';
 import { Misc } from '../misc/misc';
-import { ActorSimplePhysics } from '../physics/actor-simple-physics';
+import { ActorSimplePhysics } from '../physics/simple-physics/actor-simple-physics';
+import { SpriteKeyFrameCallback } from '../sprite/sprite-keyframe-callback';
 
 export abstract class Actor {
     // Private / Protected
@@ -57,6 +58,15 @@ export abstract class Actor {
     }
 
     /**
+     * Gets animation properties
+     * @param id
+     * @returns
+     */
+    getAnimation<T = ActorAnimation2D | ActorAnimation3D>(id: string): T {
+        return this.animations.get<T>(id);
+    }
+
+    /**
      * Sets animation.
      * To be implemented by generic actors (Actor2D, Actor3D,..).
      *
@@ -64,7 +74,7 @@ export abstract class Actor {
      * @param loop
      * @param completed
      */
-    abstract setAnimation(name: string, loop?: boolean, completed?: () => void): void;
+    abstract setAnimation(name: string, loop?: boolean, completed?: () => void, keyFrames?: SpriteKeyFrameCallback): void;
 
     /**
      * To be implemented by app actor.
