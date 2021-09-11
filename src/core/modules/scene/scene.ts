@@ -47,7 +47,7 @@ export abstract class Scene {
     protected readonly actions: ActionsManager<any> = new ActionsManager<any>();
 
     // Particles
-    protected readonly particles: ParticlesFactory = new ParticlesFactory();
+    protected particles: ParticlesFactory;
 
     /**
      * Create babylonjs scene, trigger onLoad.
@@ -62,6 +62,7 @@ export abstract class Scene {
         this.isExecuted = false;
 
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
+        this.particles = new ParticlesFactory(this.babylonjs);
 
         this.onLoad();
 
