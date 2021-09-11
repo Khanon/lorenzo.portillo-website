@@ -1,4 +1,4 @@
-import { Actor3D, Misc, State } from '../../../../../core';
+import { Actor3D, Misc, State } from '../../../../../khanon3d';
 
 export class EarthStateMotion extends State<Actor3D> {
     private readonly endMotion = { y: -7.13, scale: 0.98 };

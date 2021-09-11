@@ -1,9 +1,11 @@
+import { Subscription } from 'rxjs';
+
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Action, Actor2D, Misc } from '../../../../../core';
+import { Action, Actor2D, Misc } from '../../../../../khanon3d';
 
 import { SceneIntroShared } from '../../scene-intro-shared';
-import { RobocilloKeyframes, RobocilloAnimations } from './robocillo-animations';
+import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
 
 export interface IRobocilloActionGoTo {
     angle: number;
@@ -25,13 +27,7 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
         } else {
             this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.target.getPosition()), new Vector3(1, 0, 0)).normalize();
         }
-        this.target.setAnimation(RobocilloAnimations.WALK, true, undefined, {
-            callback: (frame) => {
-                // Floor contact particle
-                console.log('aki PARTICLE!!');
-            },
-            keyframes: RobocilloKeyframes.walk.floor_contact,
-        });
+        this.target.setAnimation(RobocilloAnimations.WALK);
 
         this.subscribeLoopUpdate();
     }

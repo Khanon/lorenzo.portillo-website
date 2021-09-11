@@ -4,7 +4,7 @@ import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Actor3D, Mesh } from '../../../../../core';
+import { Actor3D, Mesh } from '../../../../../khanon3d';
 
 import { EarthStateMotion } from './earth-state-motion';
 

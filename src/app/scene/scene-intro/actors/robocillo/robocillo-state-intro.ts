@@ -1,4 +1,4 @@
-import { Actor2D, Misc, State } from '../../../../../core';
+import { Actor2D, Misc, State } from '../../../../../khanon3d';
 
 import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
 import { RobocilloAnimations } from './robocillo-animations';

@@ -1,6 +1,6 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Action, Actor, Misc } from '../../../../core';
+import { Action, Actor, Misc } from '../../../../khanon3d';
 
 import { SceneIntroShared } from './../scene-intro-shared';
 
@@ -50,6 +50,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
                 if (restitutionVector.length() > this.RESTITUTION_OVER_FACTOR) {
                     actor.physics.applyForce(restitutionVector.scale(1.5));
+                    // 8a8f usar actor.emitKeyframe(RobocilloKeyframes.FLOOR_CONTACT) para emitir choque contra suelo
                 }
             }
 

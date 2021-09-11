@@ -8,7 +8,7 @@ import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene, Sprite } from '../../../core';
+import { DimensionsWH, GUI, Scene, Sprite } from '../../../khanon3d';
 
 export class SceneWorld extends Scene {
     private logo: Sprite;

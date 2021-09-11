@@ -5,7 +5,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene } from '../../../core';
+import { DimensionsWH, GUI, Scene } from '../../../khanon3d';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
@@ -15,7 +15,7 @@ import { RobocilloAnimations } from './actors/robocillo/robocillo-animations';
 import { SceneIntroActionGravity } from './actions/action-gravity';
 import { SceneIntroShared } from './scene-intro-shared';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
-import { Logger } from '../../../core/modules/logger/logger';
+import { Logger } from '../../../khanon3d/modules/logger/logger';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects

@@ -1,4 +1,4 @@
-import { Core } from './core';
+import { Core } from './khanon3d';
 
 import { SceneIntro } from './app/scene/scene-intro/scene-intro';
 
