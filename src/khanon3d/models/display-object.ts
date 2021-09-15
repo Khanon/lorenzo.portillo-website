@@ -63,4 +63,9 @@ export abstract class DisplayObject {
 
     abstract setScale(scale: number): void;
     abstract getScale(): number;
+
+    abstract setAlpha(alpha: number): void;
+    abstract getAlpha(): number;
+
+    abstract release(): void;
 }

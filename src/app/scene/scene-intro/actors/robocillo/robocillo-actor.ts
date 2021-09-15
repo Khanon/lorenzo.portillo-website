@@ -7,6 +7,8 @@ import { Actor2D, Sprite } from '../../../../../khanon3d';
 import { RobocilloActionGoTo } from './robocillo-action-goto';
 import { RobocilloStateIntro } from './robocillo-state-intro';
 import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
+import { ParticleSprite } from '../../../../../khanon3d/modules/particle/particles/particle-sprite';
+import { ParticleEndCriteria } from '../../../../../khanon3d/modules/particle/particle-end-criteria';
 
 export class RobocilloActor extends Actor2D {
     createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
@@ -44,13 +46,6 @@ export class RobocilloActor extends Actor2D {
             frameStart: 80,
             frameEnd: 85,
             loop: false,
-            keyFrames: [
-                {
-                    id: RobocilloKeyFrames.FLOOR_CONTACT,
-                    subject: new Subject<number>(),
-                    keyFrames: [80],
-                },
-            ],
         });
 
         this.setScale(0.17);
@@ -59,7 +54,18 @@ export class RobocilloActor extends Actor2D {
 
         this.subscribeToKeyFrameAll(RobocilloKeyFrames.FLOOR_CONTACT).subscribe((frame) => {
             // Floor contact particle
-            console.log('aki PARTICLE!!', frame);
+            this.particles.new(
+                new ParticleSprite({
+                    spriteProperties: { url: './assets/scene-intro/sprites/particle-walk-dust.png', width: 34, height: 34, numFrames: 0 },
+                    spriteAnimation: { delay: 150, loop: false, frameStart: 0, frameEnd: 3 },
+                    x: this.getX(),
+                    y: this.getY(),
+                    z: this.getZ(),
+                    scale: this.getScale(),
+                    alpha: 0.5,
+                    endCriteria: ParticleEndCriteria.ANIMATION_END,
+                })
+            );
         });
     }
 }

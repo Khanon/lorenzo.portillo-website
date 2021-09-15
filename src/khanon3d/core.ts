@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { Engine } from './modules/engine/engine';
 import { Logger } from './modules/logger/logger';
 import { Scene } from './modules/scene/scene';
-import { SceneStart } from './modules/scene/scene-start';
+import { SceneProperties } from './modules/scene/scene-start';
 import { DimensionsWH } from './models/dimensions-wh';
 import { CoreProperties } from './models/core-properties';
 import { CoreSubscriptions } from './models/core-subscriptions';
@@ -85,7 +85,7 @@ export class Core {
     /**
      * Set current scene
      */
-    setScene(scene: Scene, sceneProperties?: SceneStart): void {
+    setScene(scene: Scene, sceneProperties?: SceneProperties): void {
         const properties = {
             engine: this.engine,
             canvas: this.canvas,

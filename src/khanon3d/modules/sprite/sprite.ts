@@ -39,6 +39,10 @@ export class Sprite extends DisplayObject {
         this.visible = false;
     }
 
+    release(): void {
+        this.babylonjs.dispose();
+    }
+
     /**
      * Play an animation
      *
@@ -124,6 +128,14 @@ export class Sprite extends DisplayObject {
 
     getScale(): number {
         return this.scale;
+    }
+
+    setAlpha(alpha: number): void {
+        this.babylonjs.color.a = alpha;
+    }
+
+    getAlpha(): number {
+        return this.babylonjs.color.a;
     }
 
     private removeAnimationKeyFrames(): void {

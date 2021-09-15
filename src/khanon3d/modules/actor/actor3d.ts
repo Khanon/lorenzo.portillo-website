@@ -3,7 +3,6 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { Actor } from './actor';
 import { Mesh } from '../mesh/mesh';
 import { ActorProperties } from './actor-properties';
-import { MeshAnimation } from '../mesh/mesh-animation';
 
 export abstract class Actor3D extends Actor {
     protected _mesh: Mesh;

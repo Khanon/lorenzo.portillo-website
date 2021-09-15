@@ -1,27 +1,25 @@
-import { Subscription } from 'rxjs';
-
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
 /* babylonjs-debugLayer */
 /* babylonjs-inspector */
 
-import { Actor } from '../actor/actor';
 import { ActionsManager } from '../actions/actions-manager';
 import { CoreSubscriptions } from '../../models/core-subscriptions';
 import { DimensionsWH } from '../../models/dimensions-wh';
 import { Engine } from '../engine/engine';
 import { Mesh } from '../mesh/mesh';
 import { Sprite } from '../sprite/sprite';
-import { SpriteInstance } from '../sprite/sprite-instance';
-import { SpriteProperties } from '../sprite/sprite-properties';
-import { SceneStart } from './scene-start';
+import { SceneProperties } from './scene-start';
 import { DisplayObject } from '../../models/display-object';
 import { Logger } from '../logger/logger';
-import { Misc } from '../misc/misc';
 import { ParticlesFactory } from '../particle/particles-factory';
+import { Subscriber } from '../../models/subscriber';
+import { SpritesManager } from '../sprite/sprites-manager';
+import { MeshesManager } from '../mesh/meshes-manager';
+import { ActorsManager } from '../actor/actors-manager';
 
-export abstract class Scene {
+export abstract class Scene extends Subscriber {
     babylonjs: BabylonJsScene;
 
     protected engine: Engine;
@@ -30,18 +28,10 @@ export abstract class Scene {
     protected isDevelopmentMode: boolean;
     protected isExecuted: boolean = false;
 
-    // Subscriptions
-    private subscriptions: Subscription[] = [];
-
-    // Sprites
-    private readonly spriteInstances: Misc.KeyValue<string, SpriteInstance> = new Misc.KeyValue<string, SpriteInstance>();
-
-    // Actors
-    private readonly meshes: Mesh[] = [];
-    private readonly sprites: Sprite[] = [];
-
-    // Actors
-    private readonly actors: Actor[] = [];
+    // Managers
+    protected spritesManager: SpritesManager;
+    protected meshesManager: MeshesManager;
+    protected actorsManager: ActorsManager;
 
     // Actions
     protected readonly actions: ActionsManager<any> = new ActionsManager<any>();
@@ -53,7 +43,7 @@ export abstract class Scene {
      * Create babylonjs scene, trigger onLoad.
      * @param properties
      */
-    load(properties: SceneStart): void {
+    load(properties: SceneProperties): void {
         this.release();
         this.engine = properties.engine;
         this.canvas = properties.canvas;
@@ -62,21 +52,24 @@ export abstract class Scene {
         this.isExecuted = false;
 
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
-        this.particles = new ParticlesFactory(this.babylonjs);
+        this.spritesManager = new SpritesManager(this.babylonjs);
+        this.meshesManager = new MeshesManager();
+        this.actorsManager = new ActorsManager();
+        this.particles = new ParticlesFactory(this.babylonjs, this.spritesManager, this.meshesManager);
 
         this.onLoad();
 
         // Create display objects for any actor added to the scene
-        this.actors.forEach((actor) => {
+        this.actorsManager.actors.forEach((actor) => {
             const displayObject: DisplayObject = actor.getDisplayObject(this.babylonjs);
             if (displayObject instanceof Sprite) {
-                const sprite = this.addSprite(displayObject);
-                sprite.assignInstance(this.getSpriteInstance(sprite.properties));
+                this.spritesManager.addSprite(displayObject);
             } else if (displayObject instanceof Mesh) {
-                this.addMesh(displayObject);
+                this.meshesManager.addMesh(displayObject);
             } else {
                 Logger.error('Unknown DisplayObject instance on actor -', actor.name);
             }
+            actor.createParticlesManager(this.babylonjs, this.spritesManager, this.meshesManager);
         });
 
         this.babylonjs.executeWhenReady(() => {
@@ -91,7 +84,7 @@ export abstract class Scene {
             });
 
             // Initialize actors
-            this.actors.forEach((actor) => actor.initialize());
+            this.actorsManager.actors.forEach((actor) => actor.initialize());
 
             // Call child onLoaded
             this.onLoaded(properties.canvasDimensions);
@@ -104,7 +97,8 @@ export abstract class Scene {
     }
 
     release(): void {
-        // TODO
+        this.spritesManager?.release();
+        this.meshesManager?.release();
     }
 
     // ------------------------
@@ -116,71 +110,6 @@ export abstract class Scene {
 
     // abstract onRelease(): void;
     // abstract onReleased(): void;
-
-    // ------------------------
-    //   Subscriptions
-    // ------------------------
-
-    protected addSubscription(subscription: Subscription): void {
-        this.subscriptions.push(subscription);
-    }
-
-    protected releaseSubscriptions(): void {
-        // TODO: When should this function be called? After scene switch?
-        // Do state.Delete() for all registered states on actors and scene
-        this.subscriptions.forEach((subscription) => {
-            subscription.unsubscribe();
-        });
-        this.subscriptions = [];
-    }
-
-    // ------------------------
-    //   Sprite methods
-    // ------------------------
-
-    addSprite(sprite: Sprite): Sprite {
-        this.sprites.push(sprite);
-        return sprite;
-    }
-
-    /**
-     * Since assets are loaded by scene, the sprite assets are stored here.
-     * TODO: Maybe switching to an external manager in the future.
-     *
-     * @param url Returns existing instance of SpriteManager or create a new one
-     * @param properties
-     * @returns
-     */
-    private getSpriteInstance(properties: SpriteProperties): SpriteInstance {
-        // Search and return existing instance
-        let spriteInstance: SpriteInstance = this.spriteInstances.get(properties.url);
-        if (spriteInstance) {
-            return spriteInstance;
-        }
-
-        // Create and return a new instance if not found
-        spriteInstance = new SpriteInstance(properties, this.babylonjs);
-        this.spriteInstances.add(properties.url, spriteInstance);
-        return spriteInstance;
-    }
-
-    // ------------------------
-    //   Mesh methods
-    // ------------------------
-
-    addMesh(mesh: Mesh): Mesh {
-        this.meshes.push(mesh);
-        return mesh;
-    }
-
-    // ------------------------
-    //   Actor methods
-    // ------------------------
-
-    addActor(actor: Actor): any {
-        this.actors.push(actor);
-        return actor;
-    }
 
     // ------------------------
     //   Debug methods

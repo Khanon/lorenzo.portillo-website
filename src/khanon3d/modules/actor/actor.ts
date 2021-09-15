@@ -13,6 +13,9 @@ import { MeshAnimation } from '../mesh/mesh-animation';
 import { Misc } from '../misc/misc';
 import { ActorSimplePhysics } from '../physics/simple-physics/actor-simple-physics';
 import { Logger } from '../logger/logger';
+import { ParticlesFactory } from '../particle/particles-factory';
+import { SpritesManager } from '../sprite/sprites-manager';
+import { MeshesManager } from '../mesh/meshes-manager';
 
 export abstract class Actor {
     // Private / Protected
@@ -25,6 +28,7 @@ export abstract class Actor {
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
     readonly modifier: ModifiersManager = new ModifiersManager();
     readonly physics: ActorSimplePhysics;
+    protected particles: ParticlesFactory;
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {
         if (this.properties?.usePhysics) {
@@ -46,6 +50,17 @@ export abstract class Actor {
      * @param displayObject
      */
     protected abstract setDisplayObject(displayObject: DisplayObject): void;
+
+    /**
+     * Create particles manager (needs some manager from Scene)
+     *
+     * @param babylonJsScene
+     * @param spritesManager
+     * @param meshesManager
+     */
+    createParticlesManager(babylonJsScene: BabylonJsScene, spritesManager: SpritesManager, meshesManager: MeshesManager): void {
+        this.particles = new ParticlesFactory(babylonJsScene, spritesManager, meshesManager, this.displayObject);
+    }
 
     /**
      * Adds an animation to the list.

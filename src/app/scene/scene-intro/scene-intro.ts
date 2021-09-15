@@ -69,10 +69,10 @@ export class SceneIntro extends Scene {
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
         // Actors
-        this.earth = this.addActor(new EarthActor('earth', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
-        this.logo = this.addActor(new LogoActor('logo'));
-        this.sun = this.addActor(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
-        this.robocillo = this.addActor(
+        this.earth = this.actorsManager.addActor(new EarthActor('earth', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.logo = this.actorsManager.addActor(new LogoActor('logo'));
+        this.sun = this.actorsManager.addActor(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.robocillo = this.actorsManager.addActor(
             new RobocilloActor('robocillo', {
                 loopUpdate$: this.coreSubscriptions.loopUpdate$,
                 physicsUpdate$: this.coreSubscriptions.physicsUpdate$,

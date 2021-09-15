@@ -2,7 +2,7 @@ import { CoreSubscriptions } from '../../models/core-subscriptions';
 import { DimensionsWH } from '../../models/dimensions-wh';
 import { Engine } from '../engine/engine';
 
-export interface SceneStart {
+export interface SceneProperties {
     engine?: Engine;
     canvas?: HTMLCanvasElement;
     canvasDimensions?: DimensionsWH;

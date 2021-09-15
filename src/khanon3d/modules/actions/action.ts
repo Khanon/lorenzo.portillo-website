@@ -7,7 +7,7 @@ export abstract class Action<T, P> extends LoopUpdateable {
     protected properties: P;
     private onDone: () => void;
 
-    constructor(readonly id: string, protected readonly target: T, protected readonly loopUpdate$?: Observable<number>) {
+    constructor(readonly id: string, protected readonly subject: T, protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
     }
 

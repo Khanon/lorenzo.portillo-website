@@ -1,6 +1,6 @@
 import { Observable, Subscription } from 'rxjs';
 
-export class LoopUpdateable {
+export abstract class LoopUpdateable {
     private loopUpdateSubscription: Subscription;
 
     constructor(protected readonly loopUpdate$?: Observable<number>) {}

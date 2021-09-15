@@ -21,30 +21,30 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
         this.gotoAngle = this.properties.angle;
 
         if (this.gotoAngle < this.getEarthAngle()) {
-            this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.target.getPosition()), new Vector3(1, 0, 0))
+            this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.subject.getPosition()), new Vector3(1, 0, 0))
                 .negate()
                 .normalize();
         } else {
-            this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.target.getPosition()), new Vector3(1, 0, 0)).normalize();
+            this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.subject.getPosition()), new Vector3(1, 0, 0)).normalize();
         }
-        this.target.setAnimation(RobocilloAnimations.WALK);
+        this.subject.setAnimation(RobocilloAnimations.WALK);
 
         this.subscribeLoopUpdate();
     }
 
     onStop() {
-        this.target.physics.scaleVelocity(0.2);
-        this.target.setAnimation(RobocilloAnimations.STOP_SIDE, false);
+        this.subject.physics.scaleVelocity(0.2);
+        this.subject.setAnimation(RobocilloAnimations.STOP_SIDE, false);
         this.unSubscribeLoopUpdate();
     }
 
     getEarthAngle(): number {
-        const vToCenter = SceneIntroShared.earth.getPosition().subtract(this.target.getPosition());
+        const vToCenter = SceneIntroShared.earth.getPosition().subtract(this.subject.getPosition());
         return Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
     }
 
     loopUpdate(delta: number): void {
-        this.target.physics.applyForce(this.vDirection.scale(0.0001));
+        this.subject.physics.applyForce(this.vDirection.scale(0.0001));
         if (Math.abs(this.getEarthAngle() - this.gotoAngle) < 0.01) {
             this.done();
             this.stop();

@@ -21,7 +21,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
     private gameLoaded: boolean = false; // TODO:  eliminar
 
     start(): void {
-        this.robocillo = this.target;
+        this.robocillo = this.subject;
         this.goIn();
     }
 
