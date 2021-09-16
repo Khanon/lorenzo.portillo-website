@@ -1,6 +1,8 @@
 import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
 import { Sprite as BabylonJsSprite } from '@babylonjs/core/Sprites/sprite';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { SpriteAnimation } from '../modules/sprite/sprite-animation';
+import { MeshAnimation } from '../modules/mesh/mesh-animation';
 
 export abstract class DisplayObject {
     readonly babylonjs: BabylonJsSprite | BabylonJsMesh;
@@ -66,6 +68,8 @@ export abstract class DisplayObject {
 
     abstract setAlpha(alpha: number): void;
     abstract getAlpha(): number;
+
+    abstract play(animation: SpriteAnimation | MeshAnimation, loopOverride?: boolean, completed?: () => void): void;
 
     abstract release(): void;
 }

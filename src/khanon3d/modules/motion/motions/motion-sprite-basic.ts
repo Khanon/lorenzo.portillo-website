@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface MotionSpriteBasicProperties {}
 
-export class MotionSpriteBasic extends Motion<Sprite> {
+export class MotionSpriteBasic extends Motion {
     initialize(properties: MotionSpriteBasicProperties, onDone?: () => void): void {}
 
     onStart(): void {}

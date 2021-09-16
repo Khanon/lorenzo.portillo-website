@@ -7,11 +7,9 @@ import { LoopUpdateable } from '../../models/loop-updateable';
 import { Motion } from '../motion/motion';
 import { SpritesManager } from '../sprite/sprites-manager';
 import { MeshesManager } from '../mesh/meshes-manager';
-import { Sprite } from '../sprite/sprite';
-import { Mesh } from '../mesh/mesh';
 import { DisplayObject } from '../../models/display-object';
 
-export abstract class Particle<T = Sprite | Mesh> extends LoopUpdateable {
+export abstract class Particle extends LoopUpdateable {
     abstract id: string;
 
     protected parent: DisplayObject;
@@ -21,22 +19,44 @@ export abstract class Particle<T = Sprite | Mesh> extends LoopUpdateable {
     protected spritesManager: SpritesManager;
     protected meshesManager: MeshesManager;
 
-    protected displayObject: T;
+    protected displayObject: DisplayObject;
 
     constructor(protected readonly properties: ParticleProperties, protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
     }
+
+    /**
+     * Return DisplayObject from child particle
+     */
+    abstract getDisplayObject(): DisplayObject;
+
+    /**
+     * Initialize displayObject and motion if needed on child function
+     *
+     * @param scene
+     */
+    abstract onInitialize(): void;
+
+    /**
+     * Start and End child functions
+     */
+    abstract onStart(): void;
+    abstract onEnd(): void;
 
     initialize(babylonJsScene: BabylonJsScene, spritesManager: SpritesManager, meshesManager: MeshesManager, parent?: DisplayObject): void {
         this.babylonJsScene = babylonJsScene;
         this.spritesManager = spritesManager;
         this.meshesManager = meshesManager;
         this.parent = parent;
-        this.onInitialize();
-    }
 
-    setDisplayObject(displayObject: T): void {
-        this.displayObject = displayObject;
+        this.displayObject = this.getDisplayObject();
+        this.displayObject.setX(this.properties.x);
+        this.displayObject.setY(this.properties.y);
+        this.displayObject.setZ(this.properties.z);
+        this.displayObject.setScale(this.properties.scale);
+        this.displayObject.setAlpha(this.properties.alpha);
+
+        this.onInitialize();
     }
 
     start(): void {
@@ -48,19 +68,4 @@ export abstract class Particle<T = Sprite | Mesh> extends LoopUpdateable {
         this.motion?.end();
         this.onEnd();
     }
-
-    loopUpdate(delta: number): void {}
-
-    /**
-     * Initialize displayObject and motion if needed on child method
-     *
-     * @param scene
-     */
-    abstract onInitialize(): void;
-
-    /**
-     * Start and End child functions
-     */
-    abstract onStart(): void;
-    abstract onEnd(): void;
 }

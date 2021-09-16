@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 
 import { LoopUpdateable } from '../../models/loop-updateable';
+import { DisplayObject } from '../../models/display-object';
 
-export abstract class Motion<T = any> extends LoopUpdateable {
-    constructor(protected readonly subject: T, protected readonly loopUpdate$?: Observable<number>) {
+export abstract class Motion extends LoopUpdateable {
+    constructor(protected readonly subject: DisplayObject, protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
     }
 

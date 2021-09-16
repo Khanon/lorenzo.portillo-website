@@ -53,7 +53,6 @@ export class RobocilloActor extends Actor2D {
         this.setAnimation(RobocilloAnimations.STOP_FRONT);
 
         this.subscribeToKeyFrameAll(RobocilloKeyFrames.FLOOR_CONTACT).subscribe((frame) => {
-            // Floor contact particle
             this.particles.new(
                 new ParticleSprite({
                     spriteProperties: { url: './assets/scene-intro/sprites/particle-walk-dust.png', width: 34, height: 34, numFrames: 0 },
@@ -62,7 +61,7 @@ export class RobocilloActor extends Actor2D {
                     y: this.getY(),
                     z: this.getZ(),
                     scale: this.getScale(),
-                    alpha: 0.5,
+                    alpha: Math.random() / 2 + 0.1,
                     endCriteria: ParticleEndCriteria.ANIMATION_END,
                 })
             );

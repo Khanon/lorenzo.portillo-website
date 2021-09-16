@@ -13,7 +13,7 @@ export interface ParticleSpriteProperties extends ParticleProperties {
     spriteAnimation: SpriteAnimation;
 }
 
-export class ParticleSprite extends Particle<Sprite> {
+export class ParticleSprite extends Particle {
     id: 'ParticleSprite';
     motion: MotionSpriteBasic;
 
@@ -21,17 +21,13 @@ export class ParticleSprite extends Particle<Sprite> {
         super(properties, loopUpdate$);
     }
 
-    onInitialize(): void {
+    getDisplayObject(): Sprite {
         const sprite = new Sprite('ParticleSprite', this.properties.spriteProperties);
         sprite.assignInstance(this.spritesManager.getSpriteInstance(this.properties.spriteProperties));
-        this.setDisplayObject(sprite);
+        return sprite;
+    }
 
-        this.displayObject.setX(this.properties.x);
-        this.displayObject.setY(this.properties.y);
-        this.displayObject.setZ(this.properties.z);
-        this.displayObject.setScale(this.properties.scale);
-        this.displayObject.setAlpha(this.properties.alpha);
-
+    onInitialize(): void {
         this.motion = new MotionSpriteBasic(this.displayObject, this.loopUpdate$);
         this.motion.initialize({});
     }

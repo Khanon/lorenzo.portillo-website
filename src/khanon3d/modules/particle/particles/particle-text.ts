@@ -6,6 +6,7 @@ import { Particle } from '../particle';
 import { ParticleProperties } from '../particle-properties';
 import { MotionSpriteBasic } from '../../motion/motions/motion-sprite-basic';
 import { Sprite } from '../../sprite/sprite';
+import { Mesh } from '../../mesh/mesh';
 
 export interface ParticleTextProperties extends ParticleProperties {
     text: string;
@@ -13,12 +14,16 @@ export interface ParticleTextProperties extends ParticleProperties {
     backgroundColor: Color4;
 }
 
-export class ParticleText extends Particle<Sprite> {
+export class ParticleText extends Particle {
     id: 'ParticleText';
     motion: MotionSpriteBasic;
 
     constructor(protected readonly properties: ParticleTextProperties, protected readonly loopUpdate$?: Observable<number>) {
         super(properties, loopUpdate$);
+    }
+
+    getDisplayObject(): Mesh {
+        return;
     }
 
     onInitialize(): void {

@@ -2,6 +2,7 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Mesh as BabylonJsMesh } from '@babylonjs/core/Meshes/mesh';
 
 import { DisplayObject } from '../../models/display-object';
+import { MeshAnimation } from './mesh-animation';
 
 export class Mesh extends DisplayObject {
     readonly babylonjs: BabylonJsMesh;
@@ -50,5 +51,9 @@ export class Mesh extends DisplayObject {
     getAlpha(): number {
         // TODO
         return 1;
+    }
+
+    play(animation: MeshAnimation): void {
+        // TODO
     }
 }
