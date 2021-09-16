@@ -52,7 +52,7 @@ export class RobocilloActor extends Actor2D {
         this.physics.setTranslationFromFloats(-0.01, -0.32, -2.96);
         this.setAnimation(RobocilloAnimations.STOP_FRONT);
 
-        this.subscribeToKeyFrameAll(RobocilloKeyFrames.FLOOR_CONTACT).subscribe((frame) => {
+        this.subscribeToKeyFrameOnAllAnims(RobocilloKeyFrames.FLOOR_CONTACT).subscribe((frame) => {
             this.particles.new(
                 new ParticleSprite({
                     spriteProperties: { url: './assets/scene-intro/sprites/particle-walk-dust.png', width: 34, height: 34, numFrames: 0 },

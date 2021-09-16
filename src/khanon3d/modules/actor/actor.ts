@@ -18,12 +18,10 @@ import { SpritesManager } from '../sprite/sprites-manager';
 import { MeshesManager } from '../mesh/meshes-manager';
 
 export abstract class Actor {
-    // Private / Protected
     private displayObject: DisplayObject;
     private readonly animations: Misc.KeyValue<number, SpriteAnimation | MeshAnimation> = new Misc.KeyValue<number, SpriteAnimation | MeshAnimation>();
     private readonly keyFramesSubjects: Misc.KeyValue<number, Subject<number>> = new Misc.KeyValue<number, Subject<number>>();
 
-    // Public
     readonly state: StateMachine<Actor> = new StateMachine<Actor>();
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
     readonly modifier: ModifiersManager = new ModifiersManager();
@@ -110,7 +108,7 @@ export abstract class Actor {
      * @param keyFrameId
      * @returns
      */
-    subscribeToKeyFrame(animationId: number, keyFrameId: number): Observable<number> {
+    subscribeToKeyFrameOnSingleAnim(animationId: number, keyFrameId: number): Observable<number> {
         const animation = this.getAnimation(animationId);
         let subject: Subject<number>;
         animation.keyFrames.forEach((keyFrame) => {
@@ -132,7 +130,7 @@ export abstract class Actor {
      * @param keyFrameId
      * @returns
      */
-    subscribeToKeyFrameAll(keyFrameId: number): Observable<number | Subject<number>> {
+    subscribeToKeyFrameOnAllAnims(keyFrameId: number): Observable<number | Subject<number>> {
         let subjects: Subject<number>[] = [];
         this.animations.getValues().forEach((animation) => {
             if (animation.keyFrames) {

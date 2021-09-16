@@ -28,7 +28,7 @@ export abstract class Particle extends LoopUpdateable {
     /**
      * Return DisplayObject from child particle
      */
-    abstract getDisplayObject(): DisplayObject;
+    abstract createDisplayObject(): DisplayObject;
 
     /**
      * Initialize displayObject and motion if needed on child function
@@ -49,7 +49,7 @@ export abstract class Particle extends LoopUpdateable {
         this.meshesManager = meshesManager;
         this.parent = parent;
 
-        this.displayObject = this.getDisplayObject();
+        this.displayObject = this.createDisplayObject();
         this.displayObject.setX(this.properties.x);
         this.displayObject.setY(this.properties.y);
         this.displayObject.setZ(this.properties.z);

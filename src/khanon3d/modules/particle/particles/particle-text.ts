@@ -22,7 +22,7 @@ export class ParticleText extends Particle {
         super(properties, loopUpdate$);
     }
 
-    getDisplayObject(): Mesh {
+    createDisplayObject(): Mesh {
         return;
     }
 

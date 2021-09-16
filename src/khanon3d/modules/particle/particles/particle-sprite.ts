@@ -21,7 +21,7 @@ export class ParticleSprite extends Particle {
         super(properties, loopUpdate$);
     }
 
-    getDisplayObject(): Sprite {
+    createDisplayObject(): Sprite {
         const sprite = new Sprite('ParticleSprite', this.properties.spriteProperties);
         sprite.assignInstance(this.spritesManager.getSpriteInstance(this.properties.spriteProperties));
         return sprite;
