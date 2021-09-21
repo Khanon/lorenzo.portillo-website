@@ -51,7 +51,7 @@ export abstract class Scene extends Subscriber {
      */
     load(properties: SceneProperties): void {
         this.release();
-        
+
         this.engine = properties.engine;
         this.canvas = properties.canvas;
         this.assetsJsonUrl = properties.assetsJsonUrl;
@@ -66,9 +66,9 @@ export abstract class Scene extends Subscriber {
         this.actorsManager = new ActorsManager(this.babylonjs, this.assetsManager, this.spritesManager, this.meshesManager, this.observables);
         this.particles = new ParticlesFactory(this.babylonjs, this.assetsManager);
 
+        this.onLoad();
         this.assetsManager.loadAssets(this.assetsJsonUrl).subscribe({
             next: () => {
-                this.onLoad();
                 this.babylonjs.executeWhenReady(() => {
                     // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
                     this.engine.babylonjs.runRenderLoop(() => {

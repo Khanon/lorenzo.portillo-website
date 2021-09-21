@@ -2,13 +2,11 @@ import { combineLatest, Subject } from 'rxjs';
 
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
-import { Actor2D, Sprite } from '../../../../../khanon3d';
+import { Actor2D, Sprite, ParticleSprite, ParticleEndCriteria } from '../../../../../khanon3d';
 
 import { RobocilloActionGoTo } from './robocillo-action-goto';
 import { RobocilloStateIntro } from './robocillo-state-intro';
 import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
-import { ParticleSprite } from '../../../../../khanon3d/modules/particle/particles/particle-sprite';
-import { ParticleEndCriteria } from '../../../../../khanon3d/modules/particle/particle-end-criteria';
 import { SceneIntroObservables } from '../../scene-intro-observables';
 
 export class RobocilloActor extends Actor2D {
@@ -58,7 +56,7 @@ export class RobocilloActor extends Actor2D {
                     spriteAnimation: { delay: 150, loop: false, frameStart: 0, frameEnd: 3 },
                     x: this.getX(),
                     y: this.getY(),
-                    z: this.getZ(),
+                    z: this.getZ() - 0.004,
                     scale: this.getScale(),
                     alpha: Math.random() / 2 + 0.1,
                     endCriteria: ParticleEndCriteria.ANIMATION_END,

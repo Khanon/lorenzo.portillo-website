@@ -28,23 +28,25 @@ export class AssetsManager {
             return fromFetch(jsonUrl).pipe(
                 switchMap((response: Response) => {
                     if (response.ok) {
-                        return response
-                            .json()
-                            .then((jsonData: AssetsJsonData) => {
-                                if (jsonData.spriteTextures) {
-                                    jsonData.spriteTextures.forEach((textureData) => {
-                                        this.loadSpriteTexture({
-                                            url: textureData.url,
-                                            width: textureData.width,
-                                            height: textureData.height,
+                        return new Observable<void>((observer) => {
+                            response
+                                .json()
+                                .then((jsonData: AssetsJsonData) => {
+                                    if (jsonData.spriteTextures) {
+                                        jsonData.spriteTextures.forEach((textureData) => {
+                                            this.loadSpriteTexture({
+                                                url: textureData.url,
+                                                width: textureData.width,
+                                                height: textureData.height,
+                                            });
                                         });
-                                    });
-                                }
-                                return of();
-                            })
-                            .catch(() => {
-                                throwError(() => new Error(`Could't parse JSON: ${jsonUrl}`));
-                            });
+                                    }
+                                    observer.next();
+                                })
+                                .catch(() => {
+                                    throwError(() => new Error(`Could't parse JSON: ${jsonUrl}`));
+                                });
+                        });
                     } else {
                         throwError(() => new Error(`Could't load JSON: ${jsonUrl}`));
                     }
