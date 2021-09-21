@@ -19,7 +19,7 @@ class App {
         this.core.start();
 
         this.core.setScene(new SceneIntro(), {
-            assetsJsonUrl: './assets/scene-intro/scene-intro-assets.json',
+            assetsJsonUrl: './assets/scene-intro/assets.json',
             isDevelopmentMode: this.isDevelopmentMode(),
             fpsContainer: 'fps-container',
         }); // TODO: remve FPS after development
