@@ -5,7 +5,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene } from '../../../khanon3d';
+import { DimensionsWH, GUI, Scene, Logger } from '../../../khanon3d';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
@@ -15,7 +15,7 @@ import { RobocilloAnimations } from './actors/robocillo/robocillo-animations';
 import { SceneIntroActionGravity } from './actions/action-gravity';
 import { SceneIntroShared } from './scene-intro-shared';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
-import { Logger } from '../../../khanon3d/modules/logger/logger';
+import { SceneIntroObservables } from './scene-intro-observables';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -54,9 +54,12 @@ export class SceneIntro extends Scene {
         this.textCanvasSize.textHorizontalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         this.textCanvasSize.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         this.textCanvasSize.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this.textCanvasSize.text = 'TEXT BLOCK';
+        // this.textCanvasSize.text = 'TEXT BLOCK';
         this.textCanvasSize.color = '#fcf403';
         // ******************
+
+        // Setup the scene
+        this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
 
         // Fixed camera
         this.camera = new UniversalCamera('camera', new Vector3(-3, 0, 0), this.babylonjs);
@@ -68,7 +71,25 @@ export class SceneIntro extends Scene {
         // Light in front of scene
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
-        // Actors
+        // Actions
+        this.gravity = new SceneIntroActionGravity('gravity', null, this.coreSubscriptions.loopUpdate$);
+        this.actions.registerAction(this.gravity);
+        this.observables.add(SceneIntroObservables.GRAVITY_FLOOR_CONTACT, this.gravity.getFloorContactObserbable());
+
+        // Attach imported camera to canvas inputs
+        this.babylonjs.activeCamera.attachControl(this.canvas);
+
+        // Add subscriptions
+        this.subscribeLoopUpdate();
+        this.subscribeCanvasResize();
+    }
+
+    onLoaded(canvasDimensions: DimensionsWH): void {
+        // this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${
+        //     canvasDimensions.width / canvasDimensions.height
+        // })`;
+
+        // Add actors
         this.earth = this.actorsManager.addActor(new EarthActor('earth', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
         this.logo = this.actorsManager.addActor(new LogoActor('logo'));
         this.sun = this.actorsManager.addActor(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
@@ -82,26 +103,6 @@ export class SceneIntro extends Scene {
 
         // Shared actors
         SceneIntroShared.earth = this.earth;
-
-        // Actions
-        this.gravity = new SceneIntroActionGravity('gravity', null, this.coreSubscriptions.loopUpdate$);
-        this.actions.registerAction(this.gravity);
-    }
-
-    onLoaded(canvasDimensions: DimensionsWH): void {
-        this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${
-            canvasDimensions.width / canvasDimensions.height
-        })`;
-
-        // Setup the scene
-        this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
-
-        // Attach imported camera to canvas inputs
-        this.babylonjs.activeCamera.attachControl(this.canvas);
-
-        // Add subscriptions
-        this.subscribeLoopUpdate();
-        this.subscribeCanvasResize();
 
         // Start motions
         this.earth.state.set('motion');
@@ -289,7 +290,8 @@ export class SceneIntro extends Scene {
     subscribeCanvasResize(): void {
         this.addSubscription(
             this.coreSubscriptions.canvasResize.subscribe((dimensions) => {
-                this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${dimensions.width / dimensions.height})`;
+                // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${dimensions.width / dimensions.height})`;
+                // this.textCanvasSize.text = '';
             })
         );
     }

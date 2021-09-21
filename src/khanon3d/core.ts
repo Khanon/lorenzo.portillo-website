@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { Engine } from './modules/engine/engine';
 import { Logger } from './modules/logger/logger';
 import { Scene } from './modules/scene/scene';
-import { SceneProperties } from './modules/scene/scene-start';
+import { SceneProperties } from './modules/scene/scene-properties';
 import { DimensionsWH } from './models/dimensions-wh';
 import { CoreProperties } from './models/core-properties';
 import { CoreSubscriptions } from './models/core-subscriptions';

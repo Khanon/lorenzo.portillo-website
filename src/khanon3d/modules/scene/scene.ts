@@ -1,3 +1,5 @@
+import { tap } from 'rxjs';
+
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
@@ -8,27 +10,31 @@ import { ActionsManager } from '../actions/actions-manager';
 import { CoreSubscriptions } from '../../models/core-subscriptions';
 import { DimensionsWH } from '../../models/dimensions-wh';
 import { Engine } from '../engine/engine';
-import { Mesh } from '../mesh/mesh';
-import { Sprite } from '../sprite/sprite';
-import { SceneProperties } from './scene-start';
-import { DisplayObject } from '../../models/display-object';
-import { Logger } from '../logger/logger';
+import { SceneProperties } from './scene-properties';
 import { ParticlesFactory } from '../particle/particles-factory';
 import { Subscriber } from '../../models/subscriber';
 import { SpritesManager } from '../sprite/sprites-manager';
 import { MeshesManager } from '../mesh/meshes-manager';
 import { ActorsManager } from '../actor/actors-manager';
+import { ObservablesContainer } from '../../models/observables-container';
+import { AssetsManager } from '../assets-manager/assets-manager';
+import { Logger } from '../logger/logger';
 
 export abstract class Scene extends Subscriber {
     babylonjs: BabylonJsScene;
 
     protected engine: Engine;
     protected canvas: HTMLCanvasElement;
+    protected assetsJsonUrl: string;
     protected coreSubscriptions: CoreSubscriptions;
     protected isDevelopmentMode: boolean;
     protected isExecuted: boolean = false;
 
+    // Shared scene observables with actors
+    protected observables: ObservablesContainer = new ObservablesContainer();
+
     // Managers
+    protected assetsManager: AssetsManager;
     protected spritesManager: SpritesManager;
     protected meshesManager: MeshesManager;
     protected actorsManager: ActorsManager;
@@ -45,49 +51,38 @@ export abstract class Scene extends Subscriber {
      */
     load(properties: SceneProperties): void {
         this.release();
+        
         this.engine = properties.engine;
         this.canvas = properties.canvas;
+        this.assetsJsonUrl = properties.assetsJsonUrl;
         this.coreSubscriptions = properties.coreSubscriptions;
         this.isDevelopmentMode = properties.isDevelopmentMode;
         this.isExecuted = false;
 
         this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
-        this.spritesManager = new SpritesManager(this.babylonjs);
-        this.meshesManager = new MeshesManager();
-        this.actorsManager = new ActorsManager();
-        this.particles = new ParticlesFactory(this.babylonjs, this.spritesManager, this.meshesManager);
+        this.assetsManager = new AssetsManager(this.babylonjs);
+        this.spritesManager = new SpritesManager(this.assetsManager);
+        this.meshesManager = new MeshesManager(this.assetsManager);
+        this.actorsManager = new ActorsManager(this.babylonjs, this.assetsManager, this.spritesManager, this.meshesManager, this.observables);
+        this.particles = new ParticlesFactory(this.babylonjs, this.assetsManager);
 
-        this.onLoad();
-
-        // Create display objects for any actor added to the scene
-        this.actorsManager.actors.forEach((actor) => {
-            const displayObject: DisplayObject = actor.getDisplayObject(this.babylonjs);
-            if (displayObject instanceof Sprite) {
-                this.spritesManager.addSprite(displayObject);
-            } else if (displayObject instanceof Mesh) {
-                this.meshesManager.addMesh(displayObject);
-            } else {
-                Logger.error('Unknown DisplayObject instance on actor -', actor.name);
-            }
-            actor.createParticlesManager(this.babylonjs, this.spritesManager, this.meshesManager);
-        });
-
-        this.babylonjs.executeWhenReady(() => {
-            // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
-            this.engine.babylonjs.runRenderLoop(() => {
-                this.isExecuted = true;
-                this.babylonjs.render();
-                if (properties.fpsContainer) {
-                    let divFps = document.getElementById(properties.fpsContainer);
-                    divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
-                }
-            });
-
-            // Initialize actors
-            this.actorsManager.actors.forEach((actor) => actor.initialize());
-
-            // Call child onLoaded
-            this.onLoaded(properties.canvasDimensions);
+        this.assetsManager.loadAssets(this.assetsJsonUrl).subscribe({
+            next: () => {
+                this.onLoad();
+                this.babylonjs.executeWhenReady(() => {
+                    // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
+                    this.engine.babylonjs.runRenderLoop(() => {
+                        this.isExecuted = true;
+                        this.babylonjs.render();
+                        if (properties.fpsContainer) {
+                            let divFps = document.getElementById(properties.fpsContainer);
+                            divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
+                        }
+                    });
+                    this.onLoaded(properties.canvasDimensions);
+                });
+            },
+            error: (error) => Logger.error('There was an error loading assets:', this.assetsJsonUrl, error),
         });
 
         // Babylonjs inspector (only DEV mode). Babylonjs inspector imports are removed on webpack build
@@ -96,7 +91,11 @@ export abstract class Scene extends Subscriber {
         }
     }
 
+    /**
+     * Release all scene objects
+     */
     release(): void {
+        this.assetsManager?.release();
         this.spritesManager?.release();
         this.meshesManager?.release();
     }

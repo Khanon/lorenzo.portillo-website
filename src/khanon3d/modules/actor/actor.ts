@@ -14,8 +14,8 @@ import { Misc } from '../misc/misc';
 import { ActorSimplePhysics } from '../physics/simple-physics/actor-simple-physics';
 import { Logger } from '../logger/logger';
 import { ParticlesFactory } from '../particle/particles-factory';
-import { SpritesManager } from '../sprite/sprites-manager';
-import { MeshesManager } from '../mesh/meshes-manager';
+import { ObservablesContainer } from '../../models/observables-container';
+import { AssetsManager } from '../assets-manager/assets-manager';
 
 export abstract class Actor {
     private displayObject: DisplayObject;
@@ -27,6 +27,7 @@ export abstract class Actor {
     readonly modifier: ModifiersManager = new ModifiersManager();
     readonly physics: ActorSimplePhysics;
     protected particles: ParticlesFactory;
+    protected sceneObservables: ObservablesContainer;
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {
         if (this.properties?.usePhysics) {
@@ -50,14 +51,39 @@ export abstract class Actor {
     protected abstract setDisplayObject(displayObject: DisplayObject): void;
 
     /**
+     * To be implemented by app actor.
+     * It will be invoked after scene loading.
+     */
+    abstract initialize(): void;
+
+    /**
+     * Sets animation.
+     * To be implemented by generic actors (Actor2D, Actor3D,..).
+     *
+     * @param name
+     * @param loop
+     * @param completed
+     */
+    abstract setAnimation(id: number, loopOverride?: boolean, completed?: () => void): void;
+
+    /**
      * Create particles manager (needs some manager from Scene)
      *
      * @param babylonJsScene
      * @param spritesManager
      * @param meshesManager
      */
-    createParticlesManager(babylonJsScene: BabylonJsScene, spritesManager: SpritesManager, meshesManager: MeshesManager): void {
-        this.particles = new ParticlesFactory(babylonJsScene, spritesManager, meshesManager, this.displayObject);
+    createParticlesManager(babylonJsScene: BabylonJsScene, assetsManager: AssetsManager): void {
+        this.particles = new ParticlesFactory(babylonJsScene, assetsManager, this.displayObject);
+    }
+
+    /**
+     * Setup scene observables
+     *
+     * @param sceneObservables
+     */
+    setSceneObservables(sceneObservables: ObservablesContainer): void {
+        this.sceneObservables = sceneObservables;
     }
 
     /**
@@ -70,13 +96,14 @@ export abstract class Actor {
         this.animations.add(id, properties);
         if (properties.keyFrames) {
             properties.keyFrames.forEach((keyFrame) => {
-                this.keyFramesSubjects.add(keyFrame.id, keyFrame.subject);
+                this.keyFramesSubjects.add(keyFrame.id, keyFrame.subject); // 8a8f
             });
         }
     }
 
     /**
      * Gets animation properties
+     *
      * @param id
      * @returns
      */
@@ -87,16 +114,6 @@ export abstract class Actor {
         }
         return animation;
     }
-
-    /**
-     * Sets animation.
-     * To be implemented by generic actors (Actor2D, Actor3D,..).
-     *
-     * @param name
-     * @param loop
-     * @param completed
-     */
-    abstract setAnimation(id: number, loopOverride?: boolean, completed?: () => void): void;
 
     // 8a8f REHACER ESTO DE LOS KEYFRAMES
     // addKeyFrame(kayframe = {keyframe id, { animations ids, frmaes[] }[] })
@@ -155,12 +172,6 @@ export abstract class Actor {
     }
 
     /**
-     * To be implemented by app actor.
-     * It will be invoked after scene loading.
-     */
-    abstract initialize(): void;
-
-    /**
      * Retrieves display object instance (not Mesh or Sprite).
      * To be used on scene loading.
      * Mesh or Sprite instances retrieving is implemented by generic actors (Actor2D, Actor3D,..).
@@ -195,6 +206,12 @@ export abstract class Actor {
         this.displayObject.incX(position.x);
         this.displayObject.incY(position.y);
         this.displayObject.incZ(position.z);
+    }
+
+    incPositionFromFloats(x: number, y: number, z: number): void {
+        this.displayObject.incX(x);
+        this.displayObject.incY(y);
+        this.displayObject.incZ(z);
     }
 
     getPosition(): Vector3 {

@@ -23,7 +23,7 @@ export class ParticleSprite extends Particle {
 
     createDisplayObject(): Sprite {
         const sprite = new Sprite('ParticleSprite', this.properties.spriteProperties);
-        sprite.assignInstance(this.spritesManager.getSpriteInstance(this.properties.spriteProperties));
+        sprite.setTexture(this.assetsManager.getSpriteTexture({ url: this.properties.spriteProperties.url }));
         return sprite;
     }
 

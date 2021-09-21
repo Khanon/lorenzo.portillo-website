@@ -9,4 +9,5 @@ export interface SceneProperties {
     coreSubscriptions?: CoreSubscriptions;
     isDevelopmentMode?: boolean;
     fpsContainer?: string;
+    assetsJsonUrl?: string;
 }

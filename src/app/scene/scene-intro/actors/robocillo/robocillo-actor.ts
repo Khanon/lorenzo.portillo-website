@@ -1,6 +1,6 @@
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 
-import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { Actor2D, Sprite } from '../../../../../khanon3d';
 
@@ -9,10 +9,11 @@ import { RobocilloStateIntro } from './robocillo-state-intro';
 import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
 import { ParticleSprite } from '../../../../../khanon3d/modules/particle/particles/particle-sprite';
 import { ParticleEndCriteria } from '../../../../../khanon3d/modules/particle/particle-end-criteria';
+import { SceneIntroObservables } from '../../scene-intro-observables';
 
 export class RobocilloActor extends Actor2D {
-    createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-intro/sprites/robocillo.png', width: 34, height: 34, numFrames: 32 });
+    createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
+        return new Sprite(this.name, { url: './assets/scene-intro/sprites/robocillo.png', numFrames: 32 });
     }
 
     initialize(): void {
@@ -41,21 +42,19 @@ export class RobocilloActor extends Actor2D {
         });
         this.addAnimation(RobocilloAnimations.MOVE_HANDS, { delay: 75, frameStart: 64, frameEnd: 66, loop: true });
         this.addAnimation(RobocilloAnimations.RAISE_HANDS, { delay: 75, frameStart: 72, frameEnd: 74, loop: true });
-        this.addAnimation(RobocilloAnimations.JUMP_FRONT, {
-            delay: 75,
-            frameStart: 80,
-            frameEnd: 85,
-            loop: false,
-        });
+        this.addAnimation(RobocilloAnimations.JUMP_FRONT, { delay: 75, frameStart: 80, frameEnd: 85, loop: false });
 
         this.setScale(0.17);
         this.physics.setTranslationFromFloats(-0.01, -0.32, -2.96);
         this.setAnimation(RobocilloAnimations.STOP_FRONT);
 
-        this.subscribeToKeyFrameOnAllAnims(RobocilloKeyFrames.FLOOR_CONTACT).subscribe((frame) => {
+        const floorContactGravity$ = this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT);
+        const floorContactKeyframe$ = this.subscribeToKeyFrameOnAllAnims(RobocilloKeyFrames.FLOOR_CONTACT);
+
+        combineLatest([floorContactGravity$, floorContactKeyframe$]).subscribe(() => {
             this.particles.new(
                 new ParticleSprite({
-                    spriteProperties: { url: './assets/scene-intro/sprites/particle-walk-dust.png', width: 34, height: 34, numFrames: 0 },
+                    spriteProperties: { url: './assets/scene-intro/sprites/particle-walk-dust.png', numFrames: 4 },
                     spriteAnimation: { delay: 150, loop: false, frameStart: 0, frameEnd: 3 },
                     x: this.getX(),
                     y: this.getY(),

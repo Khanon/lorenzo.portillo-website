@@ -1,7 +1,16 @@
 export interface SpriteProperties {
+    /**
+     * Texture url
+     */
     url: string;
-    width: number;
-    height: number;
+
+    /**
+     * Total frames
+     */
     numFrames: number;
-    ratio?: number; // Height ratio (width / height)
+
+    /**
+     * Height ratio (width / height). If undefined then use texture ratio.
+     */
+    ratio?: number;
 }

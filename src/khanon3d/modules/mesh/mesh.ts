@@ -22,7 +22,7 @@ export class Mesh extends DisplayObject {
     }
 
     release(): void {
-        // TODO
+        this.babylonjs.dispose();
     }
 
     setRotation(rotation: Vector3): void {

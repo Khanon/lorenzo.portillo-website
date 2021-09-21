@@ -2,19 +2,14 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Sprite as BabylonJsSprite } from '@babylonjs/core/Sprites/sprite';
 
 import { DisplayObject } from '../../models/display-object';
-import { SpriteInstance } from './sprite-instance';
+import { SpriteTexture } from './sprite-texture';
 import { SpriteProperties } from './sprite-properties';
 import { Logger } from '../logger/logger';
 import { SpriteAnimation } from './sprite-animation';
 
-/**
- * Class based on BabylonJs SpriteManager
- * TODO: Switch SpriteManager by SpritePackedManager once BabylonJs team implement all missing features
- */
-
 export class Sprite extends DisplayObject {
     babylonjs: BabylonJsSprite;
-    private spriteInstance: SpriteInstance;
+    private spriteTexture: SpriteTexture;
 
     private scale: number = 1;
     private keyFramesTimeouts: NodeJS.Timeout[] = [];
@@ -26,15 +21,19 @@ export class Sprite extends DisplayObject {
     get visible(): boolean {
         return this.babylonjs.isVisible;
     }
+
     set visible(visible: boolean) {
+        if (!this.spriteTexture) {
+            Logger.error('No Sprite Instance on sprite:', this.name);
+        }
         this.babylonjs.isVisible = visible;
     }
 
-    assignInstance(spriteInstance: SpriteInstance): void {
-        this.spriteInstance = spriteInstance;
-        this.babylonjs = new BabylonJsSprite(this.name, this.spriteInstance.babylonjs);
+    setTexture(spriteTexture: SpriteTexture): void {
+        this.spriteTexture = spriteTexture;
+        this.babylonjs = new BabylonJsSprite(this.name, this.spriteTexture.babylonjs);
         this.babylonjs.width = 1;
-        this.properties.ratio = this.properties.ratio ?? this.properties.height / this.properties.width;
+        this.properties.ratio = this.properties.ratio ?? this.spriteTexture.height / this.spriteTexture.width;
         this.babylonjs.height = this.properties.ratio;
         this.visible = false;
     }

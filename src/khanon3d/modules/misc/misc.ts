@@ -181,6 +181,7 @@ export namespace Misc {
     // ---------------------------------------------------------------------------------------
 
     abstract class KeyValueBase<K, V> {
+        // TODO investigate Map class to see what's better performance
         protected readonly pairs: { key: K; value: V }[] = [];
         protected readonly keys: K[] = [];
         protected readonly values: V[] = [];
@@ -188,6 +189,12 @@ export namespace Misc {
         abstract add(key: K, value: V): void;
         abstract del(key: K): void;
         protected abstract search<T>(keyvalue: T, arrSeach: T[]): any;
+
+        reset(): void {
+            this.pairs.splice(0, this.pairs.length);
+            this.keys.splice(0, this.keys.length);
+            this.values.splice(0, this.values.length);
+        }
 
         get<T = V>(key: K): T {
             return this.search<K>(key, this.keys)?.value;

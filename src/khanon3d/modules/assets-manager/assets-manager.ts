@@ -1,15 +1,86 @@
-import { AssetsManager as BabylonJsAssetsManager } from '@babylonjs/core/Misc/assetsManager';
-import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
+import { Observable, of, throwError } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
+import { switchMap, catchError } from 'rxjs/operators';
 
-import { Scene } from '../scene/scene';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+
+import { TextureProperties } from '../../models/texture-properties';
+import { Misc } from '../misc/misc';
+import { SpriteTexture } from '../sprite/sprite-texture';
+import { Logger } from '../logger/logger';
+
+interface AssetsJsonData {
+    spriteTextures: { url: string; width: number; height: number }[];
+}
 
 export class AssetsManager {
-    readonly babylonjs: BabylonJsAssetsManager;
+    private readonly spriteTextures: Misc.KeyValue<string, SpriteTexture> = new Misc.KeyValue<string, SpriteTexture>();
 
-    private readonly sceneLoader: SceneLoader;
+    constructor(private readonly babylonJsScene: BabylonJsScene) {}
 
-    constructor(private readonly scene: Scene) {
-        this.babylonjs = new BabylonJsAssetsManager(this.scene.babylonjs);
-        this.sceneLoader = new SceneLoader();
+    release(): void {
+        this.spriteTextures.getValues().forEach((spriteTexture) => spriteTexture.release());
+        this.spriteTextures.reset();
     }
+
+    loadAssets(jsonUrl: string): Observable<void | Observable<never>> {
+        if (jsonUrl) {
+            return fromFetch(jsonUrl).pipe(
+                switchMap((response: Response) => {
+                    if (response.ok) {
+                        return response
+                            .json()
+                            .then((jsonData: AssetsJsonData) => {
+                                if (jsonData.spriteTextures) {
+                                    jsonData.spriteTextures.forEach((textureData) => {
+                                        this.loadSpriteTexture({
+                                            url: textureData.url,
+                                            width: textureData.width,
+                                            height: textureData.height,
+                                        });
+                                    });
+                                }
+                                return of();
+                            })
+                            .catch(() => {
+                                throwError(() => new Error(`Could't parse JSON: ${jsonUrl}`));
+                            });
+                    } else {
+                        throwError(() => new Error(`Could't load JSON: ${jsonUrl}`));
+                    }
+                }),
+                catchError((error) => {
+                    return throwError(() => error);
+                })
+            );
+        } else {
+            return of();
+        }
+    }
+
+    loadSpriteTexture(textureProperties: TextureProperties): SpriteTexture {
+        const spriteTexture = new SpriteTexture(this.babylonJsScene, textureProperties.url, textureProperties.width, textureProperties.height);
+        this.spriteTextures.add(textureProperties.url, spriteTexture);
+        return spriteTexture;
+    }
+
+    /**
+     * Returns existing instance of SpriteManager or create a new one.
+     *
+     * @param url
+     * @param properties
+     * @returns
+     */
+    getSpriteTexture(textureProperties: TextureProperties): SpriteTexture {
+        let spriteTexture: SpriteTexture = this.spriteTextures.get(textureProperties.url);
+        if (spriteTexture) {
+            return spriteTexture;
+        } else if (textureProperties.width && textureProperties.height) {
+            return this.loadSpriteTexture(textureProperties);
+        } else {
+            Logger.error('SpriteTexture not loaded:', textureProperties.url);
+        }
+    }
+
+    loadBlender3D(url: string): void {}
 }

@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs';
+
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 import { Action, Actor, Misc } from '../../../../khanon3d';
@@ -12,6 +14,8 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     private readonly actors: Misc.KeyValue<Actor, null> = new Misc.KeyValue<Actor, null>();
 
+    private floorContact$: Subject<number> = new Subject<number>();
+
     onPlay(): void {
         this.subscribeLoopUpdate();
     }
@@ -22,6 +26,10 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     addActor(actor: Actor) {
         this.actors.add(actor, null);
+    }
+
+    getFloorContactObserbable(): Subject<number> {
+        return this.floorContact$;
     }
 
     loopUpdate(delta: number): void {
@@ -47,10 +55,11 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
                 // Restitution on floor contact
                 const restitutionVector = Misc.Vectors.vectorialProjectionToLine(actor.physics.getVelocity(), vToCenter).negate();
+                const restitutionVectorLength = restitutionVector.length();
 
-                if (restitutionVector.length() > this.RESTITUTION_OVER_FACTOR) {
+                if (restitutionVectorLength > this.RESTITUTION_OVER_FACTOR) {
                     actor.physics.applyForce(restitutionVector.scale(1.5));
-                    // 8a8f usar actor.emitKeyframe(RobocilloKeyframes.FLOOR_CONTACT) para emitir choque contra suelo
+                    this.floorContact$.next(restitutionVectorLength);
                 }
             }
 

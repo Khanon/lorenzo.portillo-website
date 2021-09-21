@@ -1,18 +1,24 @@
+import { Misc } from '../misc/misc';
 import { Mesh } from './mesh';
+import { AssetsManager } from '../assets-manager/assets-manager';
 
 export class MeshesManager {
-    private readonly meshes: Mesh[] = [];
+    private readonly meshes: Misc.KeyValue<Mesh, Mesh> = new Misc.KeyValue<Mesh, Mesh>();
+
+    constructor(private readonly assetsManager: AssetsManager) {}
 
     addMesh(mesh: Mesh): Mesh {
-        this.meshes.push(mesh);
+        this.meshes.add(mesh, mesh);
         return mesh;
     }
 
-    removeMesh(): void {
-        // TODO
+    removeMesh(mesh: Mesh): void {
+        mesh.release();
+        this.meshes.del(mesh);
     }
 
     release(): void {
-        // TODO
+        this.meshes.getValues().forEach((mesh) => mesh.release());
+        this.meshes.reset();
     }
 }

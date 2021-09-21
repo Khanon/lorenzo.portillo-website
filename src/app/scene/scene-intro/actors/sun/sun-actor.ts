@@ -1,12 +1,12 @@
-import { Scene as BabylonSceneJs } from '@babylonjs/core/scene';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { Actor2D, Sprite } from '../../../../../khanon3d';
 
 import { SunStateMotion } from './sun-state-motion';
 
 export class SunActor extends Actor2D {
-    createDisplayObject(babylonJsScene: BabylonSceneJs): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-intro/sprites/sun.png', width: 270, height: 270, numFrames: 1 });
+    createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
+        return new Sprite(this.name, { url: './assets/scene-intro/sprites/sun.png', numFrames: 1 });
     }
 
     initialize(): void {
