@@ -33,8 +33,7 @@ export class RobocilloActor extends Actor2D {
             keyFrames: [
                 {
                     id: RobocilloKeyFrames.FLOOR_CONTACT,
-                    subject: new Subject<number>(),
-                    keyFrames: [56, 60],
+                    frames: [56, 60],
                 },
             ],
         });
@@ -47,7 +46,7 @@ export class RobocilloActor extends Actor2D {
         this.setAnimation(RobocilloAnimations.STOP_FRONT);
 
         const floorContactGravity$ = this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT);
-        const floorContactKeyframe$ = this.subscribeToKeyFrameOnAllAnims(RobocilloKeyFrames.FLOOR_CONTACT);
+        const floorContactKeyframe$ = this.keyFrameSubject(RobocilloKeyFrames.FLOOR_CONTACT);
 
         combineLatest([floorContactGravity$, floorContactKeyframe$]).subscribe(() => {
             this.particles.new(

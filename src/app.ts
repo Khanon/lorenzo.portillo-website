@@ -14,7 +14,7 @@ class App {
 
     init(): void {
         // Initialize app
-        this.core = new Core({ fps: 60, deltaMaxValue: 1000 / 60 / 60 });
+        this.core = new Core({ fps: 60, deltaMaxValue: 1000 / 60 / 60, onAppError: this.appError });
         this.core.createCanvasOnDivElement('canvas-container');
         this.core.start();
 
@@ -24,6 +24,16 @@ class App {
             fpsContainer: 'fps-container',
         }); // TODO: remve FPS after development
         // this.states.GoTo(new StateLoading(this.scene));
+    }
+
+    appError(errorMsg: string): void {
+        const canvas = document.getElementById('canvas-container');
+        const errorContainer = document.getElementById('error-container');
+        const errorContainerMsg = document.getElementById('error-container-message');
+
+        canvas.style.display = 'none';
+        errorContainer.style.display = 'flex';
+        errorContainerMsg.textContent = errorMsg;
     }
 
     isDevelopmentMode(): boolean {

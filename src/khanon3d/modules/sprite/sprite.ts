@@ -59,18 +59,13 @@ export class Sprite extends DisplayObject {
             setKeyframesTimeouts();
         };
 
-        // Emit on subject for each keyFrame timeout    // 8a8f optimizar esto
+        // Emit on subject for each keyFrame timeout
         const setKeyframesTimeouts = () => {
             this.keyFramesTimeouts = [];
             if (animation.keyFrames) {
                 animation.keyFrames.forEach((animationKeyFrame) => {
-                    animationKeyFrame.keyFrames.forEach((frame) => {
-                        if (frame >= frameStart && frame <= frameEnd) {
-                            const timeout = setTimeout(() => animationKeyFrame.subject.next(frame), (frame - frameStart) * animation.delay);
-                            this.keyFramesTimeouts.push(timeout);
-                        } else {
-                            Logger.error(`Keyframe out of bounds. Frame: ${frame}, Frame start: ${frameStart}, Sprite: ${this.name}`);
-                        }
+                    animationKeyFrame.timeouts.forEach((time) => {
+                        this.keyFramesTimeouts.push(setTimeout(() => animationKeyFrame.linkedSubject.next(), time));
                     });
                 });
             }

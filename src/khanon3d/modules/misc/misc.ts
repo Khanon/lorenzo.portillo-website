@@ -225,7 +225,7 @@ export namespace Misc {
      * Non repeatable Key-Value (keys are unique in the array)
      */
     export class KeyValue<K, V> extends KeyValueBase<K, V> {
-        add(key: K, value: V): void {
+        add(key: K, value: V): V {
             if (this.getByKey(key) !== undefined) {
                 Logger.warn("Can't repeat key value -", key);
                 return;
@@ -233,6 +233,7 @@ export namespace Misc {
             this.pairs.push({ key, value });
             this.keys.push(key);
             this.values.push(value);
+            return value;
         }
 
         del(key: K): void {

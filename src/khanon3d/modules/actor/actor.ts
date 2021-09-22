@@ -20,7 +20,7 @@ import { AssetsManager } from '../assets-manager/assets-manager';
 export abstract class Actor {
     private displayObject: DisplayObject;
     private readonly animations: Misc.KeyValue<number, SpriteAnimation | MeshAnimation> = new Misc.KeyValue<number, SpriteAnimation | MeshAnimation>();
-    private readonly keyFramesSubjects: Misc.KeyValue<number, Subject<number>> = new Misc.KeyValue<number, Subject<number>>();
+    private readonly keyFramesSubjects: Misc.KeyValue<number, Subject<void>> = new Misc.KeyValue<number, Subject<void>>();
 
     readonly state: StateMachine<Actor> = new StateMachine<Actor>();
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
@@ -92,11 +92,19 @@ export abstract class Actor {
      * @param name
      * @param properties
      */
-    addAnimation(id: number, properties: SpriteAnimation | MeshAnimation): void {
-        this.animations.add(id, properties);
-        if (properties.keyFrames) {
-            properties.keyFrames.forEach((keyFrame) => {
-                this.keyFramesSubjects.add(keyFrame.id, keyFrame.subject); // 8a8f
+    addAnimation(id: number, animation: SpriteAnimation | MeshAnimation): void {
+        this.animations.add(id, animation);
+        if (animation.keyFrames) {
+            animation.keyFrames.forEach((keyFrame) => {
+                let keyFrameSubject: Subject<void> = this.keyFramesSubjects.get(keyFrame.id);
+                if (!keyFrameSubject) {
+                    keyFrameSubject = this.keyFramesSubjects.add(keyFrame.id, new Subject<void>());
+                }
+                keyFrame.linkedSubject = keyFrameSubject;
+                keyFrame.timeouts = [];
+                keyFrame.frames.forEach((frame) => {
+                    keyFrame.timeouts.push((frame - animation.frameStart) * animation.delay);
+                });
             });
         }
     }
@@ -115,31 +123,6 @@ export abstract class Actor {
         return animation;
     }
 
-    // 8a8f REHACER ESTO DE LOS KEYFRAMES
-    // addKeyFrame(kayframe = {keyframe id, { animations ids, frmaes[] }[] })
-
-    /**
-     * Subscribe to a keyframe event of a single animation
-     *
-     * @param animationId
-     * @param keyFrameId
-     * @returns
-     */
-    subscribeToKeyFrameOnSingleAnim(animationId: number, keyFrameId: number): Observable<number> {
-        const animation = this.getAnimation(animationId);
-        let subject: Subject<number>;
-        animation.keyFrames.forEach((keyFrame) => {
-            if (keyFrame.id === keyFrameId) {
-                subject = keyFrame.subject;
-                return;
-            }
-        });
-        if (!subject) {
-            Logger.error(`Keyframe not found. Animation ID: ${animationId}, KeyFrame ID: ${keyFrameId}`);
-        }
-        return subject;
-    }
-
     /**
      * Subscribe to a keyframe event on all animations
      *
@@ -147,28 +130,8 @@ export abstract class Actor {
      * @param keyFrameId
      * @returns
      */
-    subscribeToKeyFrameOnAllAnims(keyFrameId: number): Observable<number | Subject<number>> {
-        let subjects: Subject<number>[] = [];
-        this.animations.getValues().forEach((animation) => {
-            if (animation.keyFrames) {
-                animation.keyFrames.forEach((keyFrame) => {
-                    if (keyFrame.id === keyFrameId) {
-                        subjects.push(keyFrame.subject);
-                        return;
-                    }
-                });
-            }
-        });
-        return new Observable<number>().pipe(mergeWith(subjects));
-    }
-
-    /**
-     * Emits keyframe
-     *
-     * @param keyFrameId
-     */
-    emitKeyframe(keyFrameId: number): void {
-        this.keyFramesSubjects.get(keyFrameId).next(-1);
+    keyFrameSubject(keyFrameId: number): Subject<void> {
+        return this.keyFramesSubjects.get(keyFrameId);
     }
 
     /**

@@ -227,6 +227,10 @@ export class SceneIntro extends Scene {
         this.canvas.addEventListener('pointerup', () => {});
     }
 
+    onError(errorMsg: string): void {
+        this.coreSubscriptions.onError$.next(errorMsg);
+    }
+
     subscribeLoopUpdate(): void {
         // this.sun.babylonjs.position.y = 0.2699; // Start
         // this.sun.babylonjs.position.z = -3.4699;
@@ -289,7 +293,7 @@ export class SceneIntro extends Scene {
 
     subscribeCanvasResize(): void {
         this.addSubscription(
-            this.coreSubscriptions.canvasResize.subscribe((dimensions) => {
+            this.coreSubscriptions.canvasResize$.subscribe((dimensions) => {
                 // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${dimensions.width / dimensions.height})`;
                 // this.textCanvasSize.text = '';
             })

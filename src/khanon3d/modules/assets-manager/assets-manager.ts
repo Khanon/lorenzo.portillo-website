@@ -1,4 +1,4 @@
-import { Observable, of, throwError } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { switchMap, catchError } from 'rxjs/operators';
 
@@ -23,30 +23,28 @@ export class AssetsManager {
         this.spriteTextures.reset();
     }
 
-    loadAssets(jsonUrl: string): Observable<void | Observable<never>> {
+    loadAssets(jsonUrl: string): Observable<void> {
         if (jsonUrl) {
             return fromFetch(jsonUrl).pipe(
                 switchMap((response: Response) => {
                     if (response.ok) {
-                        return new Observable<void>((observer) => {
-                            response
-                                .json()
-                                .then((jsonData: AssetsJsonData) => {
-                                    if (jsonData.spriteTextures) {
-                                        jsonData.spriteTextures.forEach((textureData) => {
-                                            this.loadSpriteTexture({
-                                                url: textureData.url,
-                                                width: textureData.width,
-                                                height: textureData.height,
-                                            });
+                        return from(response.json()).pipe(
+                            switchMap((jsonData: AssetsJsonData) => {
+                                if (jsonData.spriteTextures) {
+                                    jsonData.spriteTextures.forEach((textureData) => {
+                                        this.loadSpriteTexture({
+                                            url: textureData.url,
+                                            width: textureData.width,
+                                            height: textureData.height,
                                         });
-                                    }
-                                    observer.next();
-                                })
-                                .catch(() => {
-                                    throwError(() => new Error(`Could't parse JSON: ${jsonUrl}`));
-                                });
-                        });
+                                    });
+                                }
+                                return of();
+                            }),
+                            catchError((error) => {
+                                return throwError(() => error);
+                            })
+                        );
                     } else {
                         throwError(() => new Error(`Could't load JSON: ${jsonUrl}`));
                     }

@@ -5,4 +5,6 @@ export interface CoreProperties {
     delayUpdate?: number;
     /** Don't return a 'delta' bigger than this */
     deltaMaxValue?: number;
+    /** Critical error app callback */
+    onAppError?: (errorMsg: string) => void;
 }

@@ -154,9 +154,11 @@ export class SceneWorld extends Scene {
         });
     }
 
+    onError(errorMsg: string): void {}
+
     subscribeCanvasResize(): void {
         this.addSubscription(
-            this.coreSubscriptions.canvasResize.subscribe((dimensions) => {
+            this.coreSubscriptions.canvasResize$.subscribe((dimensions) => {
                 this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height}`;
             })
         );

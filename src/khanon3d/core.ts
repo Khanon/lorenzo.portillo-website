@@ -27,10 +27,16 @@ export class Core {
     private readonly canvasResize: Subject<DimensionsWH> = new Subject<DimensionsWH>();
     private readonly loopUpdate$: Subject<number> = new Subject<number>();
     private readonly physicsUpdate$: Subject<number> = new Subject<number>();
+    private readonly onAppError$: Subject<string> = new Subject<string>();
 
     constructor(private readonly properties: CoreProperties) {
         this.loopUpdateDelay = this.properties.delayUpdate ?? 0;
         this.loopUpdateFPS = 1000 / this.properties.fps;
+        if (this.properties.onAppError) {
+            this.onAppError$.subscribe({
+                next: (errorMsg: string) => this.properties.onAppError(errorMsg),
+            });
+        }
     }
 
     /**
@@ -103,9 +109,10 @@ export class Core {
      */
     getCoreSubscriptions(): CoreSubscriptions {
         return {
-            canvasResize: this.canvasResize,
+            canvasResize$: this.canvasResize,
             loopUpdate$: this.loopUpdate$,
             physicsUpdate$: this.physicsUpdate$,
+            onError$: this.onAppError$,
         };
     }
 

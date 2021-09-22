@@ -7,12 +7,20 @@ export class AnimationKeyFrame {
     id: number;
 
     /**
-     * Subject will emit on keyframe start passing as argument the frame number
-     */
-    subject: Subject<number>;
-
-    /**
      * Frames numbers
      */
-    keyFrames: number[];
+    frames: number[];
+
+    /**
+     * Subject linked to this keyframe.
+     * Since can be more keyframes of this ID, all of them are linked to the same Subject.
+     * This is handled by Actor module.
+     */
+    linkedSubject?: Subject<void>;
+
+    /**
+     * Timeouts to emit subject on animation start
+     * This is handled by Actor module.
+     */
+    timeouts?: number[];
 }

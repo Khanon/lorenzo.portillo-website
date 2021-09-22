@@ -68,7 +68,12 @@ export abstract class Scene extends Subscriber {
 
         this.onLoad();
         this.assetsManager.loadAssets(this.assetsJsonUrl).subscribe({
-            next: () => {
+            error: (error) => {
+                const errorMsg = `There was an error loading assets: ${this.assetsJsonUrl}`;
+                Logger.error(errorMsg, error);
+                this.onError(errorMsg);
+            },
+            complete: () => {
                 this.babylonjs.executeWhenReady(() => {
                     // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
                     this.engine.babylonjs.runRenderLoop(() => {
@@ -82,7 +87,6 @@ export abstract class Scene extends Subscriber {
                     this.onLoaded(properties.canvasDimensions);
                 });
             },
-            error: (error) => Logger.error('There was an error loading assets:', this.assetsJsonUrl, error),
         });
 
         // Babylonjs inspector (only DEV mode). Babylonjs inspector imports are removed on webpack build
@@ -109,6 +113,11 @@ export abstract class Scene extends Subscriber {
 
     // abstract onRelease(): void;
     // abstract onReleased(): void;
+
+    /**
+     * On scene loading error
+     */
+    abstract onError(errorMsg: string): void;
 
     // ------------------------
     //   Debug methods
