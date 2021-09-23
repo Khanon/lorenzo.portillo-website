@@ -20,6 +20,10 @@ import { SceneIntroObservables } from './scene-intro-observables';
 import { Sprite } from '../../../khanon3d/modules/sprite/sprite';
 import { SpriteTexture } from '../../../khanon3d/modules/sprite/sprite-texture';
 
+// 8a8f si metes la página en el explorador y cambias de pestaña antes de que caruge,
+// cuando vuelves a seleccionar la pestaña, comienzan las animaciones pero Robocillo ya hizo la gravedad o algo y se ha ido
+// a tomar por culo y no aparece.
+
 export class SceneIntro extends Scene {
     // Scene 3D objects
     private camera: UniversalCamera;

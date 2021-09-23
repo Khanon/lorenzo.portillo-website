@@ -21,6 +21,8 @@ export abstract class Particle extends LoopUpdateable {
 
     protected displayObject: DisplayObject;
 
+    // TODO agregar un onDispose() que viene de la clase padre de las particulas donde se crean mediante ParticlesFactory
+
     constructor(protected readonly properties: ParticleProperties, protected readonly loopUpdate$?: Observable<number>) {
         super(loopUpdate$);
     }
