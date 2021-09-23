@@ -14,7 +14,7 @@ export class EarthActor extends Actor3D {
         flatMaterial.disableLighting = true;
         flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
         const meshBjs = MeshBuilder.CreateDisc(this.name, {
-            radius: 7.5,
+            radius: 1125,
             tessellation: 200,
         });
         meshBjs.material = flatMaterial;
@@ -26,7 +26,8 @@ export class EarthActor extends Actor3D {
         this.state.registerState(new EarthStateMotion('motion', this, this.properties.loopUpdate$));
 
         this.mesh.babylonjs.rotate(new Vector3(0, 1, 0), Math.PI / 2);
-        this.setScale(1.2);
-        this.setY(-6.9);
+        this.setX(-10);
+        this.setY(100);
+        this.setScale(1);
     }
 }

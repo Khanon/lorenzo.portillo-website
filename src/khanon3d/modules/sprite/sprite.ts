@@ -14,7 +14,7 @@ export class Sprite extends DisplayObject {
     private scale: number = 1;
     private keyFramesTimeouts: NodeJS.Timeout[] = [];
 
-    constructor(readonly name: string, readonly properties: SpriteProperties) {
+    constructor(readonly name: string = '', readonly properties: SpriteProperties = {}) {
         super(name);
     }
 
@@ -32,9 +32,8 @@ export class Sprite extends DisplayObject {
     setTexture(spriteTexture: SpriteTexture): void {
         this.spriteTexture = spriteTexture;
         this.babylonjs = new BabylonJsSprite(this.name, this.spriteTexture.babylonjs);
-        this.babylonjs.width = 1;
-        this.properties.ratio = this.properties.ratio ?? this.spriteTexture.height / this.spriteTexture.width;
-        this.babylonjs.height = this.properties.ratio;
+        this.babylonjs.width = this.spriteTexture.width;
+        this.babylonjs.height = this.spriteTexture.height;
         this.visible = false;
     }
 
@@ -116,8 +115,8 @@ export class Sprite extends DisplayObject {
 
     setScale(scale: number): void {
         this.scale = scale;
-        this.babylonjs.width = this.scale;
-        this.babylonjs.height = this.properties.ratio * this.scale;
+        this.babylonjs.width = this.spriteTexture.width * this.scale;
+        this.babylonjs.height = this.spriteTexture.height * this.scale;
     }
 
     getScale(): number {

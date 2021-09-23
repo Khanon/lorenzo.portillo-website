@@ -5,7 +5,7 @@ import { switchMap, catchError } from 'rxjs/operators';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { TextureProperties } from '../../models/texture-properties';
-import { Misc } from '../misc/misc';
+import * as Misc from '../misc';
 import { SpriteTexture } from '../sprite/sprite-texture';
 import { Logger } from '../logger/logger';
 
@@ -59,7 +59,8 @@ export class AssetsManager {
     }
 
     loadSpriteTexture(textureProperties: TextureProperties): SpriteTexture {
-        const spriteTexture = new SpriteTexture(this.babylonJsScene, textureProperties.url, textureProperties.width, textureProperties.height);
+        const spriteTexture = new SpriteTexture(this.babylonJsScene);
+        spriteTexture.setFromUrl(textureProperties.url, textureProperties.width, textureProperties.height);
         this.spriteTextures.add(textureProperties.url, spriteTexture);
         return spriteTexture;
     }

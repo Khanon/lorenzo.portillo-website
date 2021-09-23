@@ -1,4 +1,4 @@
-import { Misc } from '../misc/misc';
+import * as Misc from '../misc';
 import { Sprite } from './sprite';
 import { AssetsManager } from '../assets-manager/assets-manager';
 

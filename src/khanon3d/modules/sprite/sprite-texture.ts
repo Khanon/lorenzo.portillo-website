@@ -1,5 +1,6 @@
 import { SpriteManager } from '@babylonjs/core/Sprites/spriteManager';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+import { DynamicTexture } from '@babylonjs/core';
 
 /**
  * Class based on BabylonJs SpriteManager
@@ -9,10 +10,31 @@ export class SpriteTexture {
     private readonly MAX_SPRITES_PER_INSTANCE = 255;
 
     babylonjs: SpriteManager;
+    width: number;
+    height: number;
 
-    constructor(private readonly babylonJsScene: BabylonJsScene, readonly url: string, readonly width: number, readonly height: number) {
+    constructor(private readonly babylonJsScene: BabylonJsScene) {}
+
+    setFromUrl(url: string, width: number, height: number): void {
+        this.width = width;
+        this.height = height;
         this.babylonjs = new SpriteManager(url, url, this.MAX_SPRITES_PER_INSTANCE, { width, height }, this.babylonJsScene);
     }
+
+    setFromDynamicTexture(texture: DynamicTexture): void {
+        this.width = texture.getSize().width;
+        this.height = texture.getSize().height;
+        this.babylonjs = new SpriteManager(
+            'FromDynamicTexture',
+            '',
+            this.MAX_SPRITES_PER_INSTANCE,
+            { width: this.width, height: this.height },
+            this.babylonJsScene
+        );
+        this.babylonjs.texture = texture;
+    }
+
+    createFromTextBlock(): void {}
 
     release(): void {
         this.babylonjs.dispose();

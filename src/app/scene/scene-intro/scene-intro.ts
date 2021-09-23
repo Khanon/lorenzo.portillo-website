@@ -6,6 +6,7 @@ import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
 import { DimensionsWH, GUI, Scene, Logger } from '../../../khanon3d';
+import * as Misc from '../../../khanon3d/modules/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
@@ -16,6 +17,8 @@ import { SceneIntroActionGravity } from './actions/action-gravity';
 import { SceneIntroShared } from './scene-intro-shared';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
 import { SceneIntroObservables } from './scene-intro-observables';
+import { Sprite } from '../../../khanon3d/modules/sprite/sprite';
+import { SpriteTexture } from '../../../khanon3d/modules/sprite/sprite-texture';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -62,7 +65,7 @@ export class SceneIntro extends Scene {
         this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
 
         // Fixed camera
-        this.camera = new UniversalCamera('camera', new Vector3(-3, 0, 0), this.babylonjs);
+        this.camera = new UniversalCamera('camera', new Vector3(-450, 0, 0), this.babylonjs);
         this.camera.target = new Vector3(1, 0, 0);
         this.camera.inputs.clear();
         this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
@@ -101,8 +104,32 @@ export class SceneIntro extends Scene {
             })
         );
 
+        // ********************************************************************************
+
+        const dynamicTexture = Misc.DynamicTextures.createFromTextBlock(this.babylonjs, {
+            fontSize: 30,
+            fontStyle: '',
+            fontName: 'roadgeek',
+            textBlock: ['Mixing bits...', 'Loading creativity...', 'Checking the shopping list...', 'READY!', 'Tap to continue'],
+            textColor: '#ffffff',
+            centerH: true,
+        });
+        const sTx2 = new SpriteTexture(this.babylonjs);
+        sTx2.setFromDynamicTexture(dynamicTexture);
+        const sprite2 = new Sprite();
+        sprite2.setTexture(sTx2);
+        sprite2.setX(-30);
+        sprite2.setY(0.7);
+        sprite2.setScale(0.3);
+        sprite2.visible = true;
+
+        // ********************************************************************************
+
         // Shared actors
         SceneIntroShared.earth = this.earth;
+
+        // Hide BlackScreen
+        this.hideBlackScreen();
 
         // Start motions
         this.earth.state.set('motion');
@@ -111,10 +138,12 @@ export class SceneIntro extends Scene {
 
         // Start actions
         this.gravity.addActor(this.robocillo);
-        this.actions.play('gravity');
 
         // Start robocillo intro
-        setTimeout(() => this.robocillo.state.set(RobocilloStateIntro.id), 2000);
+        setTimeout(() => {
+            this.actions.play('gravity');
+            this.robocillo.state.set(RobocilloStateIntro.id);
+        }, 2000);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
@@ -229,6 +258,11 @@ export class SceneIntro extends Scene {
 
     onError(errorMsg: string): void {
         this.coreSubscriptions.onError$.next(errorMsg);
+    }
+
+    hideBlackScreen(): void {
+        const blackScrenn = document.getElementById('blackscreen-container');
+        blackScrenn.style.display = 'none';
     }
 
     subscribeLoopUpdate(): void {

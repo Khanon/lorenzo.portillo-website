@@ -12,7 +12,7 @@ export * from './scene/scene-properties';
 export * from './logger/logger';
 export * from './mesh/mesh';
 export * from './mesh/mesh-animation';
-export * from './misc/misc';
+export * from './misc';
 export * from './physics/simple-physics/actor-simple-physics';
 export * from './sprite/sprite';
 export * from './sprite/sprite-animation';

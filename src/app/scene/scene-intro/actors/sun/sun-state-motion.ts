@@ -1,7 +1,8 @@
-import { Actor2D, Misc, State } from '../../../../../khanon3d';
+import { Actor2D, State } from '../../../../../khanon3d';
+import * as Misc from '../../../../../khanon3d/modules/misc';
 
 export class SunStateMotion extends State<Actor2D> {
-    readonly endMotion = { y: 0.3, z: -1.65, scale: 1.15 };
+    readonly endMotion = { y: 45, z: -215, scale: 0.9 };
 
     start(): void {
         setTimeout(() => {
@@ -17,16 +18,10 @@ export class SunStateMotion extends State<Actor2D> {
     }
 
     loopUpdate(delta: number): void {
-        const speed = 0.05 * delta;
-        const step = Misc.Maths.increaseVectorWithInertia(
-            [this.subject.getY(), this.subject.getZ(), this.subject.getScale()],
-            [this.endMotion.y, this.endMotion.z, this.endMotion.scale],
-            speed,
-            1,
-            () => this.end()
-        );
+        const step = Misc.Maths.increaseVectorWithInertia([this.subject.getY(), this.subject.getZ()], [this.endMotion.y, this.endMotion.z], 0.05 * delta, 1);
+        const scale = Misc.Maths.increaseValueWithInertia(this.subject.getScale(), this.endMotion.scale, 0.005 * delta, 1, () => this.end());
         this.subject.setY(step[0]);
         this.subject.setZ(step[1]);
-        this.subject.setScale(step[2]);
+        this.subject.setScale(scale);
     }
 }

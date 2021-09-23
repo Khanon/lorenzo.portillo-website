@@ -1,8 +1,7 @@
-import { Subscription } from 'rxjs';
-
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Action, Actor2D, Misc } from '../../../../../khanon3d';
+import { Action, Actor2D } from '../../../../../khanon3d';
+import * as Misc from '../../../../../khanon3d/modules/misc';
 
 import { SceneIntroShared } from '../../scene-intro-shared';
 import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
@@ -33,7 +32,7 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
     }
 
     onStop() {
-        this.subject.physics.scaleVelocity(0.2);
+        this.subject.physics.scaleVelocity(0.1);
         this.subject.setAnimation(RobocilloAnimations.STOP_SIDE, false);
         this.unSubscribeLoopUpdate();
     }
@@ -44,7 +43,7 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
     }
 
     loopUpdate(delta: number): void {
-        this.subject.physics.applyForce(this.vDirection.scale(0.0001));
+        this.subject.physics.applyForce(this.vDirection.scale(0.015));
         if (Math.abs(this.getEarthAngle() - this.gotoAngle) < 0.01) {
             this.done();
             this.stop();

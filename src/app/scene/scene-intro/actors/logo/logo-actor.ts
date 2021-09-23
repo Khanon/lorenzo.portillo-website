@@ -11,8 +11,9 @@ export class LogoActor extends Actor2D {
     initialize(): void {
         this.state.registerState(new LogoStateMotion('motion', this));
 
-        this.setX(0.01);
-        this.setY(0.8);
-        this.setZ(1.75);
+        this.setX(0);
+        this.setY(130);
+        this.setZ(240);
+        this.setScale(0.4);
     }
 }

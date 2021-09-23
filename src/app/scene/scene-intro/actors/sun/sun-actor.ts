@@ -13,9 +13,9 @@ export class SunActor extends Actor2D {
         this.state.registerState(new SunStateMotion('motion', this, this.properties.loopUpdate$));
 
         this.sprite.setFrame(0);
-        this.setX(0.01);
-        this.setY(1.52);
-        this.setZ(-3.16);
+        this.setX(0);
+        this.setY(280);
+        this.setZ(-500);
         this.setScale(0.7);
     }
 }

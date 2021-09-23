@@ -1,4 +1,4 @@
-import { Observable, mergeWith, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
@@ -10,7 +10,7 @@ import { ActionsManager } from '../actions/actions-manager';
 import { ModifiersManager } from '../modifiers/modifiers-manager';
 import { SpriteAnimation } from '../sprite/sprite-animation';
 import { MeshAnimation } from '../mesh/mesh-animation';
-import { Misc } from '../misc/misc';
+import * as Misc from '../misc';
 import { ActorSimplePhysics } from '../physics/simple-physics/actor-simple-physics';
 import { Logger } from '../logger/logger';
 import { ParticlesFactory } from '../particle/particles-factory';
@@ -156,6 +156,14 @@ export abstract class Actor {
     // ----------------------------
     //  Operators
     // ----------------------------
+
+    get visible(): boolean {
+        return this.displayObject.visible;
+    }
+
+    set visible(visible: boolean) {
+        this.displayObject.visible = visible;
+    }
 
     setPosition(position: Vector3): void {
         this.displayObject.setPosition(position);

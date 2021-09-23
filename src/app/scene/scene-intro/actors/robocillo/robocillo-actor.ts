@@ -1,4 +1,4 @@
-import { combineLatest, Subject } from 'rxjs';
+import { merge } from 'rxjs';
 
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
@@ -41,21 +41,17 @@ export class RobocilloActor extends Actor2D {
         this.addAnimation(RobocilloAnimations.RAISE_HANDS, { delay: 75, frameStart: 72, frameEnd: 74, loop: true });
         this.addAnimation(RobocilloAnimations.JUMP_FRONT, { delay: 75, frameStart: 80, frameEnd: 85, loop: false });
 
-        this.setScale(0.17);
-        this.physics.setTranslationFromFloats(-0.01, -0.32, -2.96);
-        this.setAnimation(RobocilloAnimations.STOP_FRONT);
+        this.setScale(0.85);
+        this.physics.setTranslationFromFloats(-20, -48, -410);
 
-        const floorContactGravity$ = this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT);
-        const floorContactKeyframe$ = this.keyFrameSubject(RobocilloKeyFrames.FLOOR_CONTACT);
-
-        combineLatest([floorContactGravity$, floorContactKeyframe$]).subscribe(() => {
+        merge(this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT), this.keyFrameSubject(RobocilloKeyFrames.FLOOR_CONTACT)).subscribe(() => {
             this.particles.new(
                 new ParticleSprite({
                     spriteProperties: { url: './assets/scene-intro/sprites/particle-walk-dust.png', numFrames: 4 },
                     spriteAnimation: { delay: 150, loop: false, frameStart: 0, frameEnd: 3 },
                     x: this.getX(),
                     y: this.getY(),
-                    z: this.getZ() - 0.004,
+                    z: this.getZ() - 0.6,
                     scale: this.getScale(),
                     alpha: Math.random() / 2 + 0.1,
                     endCriteria: ParticleEndCriteria.ANIMATION_END,

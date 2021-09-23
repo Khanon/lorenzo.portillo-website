@@ -1,4 +1,5 @@
-import { Actor2D, Misc, State } from '../../../../../khanon3d';
+import { Actor2D, State } from '../../../../../khanon3d';
+import * as Misc from '../../../../../khanon3d/modules/misc';
 
 import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
 import { RobocilloAnimations } from './robocillo-animations';
@@ -13,7 +14,7 @@ enum Happiness {
 export class RobocilloStateIntro extends State<Actor2D> {
     static id: string = 'RobocilloStateIntro';
 
-    private readonly ANGLE_SUN = -0.213;
+    private readonly ANGLE_SUN = -0.1745;
     private readonly ANGLE_CENTER = 0;
 
     private robocillo: Actor2D;
@@ -71,7 +72,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
                 break;
             case Happiness.JUMP:
                 if (this.robocillo.physics.onFloor) {
-                    const vJump = SceneIntroShared.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(0.06);
+                    const vJump = SceneIntroShared.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(10);
                     this.robocillo.setAnimation(RobocilloAnimations.JUMP_FRONT, false);
                     this.robocillo.physics.resetVelocity();
                     setTimeout(() => this.robocillo.physics.applyForce(vJump), 200);

@@ -2,15 +2,16 @@ import { Subject } from 'rxjs';
 
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
-import { Action, Actor, Misc } from '../../../../khanon3d';
+import { Action, Actor } from '../../../../khanon3d';
+import * as Misc from '../../../../khanon3d/modules/misc';
 
 import { SceneIntroShared } from './../scene-intro-shared';
 
 export class SceneIntroActionGravity extends Action<Actor, void> {
-    private readonly GRAVITY_POWER: number = 0.00023;
-    private readonly FLOOR_LENGTH: number = 7.42;
+    private readonly GRAVITY_POWER: number = 0.0345;
+    private readonly FLOOR_LENGTH: number = 1135;
     private readonly HORIZONTAL_DECREASE_FACTOR = 0.01;
-    private readonly RESTITUTION_OVER_FACTOR = 0.01;
+    private readonly RESTITUTION_OVER_FACTOR = 1.5;
 
     private readonly actors: Misc.KeyValue<Actor, null> = new Misc.KeyValue<Actor, null>();
 
@@ -58,7 +59,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
                 const restitutionVectorLength = restitutionVector.length();
 
                 if (restitutionVectorLength > this.RESTITUTION_OVER_FACTOR) {
-                    // 8a8f Solve the problem of huge jump after un-focusing the webpage selecting another tab on browser
+                    // TODO Solve the problem of huge jump after un-focusing the webpage selecting another tab on browser
                     actor.physics.applyForce(restitutionVector.scale(1.5));
                     this.floorContact$.next(restitutionVectorLength);
                 }
