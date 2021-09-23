@@ -59,7 +59,6 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
                 const restitutionVectorLength = restitutionVector.length();
 
                 if (restitutionVectorLength > this.RESTITUTION_OVER_FACTOR) {
-                    // TODO Solve the problem of huge jump after un-focusing the webpage selecting another tab on browser
                     actor.physics.applyForce(restitutionVector.scale(1.5));
                     this.floorContact$.next(restitutionVectorLength);
                 }

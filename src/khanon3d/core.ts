@@ -11,6 +11,7 @@ import { SceneProperties } from './modules/scene/scene-properties';
 import { DimensionsWH } from './models/dimensions-wh';
 import { CoreProperties } from './models/core-properties';
 import { CoreSubscriptions } from './models/core-subscriptions';
+import { WorkerTimer } from './workers/worker-timer';
 
 export class Core {
     private canvas: HTMLCanvasElement;
@@ -121,18 +122,22 @@ export class Core {
      */
     loopUpdate(): void {
         this.loopUpdateLastMs = performance.now();
-        setInterval(() => {
-            const currentMs = performance.now();
-            const interval = currentMs - this.loopUpdateLastMs;
-            if (interval > this.loopUpdateDelay) {
-                let delta = interval / this.loopUpdateFPS;
-                if (this.properties.deltaMaxValue && delta > this.properties.deltaMaxValue) {
-                    delta = this.properties.deltaMaxValue;
+        WorkerTimer.setInterval(
+            () => {
+                const currentMs = performance.now();
+                const interval = currentMs - this.loopUpdateLastMs;
+                if (interval > this.loopUpdateDelay) {
+                    let delta = interval / this.loopUpdateFPS;
+                    if (this.properties.deltaMaxValue && delta > this.properties.deltaMaxValue) {
+                        delta = this.properties.deltaMaxValue;
+                    }
+                    this.loopUpdate$.next(delta);
+                    this.physicsUpdate$.next(delta);
+                    this.loopUpdateLastMs = currentMs;
                 }
-                this.loopUpdate$.next(delta);
-                this.physicsUpdate$.next(delta);
-                this.loopUpdateLastMs = currentMs;
-            }
-        }, 1);
+            },
+            1,
+            this
+        );
     }
 }

@@ -6,6 +6,7 @@ import { SpriteTexture } from './sprite-texture';
 import { SpriteProperties } from './sprite-properties';
 import { Logger } from '../logger/logger';
 import { SpriteAnimation } from './sprite-animation';
+import { WorkerTimer } from '../../workers/worker-timer';
 
 export class Sprite extends DisplayObject {
     babylonjs: BabylonJsSprite;
@@ -64,7 +65,7 @@ export class Sprite extends DisplayObject {
             if (animation.keyFrames) {
                 animation.keyFrames.forEach((animationKeyFrame) => {
                     animationKeyFrame.timeouts.forEach((time) => {
-                        this.keyFramesTimeouts.push(setTimeout(() => animationKeyFrame.linkedSubject.next(), time));
+                        this.keyFramesTimeouts.push(WorkerTimer.setTimeout(() => animationKeyFrame.linkedSubject.next(), time, this));
                     });
                 });
             }

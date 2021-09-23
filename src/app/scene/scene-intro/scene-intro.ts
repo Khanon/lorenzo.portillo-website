@@ -5,7 +5,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene, Logger } from '../../../khanon3d';
+import { DimensionsWH, GUI, Scene, Logger, WorkerTimer } from '../../../khanon3d';
 import * as Misc from '../../../khanon3d/modules/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
@@ -144,10 +144,15 @@ export class SceneIntro extends Scene {
         this.gravity.addActor(this.robocillo);
 
         // Start robocillo intro
-        setTimeout(() => {
-            this.actions.play('gravity');
-            this.robocillo.state.set(RobocilloStateIntro.id);
-        }, 2000);
+        WorkerTimer.setTimeout(
+            () => {
+                // console.log('aki actor timeout', Date());
+                this.actions.play('gravity');
+                this.robocillo.state.set(RobocilloStateIntro.id);
+            },
+            2000,
+            this
+        );
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
@@ -166,13 +171,17 @@ export class SceneIntro extends Scene {
                 this.robocillo.physics.applyForce(new Vector3(0, 0.1, 0));
                 Logger.info('vel y:', this.robocillo.physics.getVelocity().y);
                 Logger.info('pos y:', this.robocillo.physics.getTranslation().y);
-                setInterval(() => {
-                    if (!this.robocillo.physics.onFloor) {
-                        // Logger.info('');
-                        // Logger.info('vel y:', this.robocillo.physics.getVelocity().y);
-                        // Logger.info('pos y:', this.robocillo.physics.getTranslation().y);
-                    }
-                }, 0);
+                WorkerTimer.setInterval(
+                    () => {
+                        if (!this.robocillo.physics.onFloor) {
+                            // Logger.info('');
+                            // Logger.info('vel y:', this.robocillo.physics.getVelocity().y);
+                            // Logger.info('pos y:', this.robocillo.physics.getTranslation().y);
+                        }
+                    },
+                    0,
+                    this
+                );
             }
             if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {
                 obj.incZ(inc);

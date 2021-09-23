@@ -1,4 +1,4 @@
-import { Core } from './khanon3d';
+import { Core, WorkerTimer } from './khanon3d';
 
 import { SceneIntro } from './app/scene/scene-intro/scene-intro';
 
@@ -7,9 +7,13 @@ class App {
     // readonly states: StateMachine = new StateMachine();
 
     constructor() {
-        setTimeout(() => {
-            this.init();
-        }, 1);
+        WorkerTimer.setTimeout(
+            () => {
+                this.init();
+            },
+            1,
+            this
+        );
     }
 
     init(): void {
