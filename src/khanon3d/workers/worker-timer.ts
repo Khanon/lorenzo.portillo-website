@@ -38,7 +38,10 @@ export const WorkerTimer = {
             case 'timeout:done':
                 let callbackTimeout = this.callbacksTimeout[e.data.id];
                 if (callbackTimeout && callbackTimeout.fn) callbackTimeout.fn.apply(callbackTimeout.context);
-                clearInterval(e.data.id);
+                worker.postMessage({
+                    command: 'timeout:clear',
+                    id: e.data.idd,
+                });
                 break;
             case 'timeout:cleared':
                 delete this.callbacksTimeout[e.data.id];

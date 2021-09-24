@@ -14,6 +14,7 @@ export class Sprite extends DisplayObject {
 
     private scale: number = 1;
     private keyFramesTimeouts: NodeJS.Timeout[] = [];
+    private endAnimationTimer: number;
 
     constructor(readonly name: string = '', readonly properties: SpriteProperties = {}) {
         super(name);
@@ -55,11 +56,14 @@ export class Sprite extends DisplayObject {
         const frameEnd = animation.frameEnd ?? this.properties.numFrames - 1;
 
         const playAnimation = () => {
-            this.babylonjs.playAnimation(frameStart, frameEnd, false, animation.delay, completed || loop ? onCompleted : undefined);
+            this.babylonjs.playAnimation(frameStart, frameEnd, false, animation.delay);
+            if (completed || loop) {
+                this.endAnimationTimer = WorkerTimer.setTimeout(() => onCompleted(), (frameEnd - frameStart + 1) * animation.delay, this);
+            }
             setKeyframesTimeouts();
         };
 
-        // Emit on subject for each keyFrame timeout
+        // Emit subject for each keyFrame timeout
         const setKeyframesTimeouts = () => {
             this.keyFramesTimeouts = [];
             if (animation.keyFrames) {
@@ -83,11 +87,13 @@ export class Sprite extends DisplayObject {
         };
 
         this.visible = true;
+        this.removeEndAnimationTimer();
         this.removeAnimationKeyFrames();
         playAnimation();
     }
 
     stop(): void {
+        this.removeEndAnimationTimer();
         this.removeAnimationKeyFrames();
         this.babylonjs.stopAnimation();
     }
@@ -135,5 +141,12 @@ export class Sprite extends DisplayObject {
     private removeAnimationKeyFrames(): void {
         this.keyFramesTimeouts.forEach((timeout) => clearTimeout(timeout));
         this.keyFramesTimeouts = [];
+    }
+
+    private removeEndAnimationTimer(): void {
+        if (this.endAnimationTimer) {
+            WorkerTimer.clearTimeout(this.endAnimationTimer);
+            this.endAnimationTimer = undefined;
+        }
     }
 }

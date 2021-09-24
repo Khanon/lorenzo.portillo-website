@@ -41,7 +41,7 @@ export class RobocilloActor extends Actor2D {
         this.addAnimation(RobocilloAnimations.RAISE_HANDS, { delay: 75, frameStart: 72, frameEnd: 74, loop: true });
         this.addAnimation(RobocilloAnimations.JUMP_FRONT, { delay: 75, frameStart: 80, frameEnd: 85, loop: false });
 
-        this.setScale(0.85);
+        this.setScale(0.82);
         this.physics.setTranslationFromFloats(-20, -48, -410);
 
         merge(this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT), this.keyFrameSubject(RobocilloKeyFrames.FLOOR_CONTACT)).subscribe(() => {
