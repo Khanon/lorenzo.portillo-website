@@ -18,4 +18,6 @@ export class SunActor extends Actor2D {
         this.setZ(-500);
         this.setScale(0.7);
     }
+
+    release(): void {}
 }

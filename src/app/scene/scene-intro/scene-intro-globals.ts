@@ -1,5 +1,5 @@
 import { Actor3D } from '../../../khanon3d';
 
-export class SceneIntroShared {
+export class SceneIntroGlobals {
     static earth: Actor3D;
 }

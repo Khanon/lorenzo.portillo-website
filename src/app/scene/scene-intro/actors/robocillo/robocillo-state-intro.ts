@@ -1,9 +1,10 @@
 import { Actor2D, State, WorkerTimer } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/modules/misc';
+import * as Misc from '../../../../../khanon3d/misc';
 
 import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
 import { RobocilloAnimations } from './robocillo-animations';
-import { SceneIntroShared } from './../../scene-intro-shared';
+import { SceneIntroGlobals } from '../../scene-intro-globals';
+import { RobocilloActionChat } from './robocillo-action-chat';
 
 enum Happiness {
     MOVE_HANDS,
@@ -15,7 +16,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
     static id: string = 'RobocilloStateIntro';
 
     private readonly ANGLE_SUN = -0.1745;
-    private readonly ANGLE_CENTER = 0;
+    private readonly ANGLE_CENTER = 0.0068;
 
     private robocillo: Actor2D;
 
@@ -50,8 +51,8 @@ export class RobocilloStateIntro extends State<Actor2D> {
     stopCenter(): void {
         this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
         WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false), 500, this);
-        WorkerTimer.setTimeout(() => this.checkPaper(), 500, this);
-        WorkerTimer.setTimeout(() => (this.gameLoaded = true), 2500, this); // TODO: eliminar
+        WorkerTimer.setTimeout(this.checkPaper(), 500, this);
+        WorkerTimer.setTimeout(() => (this.gameLoaded = true), 15000, this); // TODO: eliminar
     }
 
     checkPaper(): void {
@@ -61,7 +62,11 @@ export class RobocilloStateIntro extends State<Actor2D> {
             });
         } else {
             WorkerTimer.setTimeout(
-                () => this.robocillo.setAnimation(RobocilloAnimations.PAPER_CHECK, false, () => this.checkPaper()),
+                () =>
+                    this.robocillo.setAnimation(RobocilloAnimations.PAPER_CHECK, false, () => {
+                        this.checkPaper();
+                        this.robocillo.action.play(RobocilloActionChat.id);
+                    }),
                 500 + Math.random() * 1000,
                 this
             );
@@ -80,7 +85,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
                 break;
             case Happiness.JUMP:
                 if (this.robocillo.physics.onFloor) {
-                    const vJump = SceneIntroShared.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(10);
+                    const vJump = SceneIntroGlobals.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(10);
                     this.robocillo.setAnimation(RobocilloAnimations.JUMP_FRONT, false);
                     this.robocillo.physics.resetVelocity();
                     WorkerTimer.setTimeout(() => this.robocillo.physics.applyForce(vJump), 200, this);

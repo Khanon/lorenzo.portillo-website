@@ -1,4 +1,4 @@
-import * as Misc from '../misc';
+import * as Misc from '../../misc';
 import { Action } from './action';
 import { Logger } from '../logger/logger';
 

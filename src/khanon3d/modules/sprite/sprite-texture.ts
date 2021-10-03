@@ -34,8 +34,6 @@ export class SpriteTexture {
         this.babylonjs.texture = texture;
     }
 
-    createFromTextBlock(): void {}
-
     release(): void {
         this.babylonjs.dispose();
         this.babylonjs = null;

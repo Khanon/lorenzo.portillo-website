@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import * as Misc from '../modules/misc';
+import * as Misc from '../misc';
 
 /**
  * Store observables to share them between modules

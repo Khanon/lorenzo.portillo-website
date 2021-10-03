@@ -4,6 +4,13 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { DynamicTextureTextBlockProperties } from './dynamic-texture-textblock-properties';
 
 export class DynamicTextures {
+    /**
+     * Creates a Dynamic Texture containing a multi-line text block.
+     *
+     * @param babylonJsScene
+     * @param properties
+     * @returns
+     */
     static createFromTextBlock(babylonJsScene: BabylonJsScene, properties: DynamicTextureTextBlockProperties): DynamicTexture {
         const font = `${properties.fontStyle} ${properties.fontSize}px ${properties.fontName}`;
 
@@ -20,8 +27,8 @@ export class DynamicTextures {
                 textWidth = ctx.measureText(text).width;
             }
         });
-        const textureWidth = properties.fixedSize?.width ?? textWidth;
-        const textureHeight = properties.fixedSize?.height ?? textHeiht + properties.fontSize / 2;
+        const textureWidth = properties.textureSize?.width ?? textWidth;
+        const textureHeight = properties.textureSize?.height ?? textHeiht + properties.fontSize / 2;
 
         var dynamicTexture = new DynamicTexture('DynamicTexture', { width: textureWidth, height: textureHeight }, babylonJsScene, false);
         const ctxTx = dynamicTexture.getContext();
@@ -32,7 +39,7 @@ export class DynamicTextures {
             ctxTx.fill();
         }
 
-        const startY = properties.centerV && properties.fixedSize ? textureHeight / 2 - (lineHeight / 2) * (properties.textBlock.length - 1) : lineHeight;
+        const startY = properties.centerV && properties.textureSize ? textureHeight / 2 - (lineHeight / 2) * (properties.textBlock.length - 1) : lineHeight;
         properties.textBlock.forEach((text, index) => {
             dynamicTexture.drawText(text, properties.centerH ? null : 0, startY + lineHeight * index, font, properties.textColor, null, false);
         });

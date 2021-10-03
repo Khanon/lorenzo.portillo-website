@@ -1,4 +1,4 @@
-import * as Misc from '../misc';
+import * as Misc from '../../misc';
 import { Mesh } from './mesh';
 import { AssetsManager } from '../assets-manager/assets-manager';
 

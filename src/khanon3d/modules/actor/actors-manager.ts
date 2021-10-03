@@ -38,7 +38,7 @@ export class ActorsManager {
         }
         actor.createParticlesManager(this.babylonJsScene, this.assetsManager);
         actor.setSceneObservables(this.sceneObservables);
-        actor.initialize();
+        actor.initialize(this.assetsManager);
 
         this._actors.push(actor);
         return actor;
@@ -49,6 +49,9 @@ export class ActorsManager {
     }
 
     release(): void {
-        // TODO
+        this.actors.forEach((actor) => {
+            actor.release();
+        });
+        this.actors.slice(0, this.actors.length);
     }
 }

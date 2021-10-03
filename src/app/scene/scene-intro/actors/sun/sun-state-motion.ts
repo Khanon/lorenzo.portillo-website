@@ -1,5 +1,5 @@
 import { Actor2D, State, WorkerTimer } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/modules/misc';
+import * as Misc from '../../../../../khanon3d/misc';
 
 export class SunStateMotion extends State<Actor2D> {
     readonly endMotion = { y: 45, z: -215, scale: 0.9 };

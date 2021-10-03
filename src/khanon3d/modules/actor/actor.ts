@@ -10,7 +10,7 @@ import { ActionsManager } from '../actions/actions-manager';
 import { ModifiersManager } from '../modifiers/modifiers-manager';
 import { SpriteAnimation } from '../sprite/sprite-animation';
 import { MeshAnimation } from '../mesh/mesh-animation';
-import * as Misc from '../misc';
+import * as Misc from '../../misc';
 import { ActorSimplePhysics } from '../physics/simple-physics/actor-simple-physics';
 import { Logger } from '../logger/logger';
 import { ParticlesFactory } from '../particle/particles-factory';
@@ -26,7 +26,7 @@ export abstract class Actor {
     readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
     readonly modifier: ModifiersManager = new ModifiersManager();
     readonly physics: ActorSimplePhysics;
-    protected particles: ParticlesFactory;
+    particles: ParticlesFactory;
     protected sceneObservables: ObservablesContainer;
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {
@@ -54,7 +54,12 @@ export abstract class Actor {
      * To be implemented by app actor.
      * It will be invoked after scene loading.
      */
-    abstract initialize(): void;
+    abstract initialize(assetsManager: AssetsManager): void;
+
+    /**
+     * Release any asset created by this actor
+     */
+    abstract release(): void;
 
     /**
      * Sets animation.
@@ -142,8 +147,8 @@ export abstract class Actor {
      * @param babylonJsScene
      * @returns
      */
-    getDisplayObject(babylonJsScene: BabylonJsScene): DisplayObject {
-        if (!this.displayObject) {
+    getDisplayObject(babylonJsScene?: BabylonJsScene): DisplayObject {
+        if (!this.displayObject && babylonJsScene) {
             this.displayObject = this.createDisplayObject(babylonJsScene);
             this.setDisplayObject(this.displayObject);
             if (this.physics) {

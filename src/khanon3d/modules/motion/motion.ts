@@ -1,25 +1,36 @@
 import { Observable } from 'rxjs';
 
 import { LoopUpdateable } from '../../models/loop-updateable';
+import { MotionProperties } from './motion-properties';
 import { DisplayObject } from '../../models/display-object';
 
 export abstract class Motion extends LoopUpdateable {
-    constructor(protected readonly subject: DisplayObject, protected readonly loopUpdate$?: Observable<number>) {
+    displayObject: DisplayObject;
+    protected onDoneCallback: () => void;
+
+    constructor(protected readonly properties: MotionProperties, protected readonly loopUpdate$: Observable<number>) {
         super(loopUpdate$);
     }
 
-    abstract initialize(properties: Object, onDone?: () => void): void;
-    abstract onStart(): void;
-    abstract onEnd(): void;
+    abstract onInitialize(): void;
     abstract loopUpdate(delta: number): void;
 
+    initialize(displayObject: DisplayObject, onDone?: () => void): void {
+        this.displayObject = displayObject;
+        this.onDoneCallback = onDone;
+        this.onInitialize();
+    }
+
     start(): void {
-        this.onStart();
         this.subscribeLoopUpdate();
     }
 
     end(): void {
-        this.onEnd();
         this.unSubscribeLoopUpdate();
+    }
+
+    protected done(): void {
+        this.end();
+        this.onDoneCallback();
     }
 }

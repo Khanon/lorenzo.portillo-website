@@ -128,9 +128,6 @@ export class Core {
                 const interval = currentMs - this.loopUpdateLastMs;
                 if (interval > this.loopUpdateDelay) {
                     let delta = interval / this.loopUpdateFPS;
-                    if (this.properties.deltaMaxValue && delta > this.properties.deltaMaxValue) {
-                        delta = this.properties.deltaMaxValue;
-                    }
                     this.loopUpdate$.next(delta);
                     this.physicsUpdate$.next(delta);
                     this.loopUpdateLastMs = currentMs;

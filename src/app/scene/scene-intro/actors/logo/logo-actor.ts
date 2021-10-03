@@ -1,6 +1,7 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { Actor2D, Sprite } from '../../../../../khanon3d';
+
 import { LogoStateMotion } from './logo-state-motion';
 
 export class LogoActor extends Actor2D {
@@ -16,4 +17,6 @@ export class LogoActor extends Actor2D {
         this.setZ(240);
         this.setScale(0.4);
     }
+
+    release(): void {}
 }

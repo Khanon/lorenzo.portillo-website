@@ -4,16 +4,15 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { ParticleProperties } from './particle-properties';
 import { LoopUpdateable } from '../../models/loop-updateable';
-import { Motion } from '../motion/motion';
 import { MeshesManager } from '../mesh/meshes-manager';
 import { DisplayObject } from '../../models/display-object';
 import { AssetsManager } from '../assets-manager/assets-manager';
+import { ParticleEndCriteria } from '..';
 
 export abstract class Particle extends LoopUpdateable {
     abstract id: string;
 
     protected parent: DisplayObject;
-    protected abstract motion: Motion;
 
     protected babylonJsScene: BabylonJsScene;
     protected assetsManager: AssetsManager;
@@ -33,17 +32,9 @@ export abstract class Particle extends LoopUpdateable {
     abstract createDisplayObject(): DisplayObject;
 
     /**
-     * Initialize displayObject and motion if needed on child function
-     *
-     * @param scene
-     */
-    abstract onInitialize(): void;
-
-    /**
      * Start and End child functions
      */
     abstract onStart(): void;
-    abstract onEnd(): void;
 
     initialize(babylonJsScene: BabylonJsScene, assetsManager: AssetsManager, parent?: DisplayObject): void {
         this.babylonJsScene = babylonJsScene;
@@ -51,22 +42,22 @@ export abstract class Particle extends LoopUpdateable {
         this.parent = parent;
 
         this.displayObject = this.createDisplayObject();
-        this.displayObject.setX(this.properties.x);
-        this.displayObject.setY(this.properties.y);
-        this.displayObject.setZ(this.properties.z);
-        this.displayObject.setScale(this.properties.scale);
-        this.displayObject.setAlpha(this.properties.alpha);
+        this.displayObject.setX(this.properties.x ?? 0);
+        this.displayObject.setY(this.properties.y ?? 0);
+        this.displayObject.setZ(this.properties.z ?? 0);
+        this.displayObject.setScale(this.properties.scale ?? 1);
+        this.displayObject.setAlpha(this.properties.alpha ?? 1);
 
-        this.onInitialize();
+        this.properties.motion?.initialize(this.displayObject, this.properties.endCriteria === ParticleEndCriteria.MOTION_END ? this.end : undefined);
     }
 
     start(): void {
-        this.motion?.start();
+        this.properties.motion?.start();
         this.onStart();
     }
 
     end(): void {
-        this.motion?.end();
-        this.onEnd();
+        this.properties.motion?.end();
+        this.displayObject.release();
     }
 }

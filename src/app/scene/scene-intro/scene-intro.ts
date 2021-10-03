@@ -6,7 +6,7 @@ import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
 import { DimensionsWH, GUI, Scene, Logger, WorkerTimer } from '../../../khanon3d';
-import * as Misc from '../../../khanon3d/modules/misc';
+import * as Misc from '../../../khanon3d/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
 import { SunActor } from './actors/sun/sun-actor';
@@ -14,7 +14,7 @@ import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 import { RobocilloAnimations } from './actors/robocillo/robocillo-animations';
 import { SceneIntroActionGravity } from './actions/action-gravity';
-import { SceneIntroShared } from './scene-intro-shared';
+import { SceneIntroGlobals } from './scene-intro-globals';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
 import { SceneIntroObservables } from './scene-intro-observables';
 import { Sprite } from '../../../khanon3d/modules/sprite/sprite';
@@ -26,7 +26,7 @@ export class SceneIntro extends Scene {
     private light: HemisphericLight;
 
     // Shared instances
-    sceneIntroShared: SceneIntroShared = new SceneIntroShared();
+    sceneIntroShared: SceneIntroGlobals = new SceneIntroGlobals();
 
     // Actors
     logo: LogoActor;
@@ -104,29 +104,8 @@ export class SceneIntro extends Scene {
             })
         );
 
-        // ********************************************************************************
-
-        const dynamicTexture = Misc.DynamicTextures.createFromTextBlock(this.babylonjs, {
-            fontSize: 30,
-            fontStyle: '',
-            fontName: 'roadgeek',
-            textBlock: ['Mixing bits...', 'Loading creativity...', 'Checking the shopping list...', 'READY!', 'Tap to continue'],
-            textColor: '#ffffff',
-            centerH: true,
-        });
-        const sTx2 = new SpriteTexture(this.babylonjs);
-        sTx2.setFromDynamicTexture(dynamicTexture);
-        const sprite2 = new Sprite();
-        sprite2.setTexture(sTx2);
-        sprite2.setX(-30);
-        sprite2.setY(0.7);
-        sprite2.setScale(0.3);
-        sprite2.visible = true;
-
-        // ********************************************************************************
-
         // Shared actors
-        SceneIntroShared.earth = this.earth;
+        SceneIntroGlobals.earth = this.earth;
 
         // Hide BlackScreen
         this.hideBlackScreen();

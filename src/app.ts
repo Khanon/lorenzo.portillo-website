@@ -18,7 +18,7 @@ class App {
 
     init(): void {
         // Initialize app
-        this.core = new Core({ fps: 60, deltaMaxValue: 1000 / 60 / 60, onAppError: this.appError });
+        this.core = new Core({ fps: 60, onAppError: this.appError });
         this.core.createCanvasOnDivElement('canvas-container');
         this.core.start();
 

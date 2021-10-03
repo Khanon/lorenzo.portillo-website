@@ -1,6 +1,6 @@
 import { State } from './state';
 import { Logger } from '../logger/logger';
-import * as Misc from '../misc';
+import * as Misc from '../../misc';
 
 export class StateMachine<T> {
     currentState: State<T>;

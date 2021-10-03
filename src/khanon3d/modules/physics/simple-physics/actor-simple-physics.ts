@@ -4,7 +4,7 @@ import { Vector3, Matrix } from '@babylonjs/core/Maths/math.vector';
 
 import { LoopUpdateable } from '../../../models/loop-updateable';
 import { Modifier } from '../../modifiers/modifier';
-import * as Misc from '../../misc';
+import * as Misc from '../../../misc';
 import { DisplayObject } from '../../../models/display-object';
 
 export class ActorSimplePhysics extends LoopUpdateable implements Modifier {

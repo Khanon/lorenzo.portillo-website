@@ -26,7 +26,7 @@ export class Sprite extends DisplayObject {
 
     set visible(visible: boolean) {
         if (!this.spriteTexture) {
-            Logger.error('No Sprite Instance on sprite:', this.name);
+            Logger.error('No SpriteTexture on sprite:', this.name);
         }
         this.babylonjs.isVisible = visible;
     }

@@ -1,10 +1,10 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 import { Action, Actor2D } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/modules/misc';
+import * as Misc from '../../../../../khanon3d/misc';
 
-import { SceneIntroShared } from '../../scene-intro-shared';
-import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
+import { SceneIntroGlobals } from '../../scene-intro-globals';
+import { RobocilloAnimations } from './robocillo-animations';
 
 export interface IRobocilloActionGoTo {
     angle: number;
@@ -20,11 +20,11 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
         this.gotoAngle = this.properties.angle;
 
         if (this.gotoAngle < this.getEarthAngle()) {
-            this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.subject.getPosition()), new Vector3(1, 0, 0))
+            this.vDirection = Vector3.Cross(SceneIntroGlobals.earth.getPosition().subtract(this.subject.getPosition()), new Vector3(1, 0, 0))
                 .negate()
                 .normalize();
         } else {
-            this.vDirection = Vector3.Cross(SceneIntroShared.earth.getPosition().subtract(this.subject.getPosition()), new Vector3(1, 0, 0)).normalize();
+            this.vDirection = Vector3.Cross(SceneIntroGlobals.earth.getPosition().subtract(this.subject.getPosition()), new Vector3(1, 0, 0)).normalize();
         }
         this.subject.setAnimation(RobocilloAnimations.WALK);
 
@@ -38,7 +38,7 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
     }
 
     getEarthAngle(): number {
-        const vToCenter = SceneIntroShared.earth.getPosition().subtract(this.subject.getPosition());
+        const vToCenter = SceneIntroGlobals.earth.getPosition().subtract(this.subject.getPosition());
         return Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
     }
 

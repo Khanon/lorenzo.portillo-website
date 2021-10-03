@@ -30,4 +30,6 @@ export class EarthActor extends Actor3D {
         this.setY(100);
         this.setScale(1);
     }
+
+    release(): void {}
 }

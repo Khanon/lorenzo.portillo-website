@@ -3,7 +3,7 @@
  * Modifeiers can be used from outer the container and also be combined with other modifiers.
  */
 
-import * as Misc from '../misc';
+import * as Misc from '../../misc';
 import { Modifier } from './modifier';
 import { Logger } from '../logger/logger';
 

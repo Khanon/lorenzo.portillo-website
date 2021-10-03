@@ -5,7 +5,7 @@ import { switchMap, catchError } from 'rxjs/operators';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { TextureProperties } from '../../models/texture-properties';
-import * as Misc from '../misc';
+import * as Misc from '../../misc';
 import { SpriteTexture } from '../sprite/sprite-texture';
 import { Logger } from '../logger/logger';
 

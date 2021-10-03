@@ -1,4 +1,4 @@
-import { Logger } from '../logger/logger';
+import { Logger } from '../modules/logger/logger';
 
 abstract class KeyValueBase<K, V> {
     // TODO investigate Map class to see what's better performance
