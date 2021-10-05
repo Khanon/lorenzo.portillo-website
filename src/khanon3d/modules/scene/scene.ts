@@ -23,6 +23,7 @@ import { Logger } from '../logger/logger';
 export abstract class Scene extends Subscriber {
     babylonjs: BabylonJsScene;
 
+    protected properties: SceneProperties;
     protected engine: Engine;
     protected canvas: HTMLCanvasElement;
     protected assetsJsonUrl: string;
@@ -52,6 +53,7 @@ export abstract class Scene extends Subscriber {
     load(properties: SceneProperties): void {
         this.release();
 
+        this.properties = properties;
         this.engine = properties.engine;
         this.canvas = properties.canvas;
         this.assetsJsonUrl = properties.assetsJsonUrl;
@@ -75,16 +77,9 @@ export abstract class Scene extends Subscriber {
             },
             complete: () => {
                 this.babylonjs.executeWhenReady(() => {
-                    // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
-                    this.engine.babylonjs.runRenderLoop(() => {
-                        this.isExecuted = true;
-                        this.babylonjs.render();
-                        if (properties.fpsContainer) {
-                            let divFps = document.getElementById(properties.fpsContainer);
-                            divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
-                        }
-                    });
-                    this.onLoaded(properties.canvasDimensions);
+                    if (this.properties.execute === undefined || this.properties.execute === true) {
+                        this.execute();
+                    }
                 });
             },
         });
@@ -96,23 +91,41 @@ export abstract class Scene extends Subscriber {
     }
 
     /**
+     * Execute the scene
+     */
+    execute(): void {
+        // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
+        this.engine.babylonjs.runRenderLoop(() => {
+            this.isExecuted = true;
+            this.babylonjs.render();
+            if (this.properties.fpsContainer) {
+                let divFps = document.getElementById(this.properties.fpsContainer);
+                divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
+            }
+        });
+        this.onExecute(this.properties.canvasDimensions);
+    }
+
+    /**
      * Release all scene objects
      */
     release(): void {
-        this.assetsManager?.release();
+        this.onRelease();
+        this.actorsManager?.release();
         this.spritesManager?.release();
         this.meshesManager?.release();
+        this.assetsManager?.release();
     }
 
     // ------------------------
-    //   Load and Release
+    //   Load, Execute and Release
     // ------------------------
 
     abstract onLoad(): void;
-    abstract onLoaded(canvasSize: DimensionsWH): void;
 
-    // abstract onRelease(): void;
-    // abstract onReleased(): void;
+    abstract onExecute(canvasSize: DimensionsWH): void;
+
+    abstract onRelease(): void;
 
     /**
      * On scene loading error

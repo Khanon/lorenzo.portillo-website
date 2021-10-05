@@ -7,7 +7,7 @@ import { LoopUpdateable } from '../../models/loop-updateable';
 import { MeshesManager } from '../mesh/meshes-manager';
 import { DisplayObject } from '../../models/display-object';
 import { AssetsManager } from '../assets-manager/assets-manager';
-import { ParticleEndCriteria } from '..';
+import { ParticleEndCriteria } from '../particle/particle-end-criteria';
 
 export abstract class Particle extends LoopUpdateable {
     abstract id: string;

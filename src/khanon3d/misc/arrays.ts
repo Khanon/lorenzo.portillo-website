@@ -8,4 +8,8 @@ export class Arrays {
             [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
         }
     }
+
+    static empty(arr: any[]): void {
+        arr.splice(0, arr.length);
+    }
 }

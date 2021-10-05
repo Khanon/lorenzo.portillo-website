@@ -12,6 +12,7 @@ export class RobocilloActionChat extends Action<Actor2D, void> {
     static id: string = 'RobocilloActionChat';
 
     txChats: SpriteTexture[];
+    txEnd: SpriteTexture[];
     counter: number = 0;
 
     onPlay() {

@@ -37,6 +37,10 @@ export class SceneIntro extends Scene {
     // Actions
     gravity: SceneIntroActionGravity;
 
+    // Textures
+    private readonly loadingEndTx: SpriteTexture[] = [];
+    private readonly loadingEnd: string[] = ['READY!', 'Tap to continue'];
+
     // ******************
     // Debug TODO: delete
     gui: GUI;
@@ -71,7 +75,7 @@ export class SceneIntro extends Scene {
         this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
         this.camera.attachControl(this.canvas, true);
 
-        // Light in front of scene
+        // Light
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
         // Actions
@@ -82,12 +86,31 @@ export class SceneIntro extends Scene {
         // Attach imported camera to canvas inputs
         this.babylonjs.activeCamera.attachControl(this.canvas);
 
+        // Textures
+        this.loadingEnd.forEach((chat) => {
+            const dynamicTexture = Misc.DynamicTextures.createFromTextBlock(this.babylonjs, {
+                textBlock: [chat],
+                fontSize: 40,
+                fontStyle: '',
+                fontName: 'roadgeek',
+                textColor: '#ffffff',
+                centerH: true,
+            });
+            const spriteTexture = new SpriteTexture(this.babylonjs);
+            spriteTexture.setFromDynamicTexture(dynamicTexture);
+            this.loadingEndTx.push(spriteTexture);
+        });
+        this.loadingEndTx.forEach((texture) => {
+            texture.release();
+        });
+        Misc.Arrays.empty(this.loadingEndTx);
+
         // Add subscriptions
         this.subscribeLoopUpdate();
         this.subscribeCanvasResize();
     }
 
-    onLoaded(canvasDimensions: DimensionsWH): void {
+    onExecute(canvasDimensions: DimensionsWH): void {
         // this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${
         //     canvasDimensions.width / canvasDimensions.height
         // })`;
@@ -121,7 +144,6 @@ export class SceneIntro extends Scene {
         // Start robocillo intro
         WorkerTimer.setTimeout(
             () => {
-                // console.log('aki actor timeout', Date());
                 this.actions.play('gravity');
                 this.robocillo.state.set(RobocilloStateIntro.id);
             },
@@ -243,6 +265,8 @@ export class SceneIntro extends Scene {
         this.canvas.addEventListener('pointerdown', () => {});
         this.canvas.addEventListener('pointerup', () => {});
     }
+
+    onRelease(): void {}
 
     onError(errorMsg: string): void {
         this.coreSubscriptions.onError$.next(errorMsg);

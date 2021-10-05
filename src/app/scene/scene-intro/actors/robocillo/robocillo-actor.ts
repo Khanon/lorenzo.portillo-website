@@ -16,12 +16,11 @@ export class RobocilloActor extends Actor2D {
     private readonly loadingChats: string[] = [
         'Mixing bits...',
         'Loading bytes...',
-        'Checking the shopping list...',
         'Developing bugs...',
         'Generating errors...',
         'What was I doing?',
-        'Loading shaders...',
-        'Composing strange things...',
+        'Shading shaders...',
+        'Composing meshes...',
         'Howdy!',
     ];
 
@@ -100,6 +99,6 @@ export class RobocilloActor extends Actor2D {
         this.loadingChatsTx.forEach((texture) => {
             texture.release();
         });
-        this.loadingChatsTx.splice(0, this.loadingChatsTx.length);
+        Misc.Arrays.empty(this.loadingChatsTx);
     }
 }

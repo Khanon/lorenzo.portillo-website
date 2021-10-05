@@ -7,7 +7,7 @@ import { DynamicTexture } from '@babylonjs/core';
  * TODO: Switch SpriteManager by SpritePackedManager once BabylonJs team implement all missing features
  */
 export class SpriteTexture {
-    private readonly MAX_SPRITES_PER_INSTANCE = 255;
+    private readonly MAX_SPRITES_PER_INSTANCE = 9999;
 
     babylonjs: SpriteManager;
     width: number;
@@ -21,9 +21,9 @@ export class SpriteTexture {
         this.babylonjs = new SpriteManager(url, url, this.MAX_SPRITES_PER_INSTANCE, { width, height }, this.babylonJsScene);
     }
 
-    setFromDynamicTexture(texture: DynamicTexture): void {
-        this.width = texture.getSize().width;
-        this.height = texture.getSize().height;
+    setFromDynamicTexture(texture: DynamicTexture, width?: number, height?: number): void {
+        this.width = width ?? texture.getSize().width;
+        this.height = height ?? texture.getSize().height;
         this.babylonjs = new SpriteManager(
             'FromDynamicTexture',
             '',

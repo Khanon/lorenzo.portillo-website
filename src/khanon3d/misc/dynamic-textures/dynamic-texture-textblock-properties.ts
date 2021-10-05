@@ -4,7 +4,7 @@ export interface DynamicTextureTextBlockProperties {
     /**
      * Array containing each text line
      */
-    textBlock: string[];
+    textBlock?: string[];
 
     /**
      * Font name (fontface)

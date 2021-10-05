@@ -14,7 +14,7 @@ export interface MotionSpriteBasicProperties extends MotionProperties {
 }
 
 export class MotionSpriteBasic extends Motion {
-    private stack: any[] = [];
+    private stack: ((delta: number) => void)[] = [];
 
     constructor(protected readonly properties: MotionSpriteBasicProperties, protected readonly loopUpdate$: Observable<number>) {
         super(properties, loopUpdate$);

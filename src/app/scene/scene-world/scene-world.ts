@@ -75,7 +75,7 @@ export class SceneWorld extends Scene {
         );*/
     }
 
-    onLoaded(canvasDimensions: DimensionsWH): void {
+    onExecute(canvasDimensions: DimensionsWH): void {
         console.log('aki onLoaded, canvas dimensions:', canvasDimensions);
         this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height}`;
 
@@ -153,6 +153,8 @@ export class SceneWorld extends Scene {
             // console.log('Mouse UP!');
         });
     }
+
+    onRelease(): void {}
 
     onError(errorMsg: string): void {}
 

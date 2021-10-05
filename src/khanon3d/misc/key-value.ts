@@ -1,7 +1,9 @@
 import { Logger } from '../modules/logger/logger';
+import { Arrays } from './arrays';
 
 abstract class KeyValueBase<K, V> {
     // TODO investigate Map class to see what's better performance
+    // Investigate as well if using an object instead arrays is more efficient
     protected readonly pairs: { key: K; value: V }[] = [];
     protected readonly keys: K[] = [];
     protected readonly values: V[] = [];
@@ -11,9 +13,9 @@ abstract class KeyValueBase<K, V> {
     protected abstract search<T>(keyvalue: T, arrSeach: T[]): any;
 
     reset(): void {
-        this.pairs.splice(0, this.pairs.length);
-        this.keys.splice(0, this.keys.length);
-        this.values.splice(0, this.values.length);
+        Arrays.empty(this.pairs);
+        Arrays.empty(this.keys);
+        Arrays.empty(this.values);
     }
 
     get<T = V>(key: K): T {
@@ -79,6 +81,7 @@ export class KeyValue<K, V> extends KeyValueBase<K, V> {
  * Repeatable Key-Value (keys can be repeated in the array)
  */
 export class RKeyValue<K, V> extends KeyValueBase<K, V> {
+    // TODO Does it has sense a repeatable KeyValue when search only returns a single value?
     add(key: K, value: V) {
         this.pairs.push({ key, value });
         this.keys.push(key);

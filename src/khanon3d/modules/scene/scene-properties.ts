@@ -10,4 +10,5 @@ export interface SceneProperties {
     isDevelopmentMode?: boolean;
     fpsContainer?: string;
     assetsJsonUrl?: string;
+    execute?: boolean;
 }
