@@ -9,4 +9,11 @@ export abstract class State<T> extends LoopUpdateable {
 
     abstract start(): void;
     abstract end(): void;
+
+    /**
+     * Override on child to notify messages to this actor from outer scene
+     *
+     * @param id
+     */
+    notify(id: any): void {}
 }

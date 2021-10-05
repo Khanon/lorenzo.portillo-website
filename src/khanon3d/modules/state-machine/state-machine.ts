@@ -32,4 +32,16 @@ export class StateMachine<T> {
     getCurrentState(): State<T> {
         return this.currentState;
     }
+
+    notify(id: any): void {
+        if (this.currentState) {
+            this.currentState.notify(id);
+        }
+    }
+
+    notifyAll(id: any): void {
+        this.states.getValues().forEach((state) => {
+            state.notify(id);
+        });
+    }
 }

@@ -72,6 +72,13 @@ export abstract class Actor {
     abstract setAnimation(id: number, loopOverride?: boolean, completed?: () => void): void;
 
     /**
+     * Override on child to notify messages to this actor from outer scene
+     *
+     * @param id
+     */
+    notify(id: any): void {}
+
+    /**
      * Create particles manager (needs some manager from Scene)
      *
      * @param babylonJsScene

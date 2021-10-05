@@ -1,7 +1,7 @@
 /**
  * DISCARDEED AT THE MOMENT
  */
-
+/*
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture';
 
@@ -9,7 +9,7 @@ import { DynamicTextureTextBlockProperties } from '../misc/dynamic-textures/dyna
 import { SpriteTexture } from '../modules/sprite/sprite-texture';
 import { DimensionsWH } from '../models/dimensions-wh';
 
-/*export*/ class SpriteTextFont {
+export class SpriteTextFont {
     charSizes: DimensionsWH[] = [];
 
     private fontTexture: SpriteTexture;
@@ -90,3 +90,4 @@ import { DimensionsWH } from '../models/dimensions-wh';
         return this.fontTexture;
     }
 }
+*/

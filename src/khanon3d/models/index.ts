@@ -4,7 +4,7 @@
 
 export { CoreProperties } from './core-properties';
 export { CoreSubscriptions } from './core-subscriptions';
-export { DynamicTextureTextBlockProperties } from '../misc/dynamic-textures/dynamic-texture-textblock-properties';
+export { TextBlockProperties as DynamicTextureTextBlockProperties } from './textblock-properties';
 export { DimensionsWH } from './dimensions-wh';
 export { DisplayObject } from './display-object';
 export { ObservablesContainer } from './observables-container';

@@ -2,17 +2,18 @@
  * DISCARDEED AT THE MOMENT
  */
 
+/*
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Sprite as BabylonJsSprite } from '@babylonjs/core/Sprites/sprite';
 
 import { DisplayObject } from '../../models/display-object';
 import { SpriteProperties } from './sprite-properties';
-// import { SpriteTextFont } from './sprite-text-font';
+import { SpriteTextFont } from './sprite-text-font';
 import { Logger } from '../logger/logger';
 
-/*export*/ class SpriteText extends DisplayObject {
+export class SpriteText extends DisplayObject {
     babylonjs: BabylonJsSprite;
-    private spriteTextFont: /*SpriteTextFont*/ any;
+    private spriteTextFont: SpriteTextFont;
     // https://forum.babylonjs.com/t/grouping-parenting-sprites/1492
     // ¿Usar flat meshes para esto, que sí permiten pareent tree?. ¿puede hacerse que una malla mire a cámara siempre?
     private scale: number = 1;
@@ -35,7 +36,7 @@ import { Logger } from '../logger/logger';
     play(): void {}
     stop(): void {}
 
-    setFont(spriteTextFont: /*SpriteTextFont*/ any): void {
+    setFont(spriteTextFont: SpriteTextFont): void {
         this.spriteTextFont = spriteTextFont;
         this.babylonjs = new BabylonJsSprite(this.name, this.spriteTextFont.getTexture().babylonjs);
         this.babylonjs.width = 100;
@@ -57,12 +58,6 @@ import { Logger } from '../logger/logger';
         }
         this.babylonjs.cellIndex = frame;
     }
-
-    /**
-     * Since sprites are always facing camera, the only rotation allowed is on x axis
-     *
-     * @param rotation
-     */
     setRotation(rotation: Vector3): void {
         this.babylonjs.angle = rotation.x;
     }
@@ -89,3 +84,4 @@ import { Logger } from '../logger/logger';
         return this.babylonjs.color.a;
     }
 }
+*/

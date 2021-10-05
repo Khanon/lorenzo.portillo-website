@@ -17,8 +17,10 @@ import { SceneIntroActionGravity } from './actions/action-gravity';
 import { SceneIntroGlobals } from './scene-intro-globals';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
 import { SceneIntroObservables } from './scene-intro-observables';
-import { Sprite } from '../../../khanon3d/modules/sprite/sprite';
 import { SpriteTexture } from '../../../khanon3d/modules/sprite/sprite-texture';
+import { RobocilloMessages } from './actors/robocillo/robocillo-messages';
+import { ParticleSprite } from '../../../khanon3d/modules/particle/particles/particle-sprite';
+import { MotionSpriteBasic } from '../../../khanon3d/modules/motion/motions/motion-sprite-basic';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -38,8 +40,8 @@ export class SceneIntro extends Scene {
     gravity: SceneIntroActionGravity;
 
     // Textures
-    private readonly loadingEndTx: SpriteTexture[] = [];
-    private readonly loadingEnd: string[] = ['READY!', 'Tap to continue'];
+    private loadingEndTx: SpriteTexture[];
+    private readonly loadingEndTexts: string[][] = [['READY!'], ['Tap to continue']];
 
     // ******************
     // Debug TODO: delete
@@ -87,23 +89,7 @@ export class SceneIntro extends Scene {
         this.babylonjs.activeCamera.attachControl(this.canvas);
 
         // Textures
-        this.loadingEnd.forEach((chat) => {
-            const dynamicTexture = Misc.DynamicTextures.createFromTextBlock(this.babylonjs, {
-                textBlock: [chat],
-                fontSize: 40,
-                fontStyle: '',
-                fontName: 'roadgeek',
-                textColor: '#ffffff',
-                centerH: true,
-            });
-            const spriteTexture = new SpriteTexture(this.babylonjs);
-            spriteTexture.setFromDynamicTexture(dynamicTexture);
-            this.loadingEndTx.push(spriteTexture);
-        });
-        this.loadingEndTx.forEach((texture) => {
-            texture.release();
-        });
-        Misc.Arrays.empty(this.loadingEndTx);
+        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock(this.babylonjs, this.loadingEndTexts, SceneIntroGlobals.fontBase_40);
 
         // Add subscriptions
         this.subscribeLoopUpdate();
@@ -150,6 +136,14 @@ export class SceneIntro extends Scene {
             2000,
             this
         );
+
+        WorkerTimer.setTimeout(
+            () => {
+                this.onWorldLoaded();
+            },
+            2200,
+            this
+        ); // TODO: eliminar
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
@@ -266,7 +260,9 @@ export class SceneIntro extends Scene {
         this.canvas.addEventListener('pointerup', () => {});
     }
 
-    onRelease(): void {}
+    onRelease(): void {
+        Misc.SpriteTextures.releaseList(this.loadingEndTx);
+    }
 
     onError(errorMsg: string): void {
         this.coreSubscriptions.onError$.next(errorMsg);
@@ -342,6 +338,57 @@ export class SceneIntro extends Scene {
             this.coreSubscriptions.canvasResize$.subscribe((dimensions) => {
                 // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${dimensions.width / dimensions.height})`;
                 // this.textCanvasSize.text = '';
+            })
+        );
+    }
+
+    onWorldLoaded(): void {
+        this.robocillo.notify(RobocilloMessages.WORLD_LOADED);
+
+        this.particles.new(
+            new ParticleSprite({
+                spriteTexture: this.loadingEndTx[0],
+                x: -30,
+                y: 100,
+                z: 0,
+                scale: 0.4,
+                motion: new MotionSpriteBasic(
+                    {
+                        alphaStart: 0,
+                        alphaEnd: 1,
+                        alphaVel: 0.1,
+                        posSin: new Vector3(0, 5, 0),
+                        posSinVel: 0.1,
+                        rotSin: new Vector3(0.05, 0, 0),
+                        rotSinVel: 0.1,
+                        rotSinMoment: 8,
+                    },
+                    this.coreSubscriptions.loopUpdate$
+                ),
+            })
+        );
+
+        this.particles.new(
+            new ParticleSprite({
+                spriteTexture: this.loadingEndTx[1],
+                x: -30,
+                y: 85,
+                z: 0,
+                scale: 0.3,
+                motion: new MotionSpriteBasic(
+                    {
+                        alphaStart: 0,
+                        alphaEnd: 1,
+                        alphaVel: 0.1,
+                        posSin: new Vector3(0, 5, 0),
+                        posSinVel: 0.1,
+                        posSinMoment: 0.5,
+                        rotSin: new Vector3(0.05, 0, 0),
+                        rotSinVel: 0.1,
+                        rotSinMoment: 3,
+                    },
+                    this.coreSubscriptions.loopUpdate$
+                ),
             })
         );
     }

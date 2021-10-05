@@ -10,35 +10,25 @@ import { RobocilloStateIntro } from './robocillo-state-intro';
 import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
 import { SceneIntroObservables } from '../../scene-intro-observables';
 import { RobocilloActionChat } from './robocillo-action-chat';
+import { SceneIntroGlobals } from '../../scene-intro-globals';
+import { RobocilloMessages } from './robocillo-messages';
 
 export class RobocilloActor extends Actor2D {
-    private readonly loadingChatsTx: SpriteTexture[] = [];
-    private readonly loadingChats: string[] = [
-        'Mixing bits...',
-        'Loading bytes...',
-        'Developing bugs...',
-        'Generating errors...',
-        'What was I doing?',
-        'Shading shaders...',
-        'Composing meshes...',
-        'Howdy!',
+    private loadingChatsTx: SpriteTexture[];
+    private readonly loadingChats: string[][] = [
+        ['Loading...'],
+        ['Mixing bits...'],
+        ['Loading bytes...'],
+        ['Developing bugs...'],
+        ['Generating errors...'],
+        ['What was I doing?'],
+        ['Shading shaders...'],
+        ['Composing meshes...'],
     ];
 
     createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
-        this.loadingChats.forEach((chat) => {
-            const dynamicTexture = Misc.DynamicTextures.createFromTextBlock(babylonJsScene, {
-                textBlock: [chat],
-                fontSize: 30,
-                fontStyle: '',
-                fontName: 'roadgeek',
-                textColor: '#ffffff',
-                centerH: true,
-            });
-            const spriteTexture = new SpriteTexture(babylonJsScene);
-            spriteTexture.setFromDynamicTexture(dynamicTexture);
-            this.loadingChatsTx.push(spriteTexture);
-        });
-        Misc.Arrays.shuffle(this.loadingChatsTx);
+        this.loadingChatsTx = Misc.SpriteTextures.createListFromTextBlock(babylonJsScene, this.loadingChats, SceneIntroGlobals.fontBase_30);
+        Misc.Arrays.shuffle(this.loadingChatsTx, 1);
 
         return new Sprite(this.name, { url: './assets/scene-intro/sprites/robocillo.png', numFrames: 32 });
     }
@@ -96,9 +86,14 @@ export class RobocilloActor extends Actor2D {
     }
 
     release(): void {
-        this.loadingChatsTx.forEach((texture) => {
-            texture.release();
-        });
-        Misc.Arrays.empty(this.loadingChatsTx);
+        Misc.SpriteTextures.releaseList(this.loadingChatsTx);
+    }
+
+    notify(id: RobocilloMessages): void {
+        switch (id) {
+            case RobocilloMessages.WORLD_LOADED:
+                this.state.notify(id);
+                break;
+        }
     }
 }

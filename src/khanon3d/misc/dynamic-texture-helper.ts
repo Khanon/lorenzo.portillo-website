@@ -1,9 +1,9 @@
 import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
-import { DynamicTextureTextBlockProperties } from './dynamic-texture-textblock-properties';
+import { TextBlockProperties } from '../models/textblock-properties';
 
-export class DynamicTextures {
+export class DynamicTextureHelper {
     /**
      * Creates a Dynamic Texture containing a multi-line text block.
      *
@@ -11,7 +11,7 @@ export class DynamicTextures {
      * @param properties
      * @returns
      */
-    static createFromTextBlock(babylonJsScene: BabylonJsScene, properties: DynamicTextureTextBlockProperties): DynamicTexture {
+    static createFromTextBlock(babylonJsScene: BabylonJsScene, properties: TextBlockProperties): DynamicTexture {
         const font = `${properties.fontStyle} ${properties.fontSize}px ${properties.fontName}`;
 
         const checkSizeTx = new DynamicTexture('DynamicTexture', 64, babylonJsScene, false);

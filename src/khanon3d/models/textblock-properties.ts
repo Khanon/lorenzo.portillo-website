@@ -1,6 +1,6 @@
-import { DimensionsWH } from '../../models/dimensions-wh';
+import { DimensionsWH } from './dimensions-wh';
 
-export interface DynamicTextureTextBlockProperties {
+export interface TextBlockProperties {
     /**
      * Array containing each text line
      */

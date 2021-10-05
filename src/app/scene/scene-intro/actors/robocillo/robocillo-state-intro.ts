@@ -5,6 +5,7 @@ import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-go
 import { RobocilloAnimations } from './robocillo-animations';
 import { SceneIntroGlobals } from '../../scene-intro-globals';
 import { RobocilloActionChat } from './robocillo-action-chat';
+import { RobocilloMessages } from './robocillo-messages';
 
 enum Happiness {
     MOVE_HANDS,
@@ -15,19 +16,28 @@ enum Happiness {
 export class RobocilloStateIntro extends State<Actor2D> {
     static id: string = 'RobocilloStateIntro';
 
-    private readonly ANGLE_SUN = -0.1745;
-    private readonly ANGLE_CENTER = 0.0068;
+    private readonly ANGLE_SUN = -0.183;
+    private readonly ANGLE_CENTER = 0;
 
     private robocillo: Actor2D;
 
-    private gameLoaded: boolean = false; // TODO:  eliminar
+    loading: boolean;
 
     start(): void {
+        this.loading = true;
         this.robocillo = this.subject;
         this.goIn();
     }
 
     end(): void {}
+
+    notify(id: RobocilloMessages): void {
+        switch (id) {
+            case RobocilloMessages.WORLD_LOADED:
+                this.loading = false;
+                break;
+        }
+    }
 
     goIn(): void {
         this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: this.ANGLE_SUN }, () =>
@@ -49,18 +59,17 @@ export class RobocilloStateIntro extends State<Actor2D> {
     }
 
     stopCenter(): void {
-        this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
-        WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false), 500, this);
-        WorkerTimer.setTimeout(this.checkPaper(), 500, this);
-        WorkerTimer.setTimeout(() => (this.gameLoaded = true), 15000, this); // TODO: eliminar
+        if (this.loading) {
+            this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
+            WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false), 500, this);
+            WorkerTimer.setTimeout(this.checkPaper(), 500, this);
+        } else {
+            this.centerEnd(Happiness.JUMP);
+        }
     }
 
     checkPaper(): void {
-        if (this.gameLoaded) {
-            this.robocillo.setAnimation(RobocilloAnimations.PAPER_THROW, false, () => {
-                this.centerEnd(Happiness.JUMP);
-            });
-        } else {
+        if (this.loading) {
             WorkerTimer.setTimeout(
                 () =>
                     this.robocillo.setAnimation(RobocilloAnimations.PAPER_CHECK, false, () => {
@@ -70,6 +79,10 @@ export class RobocilloStateIntro extends State<Actor2D> {
                 500 + Math.random() * 1000,
                 this
             );
+        } else {
+            this.robocillo.setAnimation(RobocilloAnimations.PAPER_THROW, false, () => {
+                this.centerEnd(Happiness.JUMP);
+            });
         }
     }
 

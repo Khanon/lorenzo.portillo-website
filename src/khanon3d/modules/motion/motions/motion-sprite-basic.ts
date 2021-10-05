@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, single } from 'rxjs';
 
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
@@ -7,21 +7,33 @@ import { MotionEndCriteria } from '../motion-end-criteria';
 import { MotionProperties } from '../motion-properties';
 
 export interface MotionSpriteBasicProperties extends MotionProperties {
-    alphaStart: number;
+    alphaStart?: number;
     alphaEnd?: number;
     alphaVel?: number;
     posVel?: Vector3;
+    posSin?: Vector3;
+    posSinVel?: number;
+    posSinMoment?: number;
+    rotSin?: Vector3;
+    rotSinVel?: number;
+    rotSinMoment?: number;
 }
 
 export class MotionSpriteBasic extends Motion {
     private stack: ((delta: number) => void)[] = [];
+
+    private posSinOrigin: Vector3;
+    private posSinTime: number;
+
+    private rotSinOrigin: Vector3;
+    private rotSinTime: number;
 
     constructor(protected readonly properties: MotionSpriteBasicProperties, protected readonly loopUpdate$: Observable<number>) {
         super(properties, loopUpdate$);
     }
 
     onInitialize(): void {
-        this.displayObject.setAlpha(this.properties.alphaStart);
+        this.displayObject.setAlpha(this.properties.alphaStart ?? 1);
 
         if (this.properties.alphaVel) {
             if (this.properties.alphaStart < this.properties.alphaEnd) {
@@ -32,6 +44,16 @@ export class MotionSpriteBasic extends Motion {
         }
         if (this.properties.posVel) {
             this.stack.push((delta: number) => this.posAdd(delta));
+        }
+        if (this.properties.posSin) {
+            this.posSinTime = this.properties.posSinMoment ?? 0;
+            this.posSinOrigin = this.displayObject.getPosition();
+            this.stack.push((delta: number) => this.posSin(delta));
+        }
+        if (this.properties.rotSin) {
+            this.rotSinTime = this.properties.rotSinMoment ?? 0;
+            this.rotSinOrigin = this.displayObject.getRotation();
+            this.stack.push((delta: number) => this.rotSin(delta));
         }
     }
 
@@ -61,5 +83,15 @@ export class MotionSpriteBasic extends Motion {
 
     posAdd(delta: number): void {
         this.displayObject.babylonjs.position.addInPlace(this.properties.posVel.scale(delta));
+    }
+
+    posSin(delta: number): void {
+        this.posSinTime += delta * this.properties.posSinVel;
+        this.displayObject.babylonjs.position = this.posSinOrigin.add(this.properties.posSin.scale(Math.sin(this.posSinTime)));
+    }
+
+    rotSin(delta: number): void {
+        this.rotSinTime += delta * this.properties.rotSinVel;
+        this.displayObject.setRotation(this.rotSinOrigin.add(this.properties.rotSin.scale(Math.sin(this.rotSinTime))));
     }
 }
