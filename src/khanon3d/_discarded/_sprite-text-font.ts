@@ -5,9 +5,9 @@
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture';
 
-import { DynamicTextureTextBlockProperties } from '../../misc/dynamic-textures/dynamic-texture-textblock-properties';
-import { SpriteTexture } from './sprite-texture';
-import { DimensionsWH } from '../../models/dimensions-wh';
+import { DynamicTextureTextBlockProperties } from '../misc/dynamic-textures/dynamic-texture-textblock-properties';
+import { SpriteTexture } from '../modules/sprite/sprite-texture';
+import { DimensionsWH } from '../models/dimensions-wh';
 
 /*export*/ class SpriteTextFont {
     charSizes: DimensionsWH[] = [];
