@@ -1,36 +1,30 @@
-import { Subscription } from 'rxjs';
-
 import { Vector3, Matrix } from '@babylonjs/core/Maths/math.vector';
 
 import { Modifier } from '../../modifiers/modifier';
 import * as Misc from '../../../misc';
 import { DisplayObject } from '../../../models/display-object';
-import { CoreGlobals } from '../../../models/core-globals';
+import { PhysicsUpdateable } from '../../../models/physics-updatable';
 
-export class ActorSimplePhysics implements Modifier {
+export class ActorSimplePhysics extends PhysicsUpdateable implements Modifier {
     static id: string = 'ActorSimplePhysics';
     id: string = ActorSimplePhysics.id;
 
-    private velocity: Vector3 = new Vector3();
+    private displayObject: DisplayObject;
 
+    private velocity: Vector3 = new Vector3();
+    private maxVelocity: number = Number.MAX_VALUE;
     private translationMatrix: Matrix = new Matrix();
     private rotationVector: Vector3 = new Vector3();
-    private maxVelocity: number = Number.MAX_VALUE;
-    private displayObject: DisplayObject;
-    private physicsUpdateSubscription: Subscription;
 
     onFloor: boolean = false;
 
     start(displayObject: DisplayObject): void {
         this.displayObject = displayObject;
-        this.physicsUpdateSubscription = CoreGlobals.physicsUpdate$.subscribe((delta) => this.loopUpdate(delta));
+        this.subscribePhysicsUpdate();
     }
 
     release(): void {
-        if (this.physicsUpdateSubscription) {
-            this.physicsUpdateSubscription.unsubscribe();
-            this.physicsUpdateSubscription = undefined;
-        }
+        this.unSubscribePhysicsUpdate();
     }
 
     setTranslation(translation: Vector3): void {
@@ -91,7 +85,7 @@ export class ActorSimplePhysics implements Modifier {
         this.velocity.set(0, 0, 0);
     }
 
-    loopUpdate(delta: number): void {
+    physicsUpdate(delta: number): void {
         // Set to zero residual vels
         if (Math.abs(this.velocity.x) < Misc.Maths.MIN_VALUE) {
             this.velocity.x = 0;
