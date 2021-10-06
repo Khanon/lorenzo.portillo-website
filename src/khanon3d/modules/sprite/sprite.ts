@@ -58,7 +58,7 @@ export class Sprite extends DisplayObject {
         const playAnimation = () => {
             this.babylonjs.playAnimation(frameStart, frameEnd, false, animation.delay);
             if (completed || loop) {
-                this.endAnimationTimer = WorkerTimer.setTimeout(() => onCompleted(), (frameEnd - frameStart + 1) * animation.delay, this);
+                this.endAnimationTimer = WorkerTimer.setTimeout(onCompleted, (frameEnd - frameStart + 1) * animation.delay, this);
             }
             setKeyframesTimeouts();
         };

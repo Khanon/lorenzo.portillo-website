@@ -5,13 +5,7 @@ export class EarthStateMotion extends State<Actor3D> {
     private readonly endMotion = { y: -1090, scale: 1 };
 
     start(): void {
-        WorkerTimer.setTimeout(
-            () => {
-                this.subscribeLoopUpdate();
-            },
-            500,
-            this
-        );
+        WorkerTimer.setTimeout(this.subscribeLoopUpdate, 500, this);
     }
 
     end(): void {

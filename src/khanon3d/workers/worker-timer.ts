@@ -4,25 +4,25 @@ export const WorkerTimer = {
     timeoutId: 0,
     callbacksInterval: {},
     callbacksTimeout: {},
-    setInterval: function (cb, interval, context) {
+    setInterval: function (cb: () => void, interval: number, context: any) {
         this.intervalId++;
         let id = this.intervalId;
         this.callbacksInterval[id] = { fn: cb, context: context };
         worker.postMessage({
             command: 'interval:start',
-            interval: interval,
-            id: id,
+            interval,
+            id,
         });
         return id;
     },
-    setTimeout: function (cb, time, context) {
+    setTimeout: function (cb: () => void, time: number, context: any) {
         this.timeoutId++;
         let id = this.timeoutId;
         this.callbacksTimeout[id] = { fn: cb, context: context };
         worker.postMessage({
             command: 'timeout:start',
-            time: time,
-            id: id,
+            time,
+            id,
         });
         return id;
     },

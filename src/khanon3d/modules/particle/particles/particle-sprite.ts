@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 import { Particle } from '../particle';
 import { ParticleProperties } from '../particle-properties';
 import { Sprite } from '../../sprite/sprite';

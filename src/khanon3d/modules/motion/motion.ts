@@ -22,7 +22,7 @@ export abstract class Motion extends LoopUpdateable {
         this.onDoneCallback = onDone;
         this.onInitialize();
         if (this.properties.endCriteria === MotionEndCriteria.TIMEOUT) {
-            WorkerTimer.setTimeout(this.done(), this, this.properties.endValue);
+            WorkerTimer.setTimeout(this.done, this.properties.endValue, this);
         }
     }
 

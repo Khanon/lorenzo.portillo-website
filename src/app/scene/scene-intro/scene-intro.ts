@@ -70,7 +70,7 @@ export class SceneIntro extends Scene {
         this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
 
         // Fixed camera
-        this.camera = new UniversalCamera('camera', new Vector3(-450, 0, 0), this.babylonjs);
+        this.camera = new UniversalCamera('camera', new Vector3(/*-450*/ -450, 0, 0), this.babylonjs); // 8a8f descomentar
         this.camera.target = new Vector3(1, 0, 0);
         this.camera.inputs.clear();
         this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
@@ -134,13 +134,8 @@ export class SceneIntro extends Scene {
             this
         );
 
-        WorkerTimer.setTimeout(
-            () => {
-                this.onWorldLoaded();
-            },
-            12200,
-            this
-        ); // TODO: eliminar
+        // TODO: combineLatest([timeout(12500), scene-world->loaded])
+        WorkerTimer.setTimeout(this.onWorldLoaded, 12200, this);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {

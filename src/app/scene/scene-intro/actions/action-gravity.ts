@@ -13,7 +13,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly RESTITUTION_OVER_FACTOR = 1.5;
     private floorLength: number;
 
-    private readonly actors: Misc.KeyValue<Actor, null> = new Misc.KeyValue<Actor, null>();
+    private readonly actors: Actor[] = [];
 
     private floorContact$: Subject<number> = new Subject<number>();
 
@@ -32,7 +32,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
     }
 
     addActor(actor: Actor) {
-        this.actors.add(actor, null);
+        this.actors.push(actor);
     }
 
     getFloorContactObserbable(): Subject<number> {
@@ -40,7 +40,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
     }
 
     loopUpdate(delta: number): void {
-        this.actors.getKeys().forEach((actor) => {
+        this.actors.forEach((actor) => {
             const vToCenter = SceneIntroGlobals.earth.getPosition().subtract(actor.physics.getTranslation());
             const hSlowDownVector = Misc.Vectors.vectorialProjectionToPlane(actor.physics.getVelocity(), vToCenter).negate();
 

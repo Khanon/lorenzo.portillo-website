@@ -7,13 +7,8 @@ class App {
     // readonly states: StateMachine = new StateMachine();
 
     constructor() {
-        WorkerTimer.setTimeout(
-            () => {
-                this.init();
-            },
-            1,
-            this
-        );
+        // Avoid babylonJs canvas scale error
+        WorkerTimer.setTimeout(this.init, 1, this);
     }
 
     init(): void {
