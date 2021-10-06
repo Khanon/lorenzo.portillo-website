@@ -66,7 +66,7 @@ export abstract class Actor {
      * Release
      */
     release(): void {
-        this.physics.release();
+        this.physics?.release();
         this.onRelease();
     }
 

@@ -15,10 +15,9 @@ export abstract class Particle extends LoopUpdateable {
     protected parent: DisplayObject;
 
     protected babylonJsScene: BabylonJsScene;
+    protected displayObject: DisplayObject;
     protected assetsManager: AssetsManager;
     protected meshesManager: MeshesManager;
-
-    protected displayObject: DisplayObject;
 
     // TODO agregar un onDispose() que viene de la clase padre de las particulas donde se crean mediante ParticlesFactory
 
@@ -32,7 +31,7 @@ export abstract class Particle extends LoopUpdateable {
     abstract createDisplayObject(): DisplayObject;
 
     /**
-     * Start and End child functions
+     * Start child function
      */
     abstract onStart(): void;
 
