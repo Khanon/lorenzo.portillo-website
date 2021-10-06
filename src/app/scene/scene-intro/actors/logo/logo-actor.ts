@@ -18,5 +18,5 @@ export class LogoActor extends Actor2D {
         this.setScale(0.4);
     }
 
-    release(): void {}
+    onRelease(): void {}
 }

@@ -5,7 +5,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene, Logger, WorkerTimer } from '../../../khanon3d';
+import { DimensionsWH, GUI, Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic } from '../../../khanon3d';
 import * as Misc from '../../../khanon3d/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
@@ -20,7 +20,6 @@ import { SceneIntroObservables } from './scene-intro-observables';
 import { SpriteTexture } from '../../../khanon3d/modules/sprite/sprite-texture';
 import { RobocilloMessages } from './actors/robocillo/robocillo-messages';
 import { ParticleSprite } from '../../../khanon3d/modules/particle/particles/particle-sprite';
-import { MotionSpriteBasic } from '../../../khanon3d/modules/motion/motions/motion-sprite-basic';
 
 export class SceneIntro extends Scene {
     // Scene 3D objects
@@ -81,7 +80,7 @@ export class SceneIntro extends Scene {
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
 
         // Actions
-        this.gravity = new SceneIntroActionGravity('gravity', null, this.coreSubscriptions.loopUpdate$);
+        this.gravity = new SceneIntroActionGravity('gravity', null);
         this.actions.registerAction(this.gravity);
         this.observables.add(SceneIntroObservables.GRAVITY_FLOOR_CONTACT, this.gravity.getFloorContactObserbable());
 
@@ -102,13 +101,11 @@ export class SceneIntro extends Scene {
         // })`;
 
         // Add actors
-        this.earth = this.actorsManager.addActor(new EarthActor('earth', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.earth = this.actorsManager.addActor(new EarthActor('earth'));
         this.logo = this.actorsManager.addActor(new LogoActor('logo'));
-        this.sun = this.actorsManager.addActor(new SunActor('sun', { loopUpdate$: this.coreSubscriptions.loopUpdate$ }));
+        this.sun = this.actorsManager.addActor(new SunActor('sun'));
         this.robocillo = this.actorsManager.addActor(
             new RobocilloActor('robocillo', {
-                loopUpdate$: this.coreSubscriptions.loopUpdate$,
-                physicsUpdate$: this.coreSubscriptions.physicsUpdate$,
                 usePhysics: true,
             })
         );
@@ -141,7 +138,7 @@ export class SceneIntro extends Scene {
             () => {
                 this.onWorldLoaded();
             },
-            2200,
+            12200,
             this
         ); // TODO: eliminar
 
@@ -265,7 +262,7 @@ export class SceneIntro extends Scene {
     }
 
     onError(errorMsg: string): void {
-        this.coreSubscriptions.onError$.next(errorMsg);
+        CoreGlobals.onError$.next(errorMsg);
     }
 
     hideBlackScreen(): void {
@@ -282,7 +279,7 @@ export class SceneIntro extends Scene {
         // this.sun.setScale(0.7);
 
         this.addSubscription(
-            this.coreSubscriptions.loopUpdate$.subscribe((delta) => {
+            CoreGlobals.loopUpdate$.subscribe((delta) => {
                 const speed = 0.1 * delta;
                 const acc = 2;
 
@@ -335,7 +332,7 @@ export class SceneIntro extends Scene {
 
     subscribeCanvasResize(): void {
         this.addSubscription(
-            this.coreSubscriptions.canvasResize$.subscribe((dimensions) => {
+            CoreGlobals.canvasResize$.subscribe((dimensions) => {
                 // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${dimensions.width / dimensions.height})`;
                 // this.textCanvasSize.text = '';
             })
@@ -352,19 +349,16 @@ export class SceneIntro extends Scene {
                 y: 100,
                 z: 0,
                 scale: 0.4,
-                motion: new MotionSpriteBasic(
-                    {
-                        alphaStart: 0,
-                        alphaEnd: 1,
-                        alphaVel: 0.1,
-                        posSin: new Vector3(0, 5, 0),
-                        posSinVel: 0.1,
-                        rotSin: new Vector3(0.05, 0, 0),
-                        rotSinVel: 0.1,
-                        rotSinMoment: 8,
-                    },
-                    this.coreSubscriptions.loopUpdate$
-                ),
+                motion: new MotionBasic({
+                    alphaStart: 0,
+                    alphaEnd: 1,
+                    alphaVel: 0.1,
+                    posSin: new Vector3(0, 5, 0),
+                    posSinVel: 0.1,
+                    rotSin: new Vector3(0.05, 0, 0),
+                    rotSinVel: 0.1,
+                    rotSinMoment: 8,
+                }),
             })
         );
 
@@ -375,20 +369,17 @@ export class SceneIntro extends Scene {
                 y: 85,
                 z: 0,
                 scale: 0.3,
-                motion: new MotionSpriteBasic(
-                    {
-                        alphaStart: 0,
-                        alphaEnd: 1,
-                        alphaVel: 0.1,
-                        posSin: new Vector3(0, 5, 0),
-                        posSinVel: 0.1,
-                        posSinMoment: 0.5,
-                        rotSin: new Vector3(0.05, 0, 0),
-                        rotSinVel: 0.1,
-                        rotSinMoment: 3,
-                    },
-                    this.coreSubscriptions.loopUpdate$
-                ),
+                motion: new MotionBasic({
+                    alphaStart: 0,
+                    alphaEnd: 1,
+                    alphaVel: 0.1,
+                    posSin: new Vector3(0, 5, 0),
+                    posSinVel: 0.1,
+                    posSinMoment: 0.5,
+                    rotSin: new Vector3(0.05, 0, 0),
+                    rotSinVel: 0.1,
+                    rotSinMoment: 3,
+                }),
             })
         );
     }

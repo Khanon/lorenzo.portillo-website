@@ -7,7 +7,6 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 /* babylonjs-inspector */
 
 import { ActionsManager } from '../actions/actions-manager';
-import { CoreSubscriptions } from '../../models/core-subscriptions';
 import { DimensionsWH } from '../../models/dimensions-wh';
 import { Engine } from '../engine/engine';
 import { SceneProperties } from './scene-properties';
@@ -27,7 +26,6 @@ export abstract class Scene extends Subscriber {
     protected engine: Engine;
     protected canvas: HTMLCanvasElement;
     protected assetsJsonUrl: string;
-    protected coreSubscriptions: CoreSubscriptions;
     protected isDevelopmentMode: boolean;
     protected isExecuted: boolean = false;
 
@@ -57,7 +55,6 @@ export abstract class Scene extends Subscriber {
         this.engine = properties.engine;
         this.canvas = properties.canvas;
         this.assetsJsonUrl = properties.assetsJsonUrl;
-        this.coreSubscriptions = properties.coreSubscriptions;
         this.isDevelopmentMode = properties.isDevelopmentMode;
         this.isExecuted = false;
 

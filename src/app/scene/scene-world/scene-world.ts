@@ -9,6 +9,7 @@ import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
 import { DimensionsWH, GUI, Scene, Sprite } from '../../../khanon3d';
+import { CoreGlobals } from '../../../khanon3d/models/core-globals';
 
 export class SceneWorld extends Scene {
     private logo: Sprite;
@@ -160,7 +161,7 @@ export class SceneWorld extends Scene {
 
     subscribeCanvasResize(): void {
         this.addSubscription(
-            this.coreSubscriptions.canvasResize$.subscribe((dimensions) => {
+            CoreGlobals.canvasResize$.subscribe((dimensions) => {
                 this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height}`;
             })
         );

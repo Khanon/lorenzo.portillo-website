@@ -1,13 +1,13 @@
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { Vector3, Matrix } from '@babylonjs/core/Maths/math.vector';
 
-import { LoopUpdateable } from '../../../models/loop-updateable';
 import { Modifier } from '../../modifiers/modifier';
 import * as Misc from '../../../misc';
 import { DisplayObject } from '../../../models/display-object';
+import { CoreGlobals } from '../../../models/core-globals';
 
-export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
+export class ActorSimplePhysics implements Modifier {
     static id: string = 'ActorSimplePhysics';
     id: string = ActorSimplePhysics.id;
 
@@ -17,16 +17,20 @@ export class ActorSimplePhysics extends LoopUpdateable implements Modifier {
     private rotationVector: Vector3 = new Vector3();
     private maxVelocity: number = Number.MAX_VALUE;
     private displayObject: DisplayObject;
+    private physicsUpdateSubscription: Subscription;
 
     onFloor: boolean = false;
 
-    constructor(protected readonly physicsUpdate$?: Observable<number>) {
-        super(physicsUpdate$);
-    }
-
     start(displayObject: DisplayObject): void {
         this.displayObject = displayObject;
-        this.subscribeLoopUpdate();
+        this.physicsUpdateSubscription = CoreGlobals.physicsUpdate$.subscribe((delta) => this.loopUpdate(delta));
+    }
+
+    release(): void {
+        if (this.physicsUpdateSubscription) {
+            this.physicsUpdateSubscription.unsubscribe();
+            this.physicsUpdateSubscription = undefined;
+        }
     }
 
     setTranslation(translation: Vector3): void {

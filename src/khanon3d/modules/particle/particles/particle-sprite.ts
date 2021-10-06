@@ -15,8 +15,8 @@ export interface ParticleSpriteProperties extends ParticleProperties {
 export class ParticleSprite extends Particle {
     id: 'ParticleSprite';
 
-    constructor(protected readonly properties: ParticleSpriteProperties, protected readonly loopUpdate$?: Observable<number>) {
-        super(properties, loopUpdate$);
+    constructor(protected readonly properties: ParticleSpriteProperties) {
+        super(properties);
     }
 
     createDisplayObject(): Sprite {

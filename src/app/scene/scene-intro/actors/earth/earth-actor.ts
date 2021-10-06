@@ -23,7 +23,7 @@ export class EarthActor extends Actor3D {
     }
 
     initialize(): void {
-        this.state.registerState(new EarthStateMotion('motion', this, this.properties.loopUpdate$));
+        this.state.registerState(new EarthStateMotion('motion', this));
 
         this.mesh.babylonjs.rotate(new Vector3(0, 1, 0), Math.PI / 2);
         this.setX(-10);
@@ -31,5 +31,5 @@ export class EarthActor extends Actor3D {
         this.setScale(1);
     }
 
-    release(): void {}
+    onRelease(): void {}
 }

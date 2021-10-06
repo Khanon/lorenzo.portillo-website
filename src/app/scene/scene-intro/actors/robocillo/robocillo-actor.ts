@@ -34,11 +34,11 @@ export class RobocilloActor extends Actor2D {
     }
 
     initialize(assetsManager: AssetsManager): void {
-        const actionChat = new RobocilloActionChat(RobocilloActionChat.id, this, this.properties.loopUpdate$);
+        const actionChat = new RobocilloActionChat(RobocilloActionChat.id, this);
         actionChat.setChastTextures(this.loadingChatsTx);
 
         this.action.registerAction(actionChat);
-        this.action.registerAction(new RobocilloActionGoTo(RobocilloActionGoTo.id, this, this.properties.loopUpdate$));
+        this.action.registerAction(new RobocilloActionGoTo(RobocilloActionGoTo.id, this));
 
         this.state.registerState(new RobocilloStateIntro(RobocilloStateIntro.id, this));
 
@@ -85,7 +85,7 @@ export class RobocilloActor extends Actor2D {
         });
     }
 
-    release(): void {
+    onRelease(): void {
         Misc.SpriteTextures.releaseList(this.loadingChatsTx);
     }
 

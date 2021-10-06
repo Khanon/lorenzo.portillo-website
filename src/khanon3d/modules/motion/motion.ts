@@ -3,13 +3,15 @@ import { Observable } from 'rxjs';
 import { LoopUpdateable } from '../../models/loop-updateable';
 import { MotionProperties } from './motion-properties';
 import { DisplayObject } from '../../models/display-object';
+import { MotionEndCriteria } from './motion-end-criteria';
+import { WorkerTimer } from '../../workers/worker-timer';
 
 export abstract class Motion extends LoopUpdateable {
     displayObject: DisplayObject;
     protected onDoneCallback: () => void;
 
-    constructor(protected readonly properties: MotionProperties, protected readonly loopUpdate$: Observable<number>) {
-        super(loopUpdate$);
+    constructor(protected readonly properties: MotionProperties) {
+        super();
     }
 
     abstract onInitialize(): void;
@@ -19,6 +21,9 @@ export abstract class Motion extends LoopUpdateable {
         this.displayObject = displayObject;
         this.onDoneCallback = onDone;
         this.onInitialize();
+        if (this.properties.endCriteria === MotionEndCriteria.TIMEOUT) {
+            WorkerTimer.setTimeout(this.done(), this, this.properties.endValue);
+        }
     }
 
     start(): void {

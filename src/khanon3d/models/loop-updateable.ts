@@ -1,16 +1,13 @@
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { CoreGlobals } from './core-globals';
 
 export abstract class LoopUpdateable {
     private loopUpdateSubscription: Subscription;
 
-    constructor(protected readonly loopUpdate$?: Observable<number>) {}
-
     loopUpdate(delta: number): void {}
 
     subscribeLoopUpdate(): void {
-        if (this.loopUpdate$) {
-            this.loopUpdateSubscription = this.loopUpdate$.subscribe((delta) => this.loopUpdate(delta));
-        }
+        this.loopUpdateSubscription = CoreGlobals.loopUpdate$.subscribe((delta) => this.loopUpdate(delta));
     }
 
     unSubscribeLoopUpdate(): void {

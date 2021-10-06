@@ -16,6 +16,7 @@ import { Logger } from '../logger/logger';
 import { ParticlesFactory } from '../particle/particles-factory';
 import { ObservablesContainer } from '../../models/observables-container';
 import { AssetsManager } from '../assets-manager/assets-manager';
+import { CoreGlobals } from '../../models/core-globals';
 
 export abstract class Actor {
     private displayObject: DisplayObject;
@@ -31,7 +32,7 @@ export abstract class Actor {
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {
         if (this.properties?.usePhysics) {
-            this.physics = new ActorSimplePhysics(this.properties.physicsUpdate$);
+            this.physics = new ActorSimplePhysics();
         }
     }
 
@@ -57,9 +58,17 @@ export abstract class Actor {
     abstract initialize(assetsManager: AssetsManager): void;
 
     /**
-     * Release any asset created by this actor
+     * Child release, mainly assets
      */
-    abstract release(): void;
+    protected abstract onRelease(): void;
+
+    /**
+     * Release
+     */
+    release(): void {
+        this.physics.release();
+        this.onRelease();
+    }
 
     /**
      * Sets animation.

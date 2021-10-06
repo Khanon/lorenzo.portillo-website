@@ -10,7 +10,7 @@ export class SunActor extends Actor2D {
     }
 
     initialize(): void {
-        this.state.registerState(new SunStateMotion('motion', this, this.properties.loopUpdate$));
+        this.state.registerState(new SunStateMotion('motion', this));
 
         this.sprite.setFrame(0);
         this.setX(0);
@@ -19,5 +19,5 @@ export class SunActor extends Actor2D {
         this.setScale(0.7);
     }
 
-    release(): void {}
+    onRelease(): void {}
 }

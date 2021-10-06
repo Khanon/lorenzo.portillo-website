@@ -2,11 +2,12 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { SpriteTexture } from '../modules/sprite/sprite-texture';
 import { TextBlockProperties } from '../models/textblock-properties';
-import * as Misc from '.';
+import { DynamicTextureHelper } from './dynamic-texture-helper';
+import { Arrays } from './arrays';
 
 export class SpriteTextureHelper {
     static createFromTextBlock(babylonJsScene: BabylonJsScene, textBlock: string[], textBlockProperties: TextBlockProperties): SpriteTexture {
-        const dynamicTexture = Misc.DynamicTextures.createFromTextBlock(babylonJsScene, Object.assign(textBlockProperties, { textBlock }));
+        const dynamicTexture = DynamicTextureHelper.createFromTextBlock(babylonJsScene, Object.assign(textBlockProperties, { textBlock }));
         const spriteTexture = new SpriteTexture(babylonJsScene);
         spriteTexture.setFromDynamicTexture(dynamicTexture);
         return spriteTexture;
@@ -25,7 +26,7 @@ export class SpriteTextureHelper {
             arr.forEach((texture) => {
                 texture.release();
             });
-            Misc.Arrays.empty(arr);
+            Arrays.empty(arr);
         }
     }
 }

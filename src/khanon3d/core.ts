@@ -10,8 +10,8 @@ import { Scene } from './modules/scene/scene';
 import { SceneProperties } from './modules/scene/scene-properties';
 import { DimensionsWH } from './models/dimensions-wh';
 import { CoreProperties } from './models/core-properties';
-import { CoreSubscriptions } from './models/core-subscriptions';
 import { WorkerTimer } from './workers/worker-timer';
+import { CoreGlobals } from './models/core-globals';
 
 export class Core {
     private canvas: HTMLCanvasElement;
@@ -25,9 +25,6 @@ export class Core {
     private engine: Engine;
 
     // Events
-    private readonly canvasResize: Subject<DimensionsWH> = new Subject<DimensionsWH>();
-    private readonly loopUpdate$: Subject<number> = new Subject<number>();
-    private readonly physicsUpdate$: Subject<number> = new Subject<number>();
     private readonly onAppError$: Subject<string> = new Subject<string>();
 
     constructor(private readonly properties: CoreProperties) {
@@ -68,7 +65,7 @@ export class Core {
         // Manage resize
         window.addEventListener('resize', () => {
             this.engine.babylonjs.resize();
-            this.canvasResize.next(this.getCanvasDimensions());
+            CoreGlobals.canvasResize$.next(this.getCanvasDimensions());
             // this.logCanvasSize();
         });
     }
@@ -97,24 +94,10 @@ export class Core {
             engine: this.engine,
             canvas: this.canvas,
             canvasDimensions: this.getCanvasDimensions(),
-            coreSubscriptions: this.getCoreSubscriptions(),
         };
         Object.assign(properties, sceneProperties);
 
         scene.load(properties);
-    }
-
-    /**
-     * Get subscriptions
-     * @returns
-     */
-    getCoreSubscriptions(): CoreSubscriptions {
-        return {
-            canvasResize$: this.canvasResize,
-            loopUpdate$: this.loopUpdate$,
-            physicsUpdate$: this.physicsUpdate$,
-            onError$: this.onAppError$,
-        };
     }
 
     /**
@@ -128,8 +111,8 @@ export class Core {
                 const interval = currentMs - this.loopUpdateLastMs;
                 if (interval > this.loopUpdateDelay) {
                     let delta = interval / this.loopUpdateFPS;
-                    this.loopUpdate$.next(delta);
-                    this.physicsUpdate$.next(delta);
+                    CoreGlobals.loopUpdate$.next(delta);
+                    CoreGlobals.physicsUpdate$.next(delta);
                     this.loopUpdateLastMs = currentMs;
                 }
             },
