@@ -1,6 +1,20 @@
 export class Maths {
     static readonly MIN_VALUE = 0.00000001;
 
+    /**
+     * Drag value from origin to target depending on a ratio (0 is 'origin', 1 is 'target')
+     *
+     * @param origin 'origin' value on scene
+     * @param target 'target' value on scene
+     * @param ratio From 0 to 1 from origin to target
+     * @param ratioClampMin clamp min ratio
+     * @param ratioClampMax clamp max ratio
+     */
+    static dragValue(ratio: number, origin: number, target: number, ratioClampMin: number = 0, ratioClampMax: number = 1): number {
+        ratio = Maths.clamp(ratio, ratioClampMin, ratioClampMax);
+        return origin + (target - origin) * ratio;
+    }
+
     static clamp(value: number, min: number, max: number): number {
         return Math.min(Math.max(value, min), max);
     }
@@ -35,14 +49,14 @@ export class Maths {
     }
 
     static increaseValueWithInertia(from: number, to: number, speed: number, acceleration: number = 1, completed?: () => void): number {
-        const complete = () => {
+        function complete() {
             if (completed) {
                 completed();
             }
             return to;
-        };
+        }
         const dist = Math.abs(to - from);
-        if (dist <= this.MIN_VALUE) {
+        if (dist <= 0.001) {
             return complete();
         }
         if (to < from) {

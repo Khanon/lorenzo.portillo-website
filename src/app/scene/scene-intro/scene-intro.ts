@@ -20,8 +20,16 @@ import { SceneIntroObservables } from './scene-intro-observables';
 import { SpriteTexture } from '../../../khanon3d/modules/sprite/sprite-texture';
 import { RobocilloMessages } from './actors/robocillo/robocillo-messages';
 import { ParticleSprite } from '../../../khanon3d/modules/particle/particles/particle-sprite';
+import { SunStateMotion } from './actors/sun/sun-state-motion';
 
 export class SceneIntro extends Scene {
+    private readonly START_RATIO_CANVAS = 0.45;
+    private readonly MIDDLE_RATIO_CANVAS = 2.186;
+    private readonly END_RATIO_CANVAS = 3.5;
+    private readonly paramsRatio0CameraPos = new Vector3(-430, 0, 0);
+    private readonly paramsRatio1CameraPos = new Vector3(-200, 58, 0);
+    canvasRatio: number;
+
     // Scene 3D objects
     private camera: UniversalCamera;
     private light: HemisphericLight;
@@ -30,9 +38,9 @@ export class SceneIntro extends Scene {
     sceneIntroShared: SceneIntroGlobals = new SceneIntroGlobals();
 
     // Actors
+    earth: EarthActor;
     logo: LogoActor;
     sun: SunActor;
-    earth: EarthActor;
     robocillo: RobocilloActor;
 
     // Actions
@@ -51,18 +59,17 @@ export class SceneIntro extends Scene {
 
     onLoad(): void {
         // ******************
-        // Debug
+        // Debug TODO Eliminar
         this.gui = new GUI(this);
         this.textCanvasSize = this.gui.newTextBlock();
         this.textCanvasSize.left = 0;
-        this.textCanvasSize.top = 500;
+        this.textCanvasSize.top = 10;
         this.textCanvasSize.width = '500px';
         this.textCanvasSize.height = '40px';
         this.textCanvasSize.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         this.textCanvasSize.textHorizontalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         this.textCanvasSize.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         this.textCanvasSize.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        // this.textCanvasSize.text = 'TEXT BLOCK';
         this.textCanvasSize.color = '#fcf403';
         // ******************
 
@@ -70,7 +77,7 @@ export class SceneIntro extends Scene {
         this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
 
         // Fixed camera
-        this.camera = new UniversalCamera('camera', new Vector3(/*-450*/ -450, 0, 0), this.babylonjs); // 8a8f descomentar
+        this.camera = new UniversalCamera('camera', new Vector3(-450, 0, 0), this.babylonjs);
         this.camera.target = new Vector3(1, 0, 0);
         this.camera.inputs.clear();
         this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
@@ -96,9 +103,8 @@ export class SceneIntro extends Scene {
     }
 
     onExecute(canvasDimensions: DimensionsWH): void {
-        // this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${
-        //     canvasDimensions.width / canvasDimensions.height
-        // })`;
+        this.canvasRatio = canvasDimensions.width / canvasDimensions.height;
+        // this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
 
         // Add actors
         this.earth = this.actorsManager.addActor(new EarthActor('earth'));
@@ -109,6 +115,7 @@ export class SceneIntro extends Scene {
                 usePhysics: true,
             })
         );
+        this.applyCanvasRatio(true);
 
         // Shared actors
         SceneIntroGlobals.earth = this.earth;
@@ -140,9 +147,10 @@ export class SceneIntro extends Scene {
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.code, event.code);
-            const inc = event.altKey ? (event.ctrlKey ? 0.0001 : 0.001) : 0.01;
+            const inc = event.altKey ? (event.ctrlKey ? 0.01 : 0.1) : 1;
             // const obj = this.earth;
             // const obj = this.sun;
+            // const obj = this.logo;
             const obj = this.robocillo;
             if (event.code === 'Space') {
                 /*if (this.actions.isPlaying('gravity')) {
@@ -167,34 +175,54 @@ export class SceneIntro extends Scene {
                 );
             }
             if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {
-                obj.incZ(inc);
-                const leftVector = Vector3.Cross(this.earth.getPosition().subtract(this.robocillo.getPosition()), new Vector3(1, 0, 0)).normalize();
-                this.robocillo.physics.applyForce(leftVector.scale(0.001));
+                this.camera.position.z += inc;
+                console.log('aki camera:', this.camera.position.toString());
+
+                // obj.incZ(inc);
+                // const leftVector = Vector3.Cross(this.earth.getPosition().subtract(this.robocillo.getPosition()), new Vector3(1, 0, 0)).normalize();
+                // this.robocillo.physics.setTranslation(this.robocillo.physics.getTranslation().add(leftVector));
+                // this.robocillo.physics.applyForce(leftVector.scale(1));
                 // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad6' || event.code === 'ArrowRight') {
-                obj.incZ(-inc);
-                const rightVector = Vector3.Cross(this.earth.getPosition().subtract(this.robocillo.getPosition()), new Vector3(1, 0, 0)).negate().normalize();
-                this.robocillo.physics.applyForce(rightVector.scale(0.001));
+                this.camera.position.z -= inc;
+                console.log('aki camera:', this.camera.position.toString());
+
+                // obj.incZ(-inc);
+                // const rightVector = Vector3.Cross(this.earth.getPosition().subtract(this.robocillo.getPosition()), new Vector3(1, 0, 0)).negate().normalize();
+                // this.robocillo.physics.setTranslation(this.robocillo.physics.getTranslation().add(rightVector));
+                // this.robocillo.physics.applyForce(rightVector.scale(1));
                 // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad8' || event.code === 'ArrowUp') {
-                obj.incY(inc);
-                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
+                this.camera.position.y += inc;
+                console.log('aki camera:', this.camera.position.toString());
+
+                // obj.incY(inc);
+                // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad2' || event.code === 'ArrowDown') {
-                obj.incY(-inc);
-                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
+                this.camera.position.y -= inc;
+                console.log('aki camera:', this.camera.position.toString());
+
+                // obj.incY(-inc);
+                // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad9') {
+                this.camera.position.x += inc;
+                console.log('aki camera:', this.camera.position.toString());
+
                 // obj.babylonjs.position.x += inc;
-                obj.setScale(obj.getScale() - inc);
-                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
+                // obj.setScale(obj.getScale() - inc);
+                // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'Numpad3') {
+                this.camera.position.x -= inc;
+                console.log('aki camera:', this.camera.position.toString());
+
                 // obj.babylonjs.position.x -= inc;
-                obj.setScale(obj.getScale() + inc);
-                console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
+                // obj.setScale(obj.getScale() + inc);
+                // console.log('aki position:', obj.getX(), obj.getY(), obj.getZ(), obj.getScale());
             }
             if (event.code === 'End') {
             }
@@ -283,7 +311,7 @@ export class SceneIntro extends Scene {
                     this.sun.babylonjs.position.y = Misc.Maths.increaseValue(this.sun.babylonjs.position.y, 0.2699, speed);
                     this.sun.babylonjs.position.z = Misc.Maths.increaseValue(this.sun.babylonjs.position.z, -3.4699, speed);
                     this.sun.setScale(Misc.Maths.increaseValue(this.sun.getScale(), 1.15, speed));
-                    // console.log('aki A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
+                    // console.log('A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
                 }
                 if (this.animationTest === 2) {
                     const result = Misc.Maths.increaseVectorWithInertia(
@@ -296,7 +324,7 @@ export class SceneIntro extends Scene {
                     this.sun.babylonjs.position.z = result[1];
                     this.sun.setScale(result[2]);
                     // console.log(
-                    //     'aki A VER',
+                    //     'A VER',
                     //     this.sun.babylonjs.position.y.toPrecision(5),
                     //     this.sun.babylonjs.position.z.toPrecision(5),
                     //     this.sun.getScale().toPrecision(5)
@@ -307,7 +335,7 @@ export class SceneIntro extends Scene {
                     this.sun.babylonjs.position.y = Misc.Maths.increaseValue(this.sun.babylonjs.position.y, 0.8, speed);
                     this.sun.babylonjs.position.z = Misc.Maths.increaseValue(this.sun.babylonjs.position.z, -1.9, speed);
                     this.sun.setScale(Misc.Maths.increaseValue(this.sun.getScale(), 0.7, speed));
-                    // console.log('aki A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
+                    // console.log('A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
                 }
                 if (this.animationTest === 3) {
                     const result = Misc.Maths.increaseVectorWithInertia(
@@ -319,7 +347,7 @@ export class SceneIntro extends Scene {
                     this.sun.babylonjs.position.y = result[0];
                     this.sun.babylonjs.position.z = result[1];
                     this.sun.setScale(result[2]);
-                    // console.log('aki A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
+                    // console.log('A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
                 }*/
             })
         );
@@ -328,10 +356,48 @@ export class SceneIntro extends Scene {
     subscribeCanvasResize(): void {
         this.addSubscription(
             CoreGlobals.canvasResize$.subscribe((dimensions) => {
-                // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${dimensions.width / dimensions.height})`;
-                // this.textCanvasSize.text = '';
+                this.canvasRatio = dimensions.width / dimensions.height;
+                this.applyCanvasRatio(false);
+                this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
             })
         );
+    }
+
+    applyCanvasRatio(initialize: boolean): void {
+        // Camera responsive, this.MIDDLE_RATIO_CANVAS is ratio = 0; this.END_RATIO_CANVAS is ratio = 1
+        const factorCamera = 1 / (this.END_RATIO_CANVAS - this.MIDDLE_RATIO_CANVAS);
+        const ratioCamera = (this.canvasRatio - this.MIDDLE_RATIO_CANVAS) * factorCamera;
+        this.camera.position = Misc.Vectors.dragPoint(ratioCamera, this.paramsRatio0CameraPos, this.paramsRatio1CameraPos);
+
+        // this.START_RATIO_CANVAS is ratio = 0; this.MIDDLE_RATIO_CANVAS is ratio = 1
+        const factor = 1 / (this.MIDDLE_RATIO_CANVAS - this.START_RATIO_CANVAS);
+        const ratio = (this.canvasRatio - this.START_RATIO_CANVAS) * factor;
+
+        // Logo responsive
+        this.logo.setPosition(Misc.Vectors.dragPoint(ratio, LogoActor.paramsRatio0Pos, LogoActor.paramsRatio1Pos));
+        this.logo.setScale(Misc.Maths.dragValue(ratio, LogoActor.paramsRatio0Scale, LogoActor.paramsRatio1Scale));
+
+        // Sun responsive
+        if (initialize) {
+            this.sun.setPosition(Misc.Vectors.dragPoint(ratio, SunActor.paramsRatio0Pos, SunActor.paramsRatio1Pos));
+            SunStateMotion.endPosition = Misc.Vectors.dragPoint(ratio, SunStateMotion.paramsRatio0Pos, SunStateMotion.paramsRatio1Pos);
+            SunStateMotion.endScale = Misc.Maths.dragValue(ratio, SunStateMotion.paramsRatio0Scale, SunStateMotion.paramsRatio1Scale);
+        } else {
+            const stateMotion = this.sun.state.getCurrentState();
+            if (stateMotion) {
+                SunStateMotion.endPosition = Misc.Vectors.dragPoint(ratio, SunStateMotion.paramsRatio0Pos, SunStateMotion.paramsRatio1Pos);
+                SunStateMotion.endScale = Misc.Maths.dragValue(ratio, SunStateMotion.paramsRatio0Scale, SunStateMotion.paramsRatio1Scale);
+            } else {
+                this.sun.setPosition(Misc.Vectors.dragPoint(ratio, SunStateMotion.paramsRatio0Pos, SunStateMotion.paramsRatio1Pos));
+                this.sun.setScale(Misc.Maths.dragValue(ratio, SunStateMotion.paramsRatio0Scale, SunStateMotion.paramsRatio1Scale));
+            }
+        }
+
+        // Robocillo responsive
+        if (initialize) {
+            this.robocillo.physics.setTranslation(Misc.Vectors.dragPoint(ratio, RobocilloActor.paramsRatio0Pos, RobocilloActor.paramsRatio1Pos));
+            RobocilloStateIntro.ANGLE_SUN = Misc.Maths.dragValue(ratio, RobocilloStateIntro.paramRatio0AngleSun, RobocilloStateIntro.paramRatio1AngleSun);
+        }
     }
 
     onWorldLoaded(): void {
@@ -341,7 +407,7 @@ export class SceneIntro extends Scene {
             new ParticleSprite({
                 spriteTexture: this.loadingEndTx[0],
                 x: -30,
-                y: 100,
+                y: 75,
                 z: 0,
                 scale: 0.4,
                 motion: new MotionBasic({
@@ -361,7 +427,7 @@ export class SceneIntro extends Scene {
             new ParticleSprite({
                 spriteTexture: this.loadingEndTx[1],
                 x: -30,
-                y: 85,
+                y: 60,
                 z: 0,
                 scale: 0.3,
                 motion: new MotionBasic({

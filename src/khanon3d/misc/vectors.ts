@@ -3,6 +3,20 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Maths } from './maths';
 
 export class Vectors {
+    /**
+     * Drag point from origin to target depending on a ratio (0 is 'origin', 1 is 'target')
+     *
+     * @param origin Vector 'origin' position on scene
+     * @param target Vector 'target' position on scene
+     * @param ratio From 0 to 1 from origin to target
+     * @param ratioClampMin clamp min ratio
+     * @param ratioClampMax clamp max ratio
+     */
+    static dragPoint(ratio: number, origin: Vector3, target: Vector3, ratioClampMin: number = 0, ratioClampMax: number = 1): Vector3 {
+        ratio = Maths.clamp(ratio, ratioClampMin, ratioClampMax);
+        return origin.add(target.subtract(origin).scale(ratio));
+    }
+
     static vectorialProjectionToLine(vector: Vector3, line: Vector3): Vector3 {
         return line.scale(Vector3.Dot(vector, line) / Vector3.Dot(line, line));
     }

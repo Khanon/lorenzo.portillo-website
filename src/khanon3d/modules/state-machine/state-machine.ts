@@ -17,7 +17,7 @@ export class StateMachine<T> {
         }
         const nextState = this.get(stateId);
         this.currentState = nextState;
-        this.currentState.start();
+        this.currentState.start(() => this.onEndState());
     }
 
     get(stateId: string): State<T> {
@@ -27,6 +27,14 @@ export class StateMachine<T> {
             return undefined;
         }
         return state;
+    }
+
+    onEndState(): void {
+        this.currentState = undefined;
+    }
+
+    isPlayingState(): boolean {
+        return !!this.currentState;
     }
 
     getCurrentState(): State<T> {

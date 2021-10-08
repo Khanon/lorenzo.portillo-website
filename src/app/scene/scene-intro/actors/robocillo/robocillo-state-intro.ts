@@ -16,20 +16,22 @@ enum Happiness {
 export class RobocilloStateIntro extends State<Actor2D> {
     static id: string = 'RobocilloStateIntro';
 
-    private readonly ANGLE_SUN = -0.183;
-    private readonly ANGLE_CENTER = 0;
+    static readonly paramRatio0AngleSun = -0.055;
+    static readonly paramRatio1AngleSun = -0.183;
+    static ANGLE_SUN = 0;
+    private readonly ANGLE_CENTER = -0.004;
 
     private robocillo: Actor2D;
 
     loading: boolean;
 
-    start(): void {
+    onStart(): void {
         this.loading = true;
         this.robocillo = this.subject;
         this.goIn();
     }
 
-    end(): void {}
+    onEnd(): void {}
 
     notify(id: RobocilloMessages): void {
         switch (id) {
@@ -40,7 +42,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
     }
 
     goIn(): void {
-        this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: this.ANGLE_SUN }, () =>
+        this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: RobocilloStateIntro.ANGLE_SUN }, () =>
             WorkerTimer.setTimeout(this.stopSun, 500, this)
         );
     }

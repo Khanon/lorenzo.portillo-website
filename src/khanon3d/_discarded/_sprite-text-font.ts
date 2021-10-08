@@ -26,7 +26,7 @@ export class SpriteTextFont {
         for (let i = 0; i < 256; i++) {
             characters.push(String.fromCharCode(i));
         }
-        console.log('aki this.characters', characters);
+        console.log('this.characters', characters);
 
         const font = `${this.properties.fontStyle} ${this.properties.fontSize}px ${this.properties.fontName}`;
 
@@ -53,14 +53,14 @@ export class SpriteTextFont {
         textureWidth = numRowX * charWidth;
         textureHeight = Math.ceil(characters.length / numRowX) * charHeight;
 
-        console.log('aki numRowX', numRowX);
-        console.log('aki maxCharWidth:', charWidth);
-        console.log('aki maxCharHeight:', charHeight);
-        console.log('aki textureWidth', textureWidth);
-        console.log('aki textureHeight', textureHeight);
-        console.log('aki rowX, rowY', textureWidth / charWidth, textureHeight / charHeight);
-        console.log('aki sizes:', this.charSizes);
-        console.log('aki json:', spritePackedJson);
+        console.log('numRowX', numRowX);
+        console.log('maxCharWidth:', charWidth);
+        console.log('maxCharHeight:', charHeight);
+        console.log('textureWidth', textureWidth);
+        console.log('textureHeight', textureHeight);
+        console.log('rowX, rowY', textureWidth / charWidth, textureHeight / charHeight);
+        console.log('sizes:', this.charSizes);
+        console.log('json:', spritePackedJson);
 
         dynamicTexture = new DynamicTexture('DynamicTexture', { width: textureWidth, height: textureHeight }, this.babylonJsScene, false);
         const ctxTx = dynamicTexture.getContext();

@@ -1,6 +1,7 @@
 import { merge } from 'rxjs';
 
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 import { Actor2D, Sprite, ParticleSprite, ParticleEndCriteria, SpriteTexture, AssetsManager } from '../../../../../khanon3d';
 import * as Misc from '../../../../../khanon3d/misc';
@@ -14,6 +15,9 @@ import { SceneIntroGlobals } from '../../scene-intro-globals';
 import { RobocilloMessages } from './robocillo-messages';
 
 export class RobocilloActor extends Actor2D {
+    static paramsRatio0Pos = new Vector3(-20, 7, -140);
+    static paramsRatio1Pos = new Vector3(-20, -48, -440);
+
     private loadingChatsTx: SpriteTexture[];
     private readonly loadingChats: string[][] = [
         ['Loading...'],
@@ -66,7 +70,6 @@ export class RobocilloActor extends Actor2D {
         this.addAnimation(RobocilloAnimations.JUMP_FRONT, { delay: 75, frameStart: 80, frameEnd: 85, loop: false });
 
         this.setScale(0.82);
-        this.physics.setTranslationFromFloats(-20, -48, -410);
 
         const floorContactTexture: SpriteTexture = assetsManager.getSpriteTexture({ url: './assets/scene-intro/sprites/particle-walk-dust.png' });
         merge(this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT), this.keyFrameSubject(RobocilloKeyFrames.FLOOR_CONTACT)).subscribe(() => {

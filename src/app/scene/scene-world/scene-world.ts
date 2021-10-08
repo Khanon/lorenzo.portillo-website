@@ -123,8 +123,6 @@ export class SceneWorld extends Scene {
         });
 
         this.canvas.addEventListener('pointermove', () => {
-            // console.log(Vector3.Zero(), 'aki MOUSE MOVE', this.babylonjs.pointerX, this.babylonjs.pointerY, click);
-
             if (click === 1) {
                 if (zoom) {
                     zoom = false;
