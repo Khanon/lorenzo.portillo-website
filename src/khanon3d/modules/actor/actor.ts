@@ -16,7 +16,6 @@ import { Logger } from '../logger/logger';
 import { ParticlesFactory } from '../particle/particles-factory';
 import { ObservablesContainer } from '../../models/observables-container';
 import { AssetsManager } from '../assets-manager/assets-manager';
-import { CoreGlobals } from '../../models/core-globals';
 
 export abstract class Actor {
     private displayObject: DisplayObject;

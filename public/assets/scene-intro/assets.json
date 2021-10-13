@@ -2,23 +2,23 @@
     "spriteTextures": [
         {
             "url": "./assets/scene-intro/sprites/sun.png",
-            "width": 270,
-            "height": 270
+            "cellWidth": 270,
+            "cellHeight": 270
         },
         {
             "url": "./assets/scene-intro/sprites/robocillo.png",
-            "width": 34,
-            "height": 34
+            "cellWidth": 34,
+            "cellHeight": 34
         },
         {
             "url": "./assets/scene-intro/sprites/logo.png",
-            "width": 453,
-            "height": 115
+            "cellWidth": 402,
+            "cellHeight": 83
         },
         {
             "url": "./assets/scene-intro/sprites/particle-walk-dust.png",
-            "width": 34,
-            "height": 34
+            "cellWidth": 34,
+            "cellHeight": 34
         }
     ]
 }

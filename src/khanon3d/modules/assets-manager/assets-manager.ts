@@ -10,7 +10,7 @@ import { SpriteTexture } from '../sprite/sprite-texture';
 import { Logger } from '../logger/logger';
 
 interface AssetsJsonData {
-    spriteTextures: { url: string; width: number; height: number }[];
+    spriteTextures: { url: string; cellWidth: number; cellHeight: number }[];
 }
 
 export class AssetsManager {
@@ -34,8 +34,8 @@ export class AssetsManager {
                                     jsonData.spriteTextures.forEach((textureData) => {
                                         this.loadSpriteTexture({
                                             url: textureData.url,
-                                            width: textureData.width,
-                                            height: textureData.height,
+                                            width: textureData.cellWidth,
+                                            height: textureData.cellHeight,
                                         });
                                     });
                                 }

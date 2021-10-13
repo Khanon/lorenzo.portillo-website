@@ -23,7 +23,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
                 SceneIntroGlobals.earth.mesh.babylonjs.getBoundingInfo().boundingBox.maximum.x,
                 SceneIntroGlobals.earth.mesh.babylonjs.getBoundingInfo().boundingBox.maximum.y,
                 SceneIntroGlobals.earth.mesh.babylonjs.getBoundingInfo().boundingBox.maximum.z
-            ) + 10;
+            ) + 10.5;
         this.subscribeLoopUpdate();
     }
 

@@ -6,13 +6,13 @@ import { Actor2D, Sprite } from '../../../../../khanon3d';
 import { LogoStateMotion } from './logo-state-motion';
 
 export class LogoActor extends Actor2D {
-    static paramsRatio0Pos = new Vector3(0, 146, -2);
+    static paramsRatio0Pos = new Vector3(0, 136, -2);
     static paramsRatio1Pos = new Vector3(0, 115, 240);
     static paramsRatio0Scale = 0.35;
     static paramsRatio1Scale = 0.4;
 
     createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-intro/sprites/logo.png', numFrames: 59 });
+        return new Sprite(this.name, { url: './assets/scene-intro/sprites/logo.png', numFrames: 90 });
     }
 
     initialize(): void {

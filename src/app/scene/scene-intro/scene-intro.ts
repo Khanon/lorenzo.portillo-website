@@ -26,6 +26,7 @@ export class SceneIntro extends Scene {
     private readonly START_RATIO_CANVAS = 0.45;
     private readonly MIDDLE_RATIO_CANVAS = 2.186;
     private readonly END_RATIO_CANVAS = 3.5;
+    private readonly VERTICAL_RATIO_CANVAS = 0.31;
     private readonly paramsRatio0CameraPos = new Vector3(-430, 0, 0);
     private readonly paramsRatio1CameraPos = new Vector3(-200, 58, 0);
     canvasRatio: number;
@@ -74,7 +75,7 @@ export class SceneIntro extends Scene {
         // ******************
 
         // Setup the scene
-        this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
+        this.babylonjs.clearColor = new Color4(0.25, 0.25, 0.25, 1.0);
 
         // Fixed camera
         this.camera = new UniversalCamera('camera', new Vector3(-450, 0, 0), this.babylonjs);
@@ -125,8 +126,8 @@ export class SceneIntro extends Scene {
 
         // Start motions
         this.earth.state.set('motion');
-        this.logo.state.set('motion');
         this.sun.state.set('motion');
+        WorkerTimer.setTimeout(() => this.logo.state.set('motion'), 1000, this);
 
         // Start actions
         this.gravity.addActor(this.robocillo);
@@ -282,6 +283,7 @@ export class SceneIntro extends Scene {
 
     onRelease(): void {
         Misc.SpriteTextures.releaseList(this.loadingEndTx);
+        this.releaseSubscriptions();
     }
 
     onError(errorMsg: string): void {
@@ -358,7 +360,7 @@ export class SceneIntro extends Scene {
             CoreGlobals.canvasResize$.subscribe((dimensions) => {
                 this.canvasRatio = dimensions.width / dimensions.height;
                 this.applyCanvasRatio(false);
-                this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
+                // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
             })
         );
     }
@@ -374,7 +376,11 @@ export class SceneIntro extends Scene {
         const ratio = (this.canvasRatio - this.START_RATIO_CANVAS) * factor;
 
         // Logo responsive
-        this.logo.setPosition(Misc.Vectors.dragPoint(ratio, LogoActor.paramsRatio0Pos, LogoActor.paramsRatio1Pos));
+        if (ratio < this.VERTICAL_RATIO_CANVAS) {
+            this.logo.setPosition(LogoActor.paramsRatio0Pos);
+        } else {
+            this.logo.setPosition(Misc.Vectors.dragPoint(ratio, LogoActor.paramsRatio0Pos, LogoActor.paramsRatio1Pos));
+        }
         this.logo.setScale(Misc.Maths.dragValue(ratio, LogoActor.paramsRatio0Scale, LogoActor.paramsRatio1Scale));
 
         // Sun responsive

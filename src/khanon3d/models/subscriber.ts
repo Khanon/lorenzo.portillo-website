@@ -8,8 +8,6 @@ export class Subscriber {
     }
 
     protected releaseSubscriptions(): void {
-        // TODO: When should this function be called? After scene switch?
-        // Do state.Delete() for all registered states on actors and scene
         this.subscriptions.forEach((subscription) => {
             subscription.unsubscribe();
         });
