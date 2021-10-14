@@ -13,7 +13,7 @@ export class SpriteTexture {
     width: number;
     height: number;
 
-    constructor(private readonly babylonJsScene: BabylonJsScene) {}
+    constructor(private readonly id: string, private readonly babylonJsScene: BabylonJsScene) {}
 
     setFromUrl(url: string, width: number, height: number): void {
         this.width = width;

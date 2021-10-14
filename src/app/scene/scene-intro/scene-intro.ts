@@ -5,7 +5,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic } from '../../../khanon3d';
+import { GUI, Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic } from '../../../khanon3d';
 import * as Misc from '../../../khanon3d/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
@@ -23,6 +23,9 @@ import { ParticleSprite } from '../../../khanon3d/modules/particle/particles/par
 import { SunStateMotion } from './actors/sun/sun-state-motion';
 
 export class SceneIntro extends Scene {
+    static id: string = 'SceneIntro';
+    id = SceneIntro.id;
+
     private readonly START_RATIO_CANVAS = 0.45;
     private readonly MIDDLE_RATIO_CANVAS = 2.186;
     private readonly END_RATIO_CANVAS = 3.5;
@@ -59,6 +62,7 @@ export class SceneIntro extends Scene {
     // ******************
 
     onLoad(): void {
+        console.log('aki scene-intro LOAD');
         // ******************
         // Debug TODO Eliminar
         this.gui = new GUI(this);
@@ -78,7 +82,7 @@ export class SceneIntro extends Scene {
         this.babylonjs.clearColor = new Color4(0.25, 0.25, 0.25, 1.0);
 
         // Fixed camera
-        this.camera = new UniversalCamera('camera', new Vector3(-450, 0, 0), this.babylonjs);
+        this.camera = new UniversalCamera('camera', new Vector3(0, 0, 0), this.babylonjs);
         this.camera.target = new Vector3(1, 0, 0);
         this.camera.inputs.clear();
         this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
@@ -96,15 +100,16 @@ export class SceneIntro extends Scene {
         this.babylonjs.activeCamera.attachControl(this.canvas);
 
         // Textures
-        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock(this.babylonjs, this.loadingEndTexts, SceneIntroGlobals.fontBase_40);
+        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, SceneIntroGlobals.fontBase_40);
 
         // Add subscriptions
         this.subscribeLoopUpdate();
         this.subscribeCanvasResize();
     }
 
-    onExecute(canvasDimensions: DimensionsWH): void {
-        this.canvasRatio = canvasDimensions.width / canvasDimensions.height;
+    onPlay(): void {
+        console.log('aki scene-intro PLAY');
+        this.canvasRatio = CoreGlobals.canvasDimensions.width / CoreGlobals.canvasDimensions.height;
         // this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
 
         // Add actors
@@ -280,6 +285,8 @@ export class SceneIntro extends Scene {
         this.canvas.addEventListener('pointerdown', () => {});
         this.canvas.addEventListener('pointerup', () => {});
     }
+
+    onStop(): void {}
 
     onRelease(): void {
         Misc.SpriteTextures.releaseList(this.loadingEndTx);

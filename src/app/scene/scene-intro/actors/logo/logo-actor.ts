@@ -12,7 +12,7 @@ export class LogoActor extends Actor2D {
     static paramsRatio1Scale = 0.4;
 
     createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-intro/sprites/logo.png', numFrames: 90 });
+        return new Sprite(this.name, { textureId: 'logo', numFrames: 90 });
     }
 
     initialize(): void {

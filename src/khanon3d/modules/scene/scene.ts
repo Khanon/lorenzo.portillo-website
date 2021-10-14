@@ -1,5 +1,4 @@
-import { tap } from 'rxjs';
-
+import { Engine as BabylonJsEngine } from '@babylonjs/core/Engines/engine';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 // Inspector (only dev mode), these comments will be replaced from webpack.dev.js
@@ -7,8 +6,6 @@ import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 /* babylonjs-inspector */
 
 import { ActionsManager } from '../actions/actions-manager';
-import { DimensionsWH } from '../../models/dimensions-wh';
-import { Engine } from '../engine/engine';
 import { SceneProperties } from './scene-properties';
 import { ParticlesFactory } from '../particle/particles-factory';
 import { Subscriber } from '../../models/subscriber';
@@ -18,16 +15,21 @@ import { ActorsManager } from '../actor/actors-manager';
 import { ObservablesContainer } from '../../models/observables-container';
 import { AssetsManager } from '../assets-manager/assets-manager';
 import { Logger } from '../logger/logger';
+import { CoreGlobals } from '../../models/core-globals';
 
 export abstract class Scene extends Subscriber {
+    abstract id: string;
+
     babylonjs: BabylonJsScene;
 
-    protected properties: SceneProperties;
-    protected engine: Engine;
+    isLoaded: boolean = false;
+    isPlaying: boolean = false;
+
+    // Engine properties
+    protected babylonJsEngine: BabylonJsEngine;
     protected canvas: HTMLCanvasElement;
-    protected assetsJsonUrl: string;
-    protected isDevelopmentMode: boolean;
-    protected isExecuted: boolean = false;
+    private renderStart: (id: string) => void;
+    private renderStop: (id: string) => void;
 
     // Shared scene observables with actors
     protected observables: ObservablesContainer = new ObservablesContainer();
@@ -44,21 +46,32 @@ export abstract class Scene extends Subscriber {
     // Particles
     protected particles: ParticlesFactory;
 
+    constructor(private readonly properties: SceneProperties) {
+        super();
+    }
+
+    setEngineParams(babylonJsEngine: BabylonJsEngine, canvas: HTMLCanvasElement, renderStart: (id: string) => void, renderEnd: (id: string) => void): void {
+        this.babylonJsEngine = babylonJsEngine;
+        this.canvas = canvas;
+        this.renderStart = renderStart;
+        this.renderStop = renderEnd;
+    }
+
     /**
      * Create babylonjs scene, trigger onLoad.
      * @param properties
      */
-    load(properties: SceneProperties): void {
+    load(onLoaded?: () => void): void {
+        if (this.isLoaded) {
+            Logger.warn('Scene already loaded');
+            return;
+        }
+
         this.release();
 
-        this.properties = properties;
-        this.engine = properties.engine;
-        this.canvas = properties.canvas;
-        this.assetsJsonUrl = properties.assetsJsonUrl;
-        this.isDevelopmentMode = properties.isDevelopmentMode;
-        this.isExecuted = false;
+        this.isPlaying = false;
 
-        this.babylonjs = new BabylonJsScene(this.engine.babylonjs);
+        this.babylonjs = new BabylonJsScene(this.babylonJsEngine);
         this.assetsManager = new AssetsManager(this.babylonjs);
         this.spritesManager = new SpritesManager(this.assetsManager);
         this.meshesManager = new MeshesManager(this.assetsManager);
@@ -66,63 +79,70 @@ export abstract class Scene extends Subscriber {
         this.particles = new ParticlesFactory(this.babylonjs, this.assetsManager);
 
         this.onLoad();
-        this.assetsManager.loadAssets(this.assetsJsonUrl).subscribe({
+        this.assetsManager.loadAssets(this.properties.assetsJsonUrl).subscribe({
             error: (error) => {
-                const errorMsg = `There was an error loading assets: ${this.assetsJsonUrl}`;
+                const errorMsg = `There was an error loading assets: ${this.properties.assetsJsonUrl}`;
                 Logger.error(errorMsg, error);
                 this.onError(errorMsg);
             },
             complete: () => {
                 this.babylonjs.executeWhenReady(() => {
-                    if (this.properties.execute === undefined || this.properties.execute === true) {
-                        this.execute();
+                    this.isLoaded = true;
+                    if (onLoaded) {
+                        onLoaded();
+                    }
+                    if (this.properties.playOnLoad === true) {
+                        this.play();
                     }
                 });
             },
         });
 
         // Babylonjs inspector (only DEV mode). Babylonjs inspector imports are removed on webpack build
-        if (properties.isDevelopmentMode) {
+        if (CoreGlobals.isDevelopmentMode) {
             this.debugInspector();
         }
     }
 
     /**
-     * Execute the scene
+     * Play the scene, trigger render loop
      */
-    execute(): void {
-        // Once the scene is loaded, register a render loop // TODO: possible renderLoops leaks after loading different scenes
-        this.engine.babylonjs.runRenderLoop(() => {
-            this.isExecuted = true;
-            this.babylonjs.render();
-            if (this.properties.fpsContainer) {
-                let divFps = document.getElementById(this.properties.fpsContainer);
-                divFps.innerHTML = this.engine.babylonjs.getFps().toFixed() + ' fps';
-            }
-        });
-        this.onExecute(this.properties.canvasDimensions);
+    play(): void {
+        this.isPlaying = true;
+        this.renderStart(this.id);
+        this.onPlay();
+    }
+
+    /**
+     * Stop the scene, release from render loop
+     */
+    stop(): void {
+        this.renderStop(this.id);
+        this.onStop();
     }
 
     /**
      * Release all scene objects
      */
     release(): void {
+        this.isLoaded = false;
         this.onRelease();
         this.actorsManager?.release();
         this.spritesManager?.release();
         this.meshesManager?.release();
         this.assetsManager?.release();
+        this.babylonjs?.dispose();
     }
 
     // ------------------------
-    //   Load, Execute and Release
+    //   Load, play and Release
     // ------------------------
 
     abstract onLoad(): void;
-
-    abstract onExecute(canvasSize: DimensionsWH): void;
-
     abstract onRelease(): void;
+
+    abstract onPlay(): void;
+    abstract onStop(): void;
 
     /**
      * On scene loading error

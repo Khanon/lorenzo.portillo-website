@@ -4,14 +4,15 @@ import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
-import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { DimensionsWH, GUI, Scene, Sprite } from '../../../khanon3d';
+import { GUI, Scene, Sprite } from '../../../khanon3d';
 import { CoreGlobals } from '../../../khanon3d/models/core-globals';
 
 export class SceneWorld extends Scene {
+    static id: string = 'SceneWorld';
+    id = SceneWorld.id;
+
     private logo: Sprite;
 
     // ******************
@@ -21,25 +22,10 @@ export class SceneWorld extends Scene {
     // ******************
 
     onLoad(): void {
-        // ******************
-        // Debug
-        this.gui = new GUI(this);
-        this.textCanvasSize = this.gui.newTextBlock();
-        this.textCanvasSize.left = 0;
-        this.textCanvasSize.top = 300;
-        this.textCanvasSize.width = '200px';
-        this.textCanvasSize.height = '40px';
-        this.textCanvasSize.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.textCanvasSize.textHorizontalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this.textCanvasSize.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.textCanvasSize.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this.textCanvasSize.text = 'TEXT BLOCK';
-        this.textCanvasSize.color = '#fcf403';
-        // ******************
+        console.log('aki scene-world LOAD');
+        return;
 
-        SceneLoader.Append('./assets/mesh/', 'world3d.babylon', this.babylonjs, (scene) => {
-            // do something with the scene
-        });
+        // SceneLoader.Append('./assets/scene-world/mesh/', 'world3d.babylon', this.babylonjs, (scene) => {});
 
         const camera: UniversalCamera = new UniversalCamera('Camera', new Vector3(-3, 0, 0), this.babylonjs);
         camera.target = new Vector3(1, 0, 0);
@@ -76,9 +62,8 @@ export class SceneWorld extends Scene {
         );*/
     }
 
-    onExecute(canvasDimensions: DimensionsWH): void {
-        console.log('aki onLoaded, canvas dimensions:', canvasDimensions);
-        this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height}`;
+    onPlay(): void {
+        console.log('aki scene-intro PLAY');
 
         // Setup the scene
         this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
@@ -153,9 +138,13 @@ export class SceneWorld extends Scene {
         });
     }
 
+    onStop(): void {}
+
     onRelease(): void {}
 
-    onError(errorMsg: string): void {}
+    onError(errorMsg: string): void {
+        CoreGlobals.onError$.next(errorMsg);
+    }
 
     subscribeCanvasResize(): void {
         this.addSubscription(

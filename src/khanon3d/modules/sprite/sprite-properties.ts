@@ -1,8 +1,8 @@
 export interface SpriteProperties {
     /**
-     * Texture url used to load Texture on SpriteManager
+     * Texture ID used to load Texture on SpriteManager (id is defined on asseets.json)
      */
-    url?: string;
+    textureId?: string;
 
     /**
      * Total frames

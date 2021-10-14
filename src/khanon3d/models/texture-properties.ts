@@ -1,5 +1,6 @@
 export interface TextureProperties {
-    url: string;
+    id: string;
+    url?: string;
     width?: number;
     height?: number;
 }

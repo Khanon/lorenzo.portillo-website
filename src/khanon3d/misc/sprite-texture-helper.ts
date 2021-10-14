@@ -6,17 +6,22 @@ import { DynamicTextureHelper } from './dynamic-texture-helper';
 import { Arrays } from './arrays';
 
 export class SpriteTextureHelper {
-    static createFromTextBlock(babylonJsScene: BabylonJsScene, textBlock: string[], textBlockProperties: TextBlockProperties): SpriteTexture {
+    static createFromTextBlock(id: string, babylonJsScene: BabylonJsScene, textBlock: string[], textBlockProperties: TextBlockProperties): SpriteTexture {
         const dynamicTexture = DynamicTextureHelper.createFromTextBlock(babylonJsScene, Object.assign(textBlockProperties, { textBlock }));
-        const spriteTexture = new SpriteTexture(babylonJsScene);
+        const spriteTexture = new SpriteTexture(id, babylonJsScene);
         spriteTexture.setFromDynamicTexture(dynamicTexture);
         return spriteTexture;
     }
 
-    static createListFromTextBlock(babylonJsScene: BabylonJsScene, textBlocks: string[][], textBlockProperties: TextBlockProperties): SpriteTexture[] {
+    static createListFromTextBlock(
+        id: string,
+        babylonJsScene: BabylonJsScene,
+        textBlocks: string[][],
+        textBlockProperties: TextBlockProperties
+    ): SpriteTexture[] {
         const arr: SpriteTexture[] = [];
         textBlocks.forEach((textBlock) => {
-            arr.push(SpriteTextureHelper.createFromTextBlock(babylonJsScene, textBlock, textBlockProperties));
+            arr.push(SpriteTextureHelper.createFromTextBlock(id, babylonJsScene, textBlock, textBlockProperties));
         });
         return arr;
     }

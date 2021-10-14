@@ -2,12 +2,9 @@ import '@babylonjs/core/Loading/loadingScreen';
 import '@babylonjs/core/Loading/Plugins/babylonFileLoader';
 import '@babylonjs/core/Materials/PBR/pbrMaterial';
 
-import { Subject } from 'rxjs';
-
 import { Engine } from './modules/engine/engine';
 import { Logger } from './modules/logger/logger';
 import { Scene } from './modules/scene/scene';
-import { SceneProperties } from './modules/scene/scene-properties';
 import { DimensionsWH } from './models/dimensions-wh';
 import { CoreProperties } from './models/core-properties';
 import { WorkerTimer } from './workers/worker-timer';
@@ -24,16 +21,12 @@ export class Core {
     // Engine
     private engine: Engine;
 
-    // Events
-    private readonly onAppError$: Subject<string> = new Subject<string>();
-
     constructor(private readonly properties: CoreProperties) {
         this.loopUpdateDelay = this.properties.delayUpdate ?? 0;
         this.loopUpdateFPS = 1000 / this.properties.fps;
+        CoreGlobals.isDevelopmentMode = !!this.properties.isDevelopmentMode;
         if (this.properties.onAppError) {
-            this.onAppError$.subscribe({
-                next: (errorMsg: string) => this.properties.onAppError(errorMsg),
-            });
+            CoreGlobals.onError$.subscribe({ next: (errorMsg: string) => this.properties.onAppError(errorMsg) });
         }
     }
 
@@ -45,7 +38,7 @@ export class Core {
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'canvas';
         canvasContainer.appendChild(this.canvas);
-
+        CoreGlobals.canvasDimensions = this.getCanvasDimensions();
         return this.canvas;
     }
 
@@ -53,7 +46,7 @@ export class Core {
      * Starts BabylonJs
      */
     start(): void {
-        this.engine = new Engine(this.canvas);
+        this.engine = new Engine(this.canvas, { fpsContainer: this.properties.fpsContainer });
 
         // Start loop update
         this.loopUpdate();
@@ -64,9 +57,10 @@ export class Core {
 
         // Manage resize
         window.addEventListener('resize', () => {
+            const canvasDimensions = this.getCanvasDimensions();
             this.engine.babylonjs.resize();
-            CoreGlobals.canvasResize$.next(this.getCanvasDimensions());
-            // this.logCanvasSize();
+            CoreGlobals.canvasDimensions = canvasDimensions;
+            CoreGlobals.canvasResize$.next(canvasDimensions);
         });
     }
 
@@ -89,15 +83,9 @@ export class Core {
     /**
      * Set current scene
      */
-    setScene(scene: Scene, sceneProperties?: SceneProperties): void {
-        const properties = {
-            engine: this.engine,
-            canvas: this.canvas,
-            canvasDimensions: this.getCanvasDimensions(),
-        };
-        Object.assign(properties, sceneProperties);
-
-        scene.load(properties);
+    addScene(scene: Scene): Scene {
+        this.engine.addScene(scene);
+        return scene;
     }
 
     /**
@@ -116,7 +104,7 @@ export class Core {
                     this.loopUpdateLastMs = currentMs;
                 }
             },
-            1,
+            0,
             this
         );
     }

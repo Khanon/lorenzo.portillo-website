@@ -8,7 +8,7 @@ export class SpritesManager {
     constructor(private readonly assetsManager: AssetsManager) {}
 
     addSprite(sprite: Sprite): Sprite {
-        sprite.setTexture(this.assetsManager.getSpriteTexture({ url: sprite.properties.url }));
+        sprite.setTexture(this.assetsManager.getSpriteTexture({ id: sprite.properties.textureId }));
         this.sprites.add(sprite, sprite);
         return sprite;
     }

@@ -1,10 +1,10 @@
 import { Core, WorkerTimer } from './khanon3d';
 
 import { SceneIntro } from './app/scene/scene-intro/scene-intro';
+import { SceneWorld } from './app/scene/scene-world/scene-world';
 
 class App {
     core: Core;
-    // readonly states: StateMachine = new StateMachine();
 
     constructor() {
         // Avoid babylonJs canvas scale error
@@ -13,16 +13,20 @@ class App {
 
     init(): void {
         // Initialize app
-        this.core = new Core({ fps: 60, onAppError: this.appError });
+        // TODO: remve FPS after development
+        this.core = new Core({
+            fps: 60,
+            onAppError: (errorMsg) => this.appError(errorMsg),
+            isDevelopmentMode: this.isDevelopmentMode(),
+            fpsContainer: 'fps-container',
+        });
         this.core.createCanvasOnDivElement('canvas-container');
         this.core.start();
 
-        this.core.setScene(new SceneIntro(), {
-            assetsJsonUrl: './assets/scene-intro/assets.json',
-            isDevelopmentMode: this.isDevelopmentMode(),
-            fpsContainer: 'fps-container',
-        }); // TODO: remve FPS after development
-        // this.states.GoTo(new StateLoading(this.scene));
+        const sceneIntro = this.core.addScene(new SceneIntro({ assetsJsonUrl: './assets/scene-intro/assets.json', playOnLoad: true }));
+        const sceneWorld = this.core.addScene(new SceneWorld({ assetsJsonUrl: './assets/scene-world/assets.json' }));
+        sceneIntro.load();
+        // sceneWorld.load();
     }
 
     appError(errorMsg: string): void {

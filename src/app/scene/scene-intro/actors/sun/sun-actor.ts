@@ -12,7 +12,7 @@ export class SunActor extends Actor2D {
     static paramsRatio1Scale = 0.4;
 
     createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
-        return new Sprite(this.name, { url: './assets/scene-intro/sprites/sun.png', numFrames: 1 });
+        return new Sprite(this.name, { textureId: 'sun', numFrames: 1 });
     }
 
     initialize(): void {

@@ -31,10 +31,10 @@ export class RobocilloActor extends Actor2D {
     ];
 
     createDisplayObject(babylonJsScene: BabylonJsScene): Sprite {
-        this.loadingChatsTx = Misc.SpriteTextures.createListFromTextBlock(babylonJsScene, this.loadingChats, SceneIntroGlobals.fontBase_30);
+        this.loadingChatsTx = Misc.SpriteTextures.createListFromTextBlock('', babylonJsScene, this.loadingChats, SceneIntroGlobals.fontBase_30);
         Misc.Arrays.shuffle(this.loadingChatsTx, 1);
 
-        return new Sprite(this.name, { url: './assets/scene-intro/sprites/robocillo.png', numFrames: 32 });
+        return new Sprite(this.name, { textureId: 'robocillo', numFrames: 32 });
     }
 
     initialize(assetsManager: AssetsManager): void {
@@ -71,7 +71,7 @@ export class RobocilloActor extends Actor2D {
 
         this.setScale(0.82);
 
-        const floorContactTexture: SpriteTexture = assetsManager.getSpriteTexture({ url: './assets/scene-intro/sprites/particle-walk-dust.png' });
+        const floorContactTexture: SpriteTexture = assetsManager.getSpriteTexture({ id: 'particle-walk-dust' });
         merge(this.sceneObservables.get(SceneIntroObservables.GRAVITY_FLOOR_CONTACT), this.keyFrameSubject(RobocilloKeyFrames.FLOOR_CONTACT)).subscribe(() => {
             this.particles.new(
                 new ParticleSprite({
