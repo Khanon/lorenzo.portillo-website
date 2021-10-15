@@ -132,7 +132,7 @@ export class SceneIntro extends Scene {
         // Start motions
         this.earth.state.set('motion');
         this.sun.state.set('motion');
-        WorkerTimer.setTimeout(() => this.logo.state.set('motion'), 1000, this);
+        WorkerTimer.setTimeout(() => this.logo.state.set('motion'), 1300, this);
 
         // Start actions
         this.gravity.addActor(this.robocillo);
@@ -148,7 +148,7 @@ export class SceneIntro extends Scene {
         );
 
         // TODO: combineLatest([timeout(12500), scene-world->loaded])
-        WorkerTimer.setTimeout(this.onWorldLoaded, 12200, this);
+        WorkerTimer.setTimeout(this.onWorldLoaded, 14200, this);
 
         // Input subscriptions
         this.canvas.addEventListener('keydown', (event) => {

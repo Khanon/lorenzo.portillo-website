@@ -23,10 +23,8 @@ class App {
         this.core.createCanvasOnDivElement('canvas-container');
         this.core.start();
 
-        const sceneIntro = this.core.addScene(new SceneIntro({ assetsJsonUrl: './assets/scene-intro/assets.json', playOnLoad: true }));
-        const sceneWorld = this.core.addScene(new SceneWorld({ assetsJsonUrl: './assets/scene-world/assets.json' }));
-        sceneIntro.load();
-        // sceneWorld.load();
+        this.core.loadScene(new SceneIntro({ assetsJsonUrl: './assets/scene-intro/assets.json', playOnLoad: true }));
+        this.core.loadScene(new SceneWorld({ assetsJsonUrl: './assets/scene-world/assets.json' }));
     }
 
     appError(errorMsg: string): void {

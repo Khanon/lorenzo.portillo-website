@@ -58,7 +58,7 @@ export abstract class Scene extends Subscriber {
     }
 
     /**
-     * Create babylonjs scene, trigger onLoad.
+     * Create babylonjs scene, trigger onLoad and play if indicated
      * @param properties
      */
     load(onLoaded?: () => void): void {
@@ -70,7 +70,6 @@ export abstract class Scene extends Subscriber {
         this.release();
 
         this.isPlaying = false;
-
         this.babylonjs = new BabylonJsScene(this.babylonJsEngine);
         this.assetsManager = new AssetsManager(this.babylonjs);
         this.spritesManager = new SpritesManager(this.assetsManager);

@@ -21,11 +21,10 @@ export class RobocilloActor extends Actor2D {
     private loadingChatsTx: SpriteTexture[];
     private readonly loadingChats: string[][] = [
         ['Loading...'],
+        ['Developing bugs...'],
         ['Mixing bits...'],
         ['Loading bytes...'],
-        ['Developing bugs...'],
         ['Generating errors...'],
-        ['What was I doing?'],
         ['Shading shaders...'],
         ['Composing meshes...'],
     ];
