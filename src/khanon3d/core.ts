@@ -23,7 +23,7 @@ export class Core {
     private engine: Engine;
 
     // Scene
-    private loadSceneQueue: Misc.KeyValue<Scene, void> = new Misc.KeyValue<Scene, void>();
+    private loadSceneQueue: Misc.KeyValue<Scene, (scene: Scene) => void> = new Misc.KeyValue<Scene, (scene: Scene) => void>();
 
     constructor(private readonly properties: CoreProperties) {
         this.loopUpdateDelay = this.properties.delayUpdate ?? 0;
@@ -35,13 +35,17 @@ export class Core {
     }
 
     /**
-     * Creates and append canvas to a div element
+     * Creates and append canvas to a div element.
+     * One canvas per application.
      */
-    createCanvasOnDivElement(divId: string): HTMLCanvasElement {
-        const canvasContainer = document.getElementById(divId);
+    createCanvasOnDivElement(htmlElement: HTMLElement): HTMLCanvasElement {
+        if (this.canvas) {
+            Logger.error('Not allowed more than one canvas.');
+            return;
+        }
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'canvas';
-        canvasContainer.appendChild(this.canvas);
+        htmlElement.appendChild(this.canvas);
         CoreGlobals.canvasDimensions = this.getCanvasDimensions();
         return this.canvas;
     }
@@ -49,7 +53,7 @@ export class Core {
     /**
      * Starts BabylonJs
      */
-    start(): void {
+    run(): void {
         this.engine = new Engine(this.canvas, { fpsContainer: this.properties.fpsContainer });
 
         // Start loop update
@@ -87,24 +91,34 @@ export class Core {
     /**
      * Load scene
      */
-    loadScene(scene: Scene): Scene {
+    loadScene(scene: Scene, onLoaded?: (scene: Scene) => void): Scene {
         this.engine.addScene(scene);
-        this.loadSceneQueue.add(scene);
+        this.loadSceneQueue.add(scene, onLoaded);
         if (this.loadSceneQueue.getKeys().length === 1) {
-            WorkerTimer.setTimeout(() => scene.load(() => this.loadSceneQueueNext(scene)), 1, this);
+            WorkerTimer.setTimeout(
+                () =>
+                    scene.load(() => {
+                        this.loadSceneQueueNext(scene, onLoaded);
+                    }),
+                1,
+                this
+            );
         }
         return scene;
     }
 
     /**
      * Proccess load scene queue.
-     * This is made due to BabylonJs issue on loading more than one scene simultaneously.
+     * Queue is needeed since BabylonJs mess up on loading more than one scene simultaneously.
      */
-    private loadSceneQueueNext(sceneLoaded: Scene): void {
+    private loadSceneQueueNext(sceneLoaded: Scene, onLoaded?: (scene: Scene) => void): void {
         this.loadSceneQueue.del(sceneLoaded);
+        if (onLoaded) {
+            onLoaded(sceneLoaded);
+        }
         if (this.loadSceneQueue.getKeys().length > 0) {
-            const nextScene = this.loadSceneQueue.getKeys()[0];
-            WorkerTimer.setTimeout(() => nextScene.load(() => this.loadSceneQueueNext(nextScene)), 1, this);
+            const nextScene = this.loadSceneQueue.getPairs()[0];
+            WorkerTimer.setTimeout(() => nextScene.key.load(() => this.loadSceneQueueNext(nextScene.key, nextScene.value)), 1, this);
         }
     }
 

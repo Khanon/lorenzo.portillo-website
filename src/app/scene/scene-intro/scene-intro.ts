@@ -1,11 +1,12 @@
-import { Color4 } from '@babylonjs/core/Maths/math.color';
+import { combineLatest, timer, Subject } from 'rxjs';
+
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { GUI, Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic } from '../../../khanon3d';
+import { GUI, Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic, ParticleSprite, SpriteTexture } from '../../../khanon3d';
 import * as Misc from '../../../khanon3d/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
@@ -17,10 +18,10 @@ import { SceneIntroActionGravity } from './actions/action-gravity';
 import { SceneIntroGlobals } from './scene-intro-globals';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
 import { SceneIntroObservables } from './scene-intro-observables';
-import { SpriteTexture } from '../../../khanon3d/modules/sprite/sprite-texture';
 import { RobocilloMessages } from './actors/robocillo/robocillo-messages';
-import { ParticleSprite } from '../../../khanon3d/modules/particle/particles/particle-sprite';
 import { SunStateMotion } from './actors/sun/sun-state-motion';
+import { AppSceneProperties } from '../app-scene-properties';
+import { AppNotifications } from '../../app.notifications';
 
 export class SceneIntro extends Scene {
     static id: string = 'SceneIntro';
@@ -50,37 +51,19 @@ export class SceneIntro extends Scene {
     // Actions
     gravity: SceneIntroActionGravity;
 
+    // Subscriptions
+    worldLoaded: boolean = false;
+    onWorldLoaded$: Subject<void> = new Subject<void>();
+
     // Textures
     private loadingEndTx: SpriteTexture[];
     private readonly loadingEndTexts: string[][] = [['READY!'], ['Tap to continue']];
 
-    // ******************
-    // Debug TODO: delete
-    gui: GUI;
-    textCanvasSize: TextBlock;
-    animationTest: number = -1;
-    // ******************
+    constructor(protected readonly properties: AppSceneProperties) {
+        super(properties);
+    }
 
     onLoad(): void {
-        console.log('aki scene-intro LOAD');
-        // ******************
-        // Debug TODO Eliminar
-        this.gui = new GUI(this);
-        this.textCanvasSize = this.gui.newTextBlock();
-        this.textCanvasSize.left = 0;
-        this.textCanvasSize.top = 10;
-        this.textCanvasSize.width = '500px';
-        this.textCanvasSize.height = '40px';
-        this.textCanvasSize.textHorizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.textCanvasSize.textHorizontalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this.textCanvasSize.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.textCanvasSize.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-        this.textCanvasSize.color = '#fcf403';
-        // ******************
-
-        // Setup the scene
-        this.babylonjs.clearColor = new Color4(0.25, 0.25, 0.25, 1.0);
-
         // Fixed camera
         this.camera = new UniversalCamera('camera', new Vector3(0, 0, 0), this.babylonjs);
         this.camera.target = new Vector3(1, 0, 0);
@@ -96,19 +79,14 @@ export class SceneIntro extends Scene {
         this.actions.registerAction(this.gravity);
         this.observables.add(SceneIntroObservables.GRAVITY_FLOOR_CONTACT, this.gravity.getFloorContactObserbable());
 
-        // Attach imported camera to canvas inputs
-        this.babylonjs.activeCamera.attachControl(this.canvas);
-
         // Textures
         this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, SceneIntroGlobals.fontBase_40);
 
         // Add subscriptions
-        this.subscribeLoopUpdate();
         this.subscribeCanvasResize();
     }
 
     onPlay(): void {
-        console.log('aki scene-intro PLAY');
         this.canvasRatio = CoreGlobals.canvasDimensions.width / CoreGlobals.canvasDimensions.height;
         // this.textCanvasSize.text = `Canvas: ${canvasDimensions.width} x ${canvasDimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
 
@@ -127,7 +105,7 @@ export class SceneIntro extends Scene {
         SceneIntroGlobals.earth = this.earth;
 
         // Hide BlackScreen
-        this.hideBlackScreen();
+        this.properties.appNotification(AppNotifications.HIDE_BLACK_SCREEN);
 
         // Start motions
         this.earth.state.set('motion');
@@ -147,10 +125,18 @@ export class SceneIntro extends Scene {
             this
         );
 
-        // TODO: combineLatest([timeout(12500), scene-world->loaded])
-        WorkerTimer.setTimeout(this.onWorldLoaded, 14200, this);
+        // World loaded
+        combineLatest([timer(3000), this.onWorldLoaded$]).subscribe(() => {
+            this.onWorldLoaded();
+        });
 
-        // Input subscriptions
+        // Click to go to World after loading
+        this.canvas.addEventListener('click', (event) => {
+            if (this.worldLoaded) {
+                this.properties.appNotification(AppNotifications.GO_WORLD);
+            }
+        });
+
         this.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.code, event.code);
             const inc = event.altKey ? (event.ctrlKey ? 0.01 : 0.1) : 1;
@@ -234,18 +220,6 @@ export class SceneIntro extends Scene {
             }
             if (event.code === 'Home') {
             }
-            if (event.code === 'PageUp') {
-                this.animationTest = 1;
-            }
-            if (event.code === 'PageDown') {
-                this.animationTest = 0;
-            }
-            if (event.code === 'Insert') {
-                this.animationTest = 3;
-            }
-            if (event.code === 'Delete') {
-                this.animationTest = 2;
-            }
             if (event.code === 'Digit1') {
                 this.robocillo.setAnimation(RobocilloAnimations.STOP_SIDE, false);
             }
@@ -297,77 +271,11 @@ export class SceneIntro extends Scene {
         CoreGlobals.onError$.next(errorMsg);
     }
 
-    hideBlackScreen(): void {
-        const blackScrenn = document.getElementById('blackscreen-container');
-        blackScrenn.style.display = 'none';
-    }
-
-    subscribeLoopUpdate(): void {
-        // this.sun.babylonjs.position.y = 0.2699; // Start
-        // this.sun.babylonjs.position.z = -3.4699;
-        // this.sun.setScale(1.15);
-        // this.sun.babylonjs.position.y = 0.8;
-        // this.sun.babylonjs.position.z = -1.9; // End
-        // this.sun.setScale(0.7);
-
-        this.addSubscription(
-            CoreGlobals.loopUpdate$.subscribe((delta) => {
-                const speed = 0.1 * delta;
-                const acc = 2;
-
-                // Move sun test from end to start
-                /*if (this.animationTest === 0) {
-                    this.sun.babylonjs.position.y = Misc.Maths.increaseValue(this.sun.babylonjs.position.y, 0.2699, speed);
-                    this.sun.babylonjs.position.z = Misc.Maths.increaseValue(this.sun.babylonjs.position.z, -3.4699, speed);
-                    this.sun.setScale(Misc.Maths.increaseValue(this.sun.getScale(), 1.15, speed));
-                    // console.log('A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
-                }
-                if (this.animationTest === 2) {
-                    const result = Misc.Maths.increaseVectorWithInertia(
-                        [this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale()],
-                        [0.2699, 1.4699, 1.15],
-                        speed,
-                        acc
-                    );
-                    this.sun.babylonjs.position.y = result[0];
-                    this.sun.babylonjs.position.z = result[1];
-                    this.sun.setScale(result[2]);
-                    // console.log(
-                    //     'A VER',
-                    //     this.sun.babylonjs.position.y.toPrecision(5),
-                    //     this.sun.babylonjs.position.z.toPrecision(5),
-                    //     this.sun.getScale().toPrecision(5)
-                    // );
-                }
-                // Move sun test start end to end
-                if (this.animationTest === 1) {
-                    this.sun.babylonjs.position.y = Misc.Maths.increaseValue(this.sun.babylonjs.position.y, 0.8, speed);
-                    this.sun.babylonjs.position.z = Misc.Maths.increaseValue(this.sun.babylonjs.position.z, -1.9, speed);
-                    this.sun.setScale(Misc.Maths.increaseValue(this.sun.getScale(), 0.7, speed));
-                    // console.log('A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
-                }
-                if (this.animationTest === 3) {
-                    const result = Misc.Maths.increaseVectorWithInertia(
-                        [this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale()],
-                        [0.8, -1.9, 0.7],
-                        speed,
-                        acc
-                    );
-                    this.sun.babylonjs.position.y = result[0];
-                    this.sun.babylonjs.position.z = result[1];
-                    this.sun.setScale(result[2]);
-                    // console.log('A VER', this.sun.babylonjs.position.y, this.sun.babylonjs.position.z, this.sun.getScale());
-                }*/
-            })
-        );
-    }
-
     subscribeCanvasResize(): void {
         this.addSubscription(
             CoreGlobals.canvasResize$.subscribe((dimensions) => {
                 this.canvasRatio = dimensions.width / dimensions.height;
                 this.applyCanvasRatio(false);
-                // this.textCanvasSize.text = `Canvas: ${dimensions.width} x ${dimensions.height} (Ratio: ${this.canvasRatio})`; // Debug TODO Eliminar
             })
         );
     }
@@ -414,6 +322,7 @@ export class SceneIntro extends Scene {
     }
 
     onWorldLoaded(): void {
+        this.worldLoaded = true;
         this.robocillo.notify(RobocilloMessages.WORLD_LOADED);
 
         this.particles.new(

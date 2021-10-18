@@ -6,14 +6,15 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { GUI, Scene, Sprite } from '../../../khanon3d';
-import { CoreGlobals } from '../../../khanon3d/models/core-globals';
+import { CoreGlobals, GUI, Scene } from '../../../khanon3d';
+
+import { AppSceneProperties } from '../app-scene-properties';
 
 export class SceneWorld extends Scene {
     static id: string = 'SceneWorld';
     id = SceneWorld.id;
 
-    private logo: Sprite;
+    private camera: UniversalCamera;
 
     // ******************
     // Debug TODO: delete
@@ -21,27 +22,28 @@ export class SceneWorld extends Scene {
     textCanvasSize: TextBlock;
     // ******************
 
+    constructor(protected readonly properties: AppSceneProperties) {
+        super(properties);
+    }
+
     onLoad(): void {
-        console.log('aki scene-world LOAD');
-        return;
-
-        // SceneLoader.Append('./assets/scene-world/mesh/', 'world3d.babylon', this.babylonjs, (scene) => {});
-
-        const camera: UniversalCamera = new UniversalCamera('Camera', new Vector3(-3, 0, 0), this.babylonjs);
-        camera.target = new Vector3(1, 0, 0);
-        camera.inputs.clear();
-        camera.attachControl(this.canvas, true);
+        // Fixed camera
+        this.camera = new UniversalCamera('camera', new Vector3(-10, 0, 0), this.babylonjs);
+        this.camera.target = new Vector3(1, 0, 0);
+        this.camera.inputs.clear();
+        // this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
+        this.camera.attachControl(this.canvas, true);
 
         const light1: HemisphericLight = new HemisphericLight('light1', new Vector3(1, 0, 0), this.babylonjs);
 
-        const flatMaterial = new StandardMaterial('', this.babylonjs);
+        /*const flatMaterial = new StandardMaterial('', this.babylonjs);
         flatMaterial.disableLighting = true;
         flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
 
         const sphere = MeshBuilder.CreateSphere('sphere', {});
         sphere.material = flatMaterial;
         sphere.position.x = -1;
-        sphere.position.y = -1;
+        sphere.position.y = -1;*/
 
         // Logo
         // this.logo = this.addSprite('', './assets/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
@@ -63,18 +65,10 @@ export class SceneWorld extends Scene {
     }
 
     onPlay(): void {
-        console.log('aki scene-intro PLAY');
-
-        // Setup the scene
-        this.babylonjs.clearColor = new Color4(0.19, 0.19, 0.19, 1.0);
-
         // Get scene objects
         const World3D = this.babylonjs.getMeshByID('Icosphere');
         console.log('aki World3D:', World3D);
-        World3D.visibility = 0;
-
-        // Attach imported camera to canvas inputs
-        // scene.activeCamera.attachControl(canvas);
+        World3D.visibility = 1;
 
         // Add subscriptions
         this.subscribeCanvasResize();
@@ -89,21 +83,30 @@ export class SceneWorld extends Scene {
 
         this.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.key, event.code);
-            if (event.key === 'ArrowLeft') {
-                this.logo.babylonjs.position.z += 0.01;
-                console.log('aki position:', this.logo.babylonjs.position.x, this.logo.babylonjs.position.y, this.logo.babylonjs.position.z);
+            const inc = event.altKey ? (event.ctrlKey ? 0.01 : 0.1) : 1;
+            if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {
+                this.camera.position.z += inc;
+                console.log('aki position:', this.camera.position.x, this.camera.position.y, this.camera.position.z);
             }
-            if (event.key === 'ArrowRight') {
-                this.logo.babylonjs.position.z -= 0.01;
-                console.log('aki position:', this.logo.babylonjs.position.x, this.logo.babylonjs.position.y, this.logo.babylonjs.position.z);
+            if (event.code === 'Numpad6' || event.code === 'ArrowRight') {
+                this.camera.position.z -= inc;
+                console.log('aki position:', this.camera.position.x, this.camera.position.y, this.camera.position.z);
             }
-            if (event.key === 'ArrowUp') {
-                this.logo.babylonjs.position.y += 0.01;
-                console.log('aki position:', this.logo.babylonjs.position.x, this.logo.babylonjs.position.y, this.logo.babylonjs.position.z);
+            if (event.code === 'Numpad8' || event.code === 'ArrowUp') {
+                this.camera.position.y += inc;
+                console.log('aki position:', this.camera.position.x, this.camera.position.y, this.camera.position.z);
             }
-            if (event.key === 'ArrowDown') {
-                this.logo.babylonjs.position.y -= 0.01;
-                console.log('aki position:', this.logo.babylonjs.position.x, this.logo.babylonjs.position.y, this.logo.babylonjs.position.z);
+            if (event.code === 'Numpad2' || event.code === 'ArrowDown') {
+                this.camera.position.y -= inc;
+                console.log('aki position:', this.camera.position.x, this.camera.position.y, this.camera.position.z);
+            }
+            if (event.code === 'Numpad9') {
+                this.camera.position.x += inc;
+                console.log('aki position:', this.camera.position.x, this.camera.position.y, this.camera.position.z);
+            }
+            if (event.code === 'Numpad3') {
+                this.camera.position.x -= inc;
+                console.log('aki position:', this.camera.position.x, this.camera.position.y, this.camera.position.z);
             }
         });
 

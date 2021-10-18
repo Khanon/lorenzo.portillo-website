@@ -1,3 +1,4 @@
+import { Color4 } from '@babylonjs/core/Maths/math.color';
 import { Engine as BabylonJsEngine } from '@babylonjs/core/Engines/engine';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
@@ -46,7 +47,7 @@ export abstract class Scene extends Subscriber {
     // Particles
     protected particles: ParticlesFactory;
 
-    constructor(private readonly properties: SceneProperties) {
+    constructor(protected readonly properties: SceneProperties) {
         super();
     }
 
@@ -76,6 +77,16 @@ export abstract class Scene extends Subscriber {
         this.meshesManager = new MeshesManager(this.assetsManager);
         this.actorsManager = new ActorsManager(this.babylonjs, this.assetsManager, this.spritesManager, this.meshesManager, this.observables);
         this.particles = new ParticlesFactory(this.babylonjs, this.assetsManager);
+
+        // Setup the scene
+        if (this.properties.clearColor) {
+            this.babylonjs.clearColor = new Color4(
+                this.properties.clearColor.r,
+                this.properties.clearColor.g,
+                this.properties.clearColor.b,
+                this.properties.clearColor.a
+            );
+        }
 
         this.onLoad();
         this.assetsManager.loadAssets(this.properties.assetsJsonUrl).subscribe({
@@ -109,6 +120,7 @@ export abstract class Scene extends Subscriber {
     play(): void {
         this.isPlaying = true;
         this.renderStart(this.id);
+        this.babylonjs.activeCamera.attachControl(this.canvas);
         this.onPlay();
     }
 

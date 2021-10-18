@@ -24,9 +24,11 @@ export class RobocilloStateIntro extends State<Actor2D> {
     private robocillo: Actor2D;
 
     loading: boolean;
+    loadingSteps: number;
 
     onStart(): void {
         this.loading = true;
+        this.loadingSteps = 0;
         this.robocillo = this.subject;
         this.goIn();
     }
@@ -43,7 +45,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
 
     goIn(): void {
         this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: RobocilloStateIntro.ANGLE_SUN }, () =>
-            WorkerTimer.setTimeout(this.stopSun, 500, this)
+            WorkerTimer.setTimeout(() => this.stopSun(), 500, this)
         );
     }
 
@@ -51,27 +53,23 @@ export class RobocilloStateIntro extends State<Actor2D> {
         this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
         WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.MOVE_HANDS, true), 500, this);
         WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.STOP_FRONT, false), 1000, this);
-        WorkerTimer.setTimeout(this.goCenter, 1500, this);
+        WorkerTimer.setTimeout(() => this.goCenter(), 1500, this);
     }
 
     goCenter(): void {
         this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: this.ANGLE_CENTER }, () =>
-            WorkerTimer.setTimeout(this.stopCenter, 100, this)
+            WorkerTimer.setTimeout(() => this.stopCenter(), 100, this)
         );
     }
 
     stopCenter(): void {
-        if (this.loading) {
-            this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
-            WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false), 500, this);
-            WorkerTimer.setTimeout(this.checkPaper, 500, this);
-        } else {
-            this.centerEnd(Happiness.JUMP);
-        }
+        this.robocillo.setAnimation(RobocilloAnimations.SIDE_TO_FRONT, false);
+        WorkerTimer.setTimeout(() => this.robocillo.setAnimation(RobocilloAnimations.PAPER_TAKE, false), 500, this);
+        WorkerTimer.setTimeout(() => this.checkPaper(), 500, this);
     }
 
     checkPaper(): void {
-        if (this.loading) {
+        if (this.loading || this.loadingSteps < 3) {
             WorkerTimer.setTimeout(
                 () =>
                     this.robocillo.setAnimation(RobocilloAnimations.PAPER_CHECK, false, () => {
@@ -81,6 +79,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
                 500 + Math.random() * 1000,
                 this
             );
+            this.loadingSteps++;
         } else {
             this.robocillo.setAnimation(RobocilloAnimations.PAPER_THROW, false, () => {
                 this.centerEnd(Happiness.JUMP);
@@ -92,11 +91,11 @@ export class RobocilloStateIntro extends State<Actor2D> {
         switch (happiness ?? Misc.Maths.randomInt(Happiness.MOVE_HANDS, Happiness.JUMP)) {
             case Happiness.MOVE_HANDS:
                 this.robocillo.setAnimation(RobocilloAnimations.MOVE_HANDS);
-                WorkerTimer.setTimeout(this.centerEnd, 500 + Math.random() * 1000, this);
+                WorkerTimer.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this);
                 break;
             case Happiness.RAISE_HANDS:
                 this.robocillo.setAnimation(RobocilloAnimations.RAISE_HANDS);
-                WorkerTimer.setTimeout(this.centerEnd, 500 + Math.random() * 1000, this);
+                WorkerTimer.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this);
                 break;
             case Happiness.JUMP:
                 if (this.robocillo.physics.onFloor) {
@@ -105,7 +104,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
                     this.robocillo.physics.resetVelocity();
                     WorkerTimer.setTimeout(() => this.robocillo.physics.applyForce(vJump), 200, this);
                 }
-                WorkerTimer.setTimeout(this.centerEnd, 1200, this);
+                WorkerTimer.setTimeout(() => this.centerEnd(), 1200, this);
                 break;
         }
     }

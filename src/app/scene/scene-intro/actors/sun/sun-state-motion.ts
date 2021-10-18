@@ -12,7 +12,7 @@ export class SunStateMotion extends State<Actor2D> {
     static endScale: number = 0;
 
     onStart(): void {
-        WorkerTimer.setTimeout(this.subscribeLoopUpdate, 700, this);
+        WorkerTimer.setTimeout(() => this.subscribeLoopUpdate(), 700, this);
     }
 
     onEnd(): void {
