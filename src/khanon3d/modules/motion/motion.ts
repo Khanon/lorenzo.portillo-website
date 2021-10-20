@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 import { LoopUpdateable } from '../../models/loop-updateable';
 import { MotionProperties } from './motion-properties';
 import { DisplayObject } from '../../models/display-object';
@@ -17,9 +15,9 @@ export abstract class Motion extends LoopUpdateable {
     abstract onInitialize(): void;
     abstract loopUpdate(delta: number): void;
 
-    initialize(displayObject: DisplayObject, onDone?: () => void): void {
+    initialize(displayObject: DisplayObject, onDoneCallback?: () => void): void {
         this.displayObject = displayObject;
-        this.onDoneCallback = onDone;
+        this.onDoneCallback = onDoneCallback;
         this.onInitialize();
         if (this.properties.endCriteria === MotionEndCriteria.TIMEOUT) {
             WorkerTimer.setTimeout(() => this.done(), this.properties.endValue, this);

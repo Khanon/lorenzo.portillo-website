@@ -9,9 +9,10 @@ import { Sprite } from '../sprite/sprite';
 import { Mesh } from '../mesh/mesh';
 import { Logger } from '../logger/logger';
 import { AssetsManager } from '../assets-manager/assets-manager';
+import * as Misc from '../../misc';
 
 export class ActorsManager {
-    private readonly _actors: Actor[] = [];
+    private readonly _actors: Misc.KeyValue<Actor, void> = new Misc.KeyValue<Actor, void>();
 
     constructor(
         private readonly babylonJsScene: BabylonJsScene,
@@ -22,7 +23,7 @@ export class ActorsManager {
     ) {}
 
     get actors(): Actor[] {
-        return this._actors;
+        return this._actors.getKeys();
     }
 
     addActor(actor: Actor): any {
@@ -38,18 +39,19 @@ export class ActorsManager {
         }
         actor.createParticlesManager(this.babylonJsScene, this.assetsManager);
         actor.setSceneObservables(this.sceneObservables);
-        actor.initialize(this.assetsManager);
+        actor.initialize(this.assetsManager, () => this.delActor(actor));
 
-        this._actors.push(actor);
+        this._actors.add(actor);
         return actor;
     }
 
-    removeActor(): void {
-        // TODO
+    delActor(actor: Actor): void {
+        this._actors.del(actor);
     }
 
     release(): void {
-        this.actors.forEach((actor) => {
+        const actors = [...this._actors.getKeys()];
+        actors.forEach((actor) => {
             actor.release();
         });
         this.actors.slice(0, this.actors.length);

@@ -6,6 +6,7 @@ import { Action, Actor } from '../../../../khanon3d';
 import * as Misc from '../../../../khanon3d/misc';
 
 import { SceneIntroGlobals } from '../scene-intro-globals';
+import { SceneIntroMessages } from '../scene-intro-notifications';
 
 export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly GRAVITY_POWER: number = 0.0345;
@@ -15,15 +16,13 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     private readonly actors: Actor[] = [];
 
-    private floorContact$: Subject<number> = new Subject<number>();
-
     onPlay(): void {
         this.floorLength =
             Math.max(
                 SceneIntroGlobals.earth.mesh.babylonjs.getBoundingInfo().boundingBox.maximum.x,
                 SceneIntroGlobals.earth.mesh.babylonjs.getBoundingInfo().boundingBox.maximum.y,
                 SceneIntroGlobals.earth.mesh.babylonjs.getBoundingInfo().boundingBox.maximum.z
-            ) + 10.5;
+            ) + 10.3;
         this.subscribeLoopUpdate();
     }
 
@@ -33,10 +32,6 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
 
     addActor(actor: Actor) {
         this.actors.push(actor);
-    }
-
-    getFloorContactObserbable(): Subject<number> {
-        return this.floorContact$;
     }
 
     loopUpdate(delta: number): void {
@@ -65,7 +60,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
                 const restitutionVectorLength = restitutionVector.length();
                 if (restitutionVectorLength > this.RESTITUTION_OVER_FACTOR) {
                     actor.physics.applyForce(restitutionVector.scale(1.5));
-                    this.floorContact$.next(restitutionVectorLength);
+                    actor.notify(SceneIntroMessages.GRAVITY_FLOOR_CONTACT);
                 }
             }
 

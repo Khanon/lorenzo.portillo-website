@@ -22,7 +22,7 @@ export class EarthActor extends Actor3D {
         return new Mesh(this.name, meshBjs);
     }
 
-    initialize(): void {
+    onInitialize(): void {
         this.state.registerState(new EarthStateMotion('motion', this));
 
         this.mesh.babylonjs.rotate(new Vector3(0, 1, 0), Math.PI / 2);

@@ -1,11 +1,10 @@
 import { Vector3, Matrix } from '@babylonjs/core/Maths/math.vector';
 
-import { Modifier } from '../../modifiers/modifier';
 import * as Misc from '../../../misc';
 import { DisplayObject } from '../../../models/display-object';
 import { PhysicsUpdateable } from '../../../models/physics-updatable';
 
-export class ActorSimplePhysics extends PhysicsUpdateable implements Modifier {
+export class ActorSimplePhysics extends PhysicsUpdateable {
     static id: string = 'ActorSimplePhysics';
     id: string = ActorSimplePhysics.id;
 

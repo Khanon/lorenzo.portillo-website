@@ -24,8 +24,10 @@ export abstract class Action<T, P> extends LoopUpdateable {
      * Don't override
      */
     stop(): void {
-        this.isPlaying = false;
-        this.onStop();
+        if (this.isPlaying) {
+            this.isPlaying = false;
+            this.onStop();
+        }
     }
 
     /**

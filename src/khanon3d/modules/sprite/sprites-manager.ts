@@ -1,15 +1,15 @@
-import * as Misc from '../../misc';
 import { Sprite } from './sprite';
 import { AssetsManager } from '../assets-manager/assets-manager';
+import * as Misc from '../../misc';
 
 export class SpritesManager {
-    private readonly sprites: Misc.KeyValue<Sprite, Sprite> = new Misc.KeyValue<Sprite, Sprite>();
+    private readonly sprites: Misc.KeyValue<Sprite, void> = new Misc.KeyValue<Sprite, void>();
 
     constructor(private readonly assetsManager: AssetsManager) {}
 
     addSprite(sprite: Sprite): Sprite {
         sprite.setTexture(this.assetsManager.getSpriteTexture({ id: sprite.properties.textureId }));
-        this.sprites.add(sprite, sprite);
+        this.sprites.add(sprite);
         return sprite;
     }
 
@@ -19,7 +19,10 @@ export class SpritesManager {
     }
 
     release(): void {
-        this.sprites.getValues().forEach((sprite) => sprite.release());
+        const sprites = [...this.sprites.getKeys()];
+        sprites.forEach((sprite) => {
+            sprite.release();
+        });
         this.sprites.reset();
     }
 }

@@ -15,7 +15,7 @@ export class LogoActor extends Actor2D {
         return new Sprite(this.name, { textureId: 'logo', numFrames: 90 });
     }
 
-    initialize(): void {
+    onInitialize(): void {
         this.state.registerState(new LogoStateMotion('motion', this));
     }
 

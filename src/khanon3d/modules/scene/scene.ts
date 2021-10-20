@@ -17,6 +17,7 @@ import { ObservablesContainer } from '../../models/observables-container';
 import { AssetsManager } from '../assets-manager/assets-manager';
 import { Logger } from '../logger/logger';
 import { CoreGlobals } from '../../models/core-globals';
+import { StateMachine } from '../state-machine/state-machine';
 
 export abstract class Scene extends Subscriber {
     abstract id: string;
@@ -32,10 +33,11 @@ export abstract class Scene extends Subscriber {
     private renderStart: (id: string) => void;
     private renderStop: (id: string) => void;
 
-    // Shared scene observables with actors
+    // Shared scene observables
     protected observables: ObservablesContainer = new ObservablesContainer();
 
     // Managers
+    protected state: StateMachine = new StateMachine();
     protected assetsManager: AssetsManager;
     protected spritesManager: SpritesManager;
     protected meshesManager: MeshesManager;
@@ -50,6 +52,21 @@ export abstract class Scene extends Subscriber {
     constructor(protected readonly properties: SceneProperties) {
         super();
     }
+
+    // ------------------------
+    //   Load, play and Release
+    // ------------------------
+
+    abstract onLoad(): void;
+    abstract onRelease(): void;
+
+    abstract onPlay(): void;
+    abstract onStop(): void;
+
+    /**
+     * On scene loading error
+     */
+    abstract onError(errorMsg: string): void;
 
     setEngineParams(babylonJsEngine: BabylonJsEngine, canvas: HTMLCanvasElement, renderStart: (id: string) => void, renderEnd: (id: string) => void): void {
         this.babylonJsEngine = babylonJsEngine;
@@ -137,6 +154,9 @@ export abstract class Scene extends Subscriber {
      */
     release(): void {
         this.isLoaded = false;
+        this.state.currentState?.end();
+        this.actions.stopAll();
+        this.particles?.release();
         this.onRelease();
         this.actorsManager?.release();
         this.spritesManager?.release();
@@ -144,21 +164,6 @@ export abstract class Scene extends Subscriber {
         this.assetsManager?.release();
         this.babylonjs?.dispose();
     }
-
-    // ------------------------
-    //   Load, play and Release
-    // ------------------------
-
-    abstract onLoad(): void;
-    abstract onRelease(): void;
-
-    abstract onPlay(): void;
-    abstract onStop(): void;
-
-    /**
-     * On scene loading error
-     */
-    abstract onError(errorMsg: string): void;
 
     // ------------------------
     //   Debug methods

@@ -32,6 +32,12 @@ export class ActionsManager<T> {
         }
     }
 
+    stopAll(): void {
+        this.registeredActions.getValues().forEach((action) => {
+            action.stop();
+        });
+    }
+
     isPlaying(actionId: string): boolean {
         return this.registeredActions.get(actionId)?.isPlaying;
     }

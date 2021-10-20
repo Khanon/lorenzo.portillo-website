@@ -2,10 +2,10 @@
  * Modifiers are meant to add functionalities or modify properties of Actors or Scenes.
  * Modifeiers can be used from outer the container and also be combined with other modifiers.
  */
-
+/*
 import * as Misc from '../../misc';
 import { Modifier } from './modifier';
-import { Logger } from '../logger/logger';
+import { Logger } from '../../modules/logger/logger';
 
 export class ModifiersManager {
     private readonly modifiers: Misc.KeyValue<string, any> = new Misc.KeyValue<string, any>();
@@ -28,3 +28,4 @@ export class ModifiersManager {
         return modifier;
     }
 }
+*/

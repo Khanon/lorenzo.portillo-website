@@ -53,23 +53,32 @@ export class Core {
     /**
      * Starts BabylonJs
      */
-    run(): void {
-        this.engine = new Engine(this.canvas, { fpsContainer: this.properties.fpsContainer });
+    run(onReady: () => void): void {
+        // Avoid babylonJs canvas scale error
+        WorkerTimer.setTimeout(
+            () => {
+                this.engine = new Engine(this.canvas, { fpsContainer: this.properties.fpsContainer });
 
-        // Start loop update
-        this.loopUpdate();
+                // Start loop update
+                this.loopUpdate();
 
-        // Log info on startup
-        Logger.info('Environment mode:', process.env.NODE_ENV);
-        this.logCanvasSize();
+                // Log info on startup
+                Logger.info('Environment mode:', process.env.NODE_ENV);
+                this.logCanvasSize();
 
-        // Manage resize
-        window.addEventListener('resize', () => {
-            const canvasDimensions = this.getCanvasDimensions();
-            this.engine.babylonjs.resize();
-            CoreGlobals.canvasDimensions = canvasDimensions;
-            CoreGlobals.canvasResize$.next(canvasDimensions);
-        });
+                // Manage resize
+                window.addEventListener('resize', () => {
+                    const canvasDimensions = this.getCanvasDimensions();
+                    this.engine.babylonjs.resize();
+                    CoreGlobals.canvasDimensions = canvasDimensions;
+                    CoreGlobals.canvasResize$.next(canvasDimensions);
+                });
+
+                onReady();
+            },
+            1,
+            this
+        );
     }
 
     /**

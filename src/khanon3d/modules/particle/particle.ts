@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 
 import { ParticleProperties } from './particle-properties';
@@ -19,7 +17,7 @@ export abstract class Particle extends LoopUpdateable {
     protected assetsManager: AssetsManager;
     protected meshesManager: MeshesManager;
 
-    // TODO agregar un onDispose() que viene de la clase padre de las particulas donde se crean mediante ParticlesFactory
+    private removeCallback: () => void;
 
     constructor(protected readonly properties: ParticleProperties) {
         super();
@@ -35,7 +33,7 @@ export abstract class Particle extends LoopUpdateable {
      */
     abstract onStart(): void;
 
-    initialize(babylonJsScene: BabylonJsScene, assetsManager: AssetsManager, parent?: DisplayObject): void {
+    initialize(babylonJsScene: BabylonJsScene, assetsManager: AssetsManager, removeCallback: () => void, parent?: DisplayObject): void {
         this.babylonJsScene = babylonJsScene;
         this.assetsManager = assetsManager;
         this.parent = parent;
@@ -47,7 +45,9 @@ export abstract class Particle extends LoopUpdateable {
         this.displayObject.setScale(this.properties.scale ?? 1);
         this.displayObject.setAlpha(this.properties.alpha ?? 1);
 
-        this.properties.motion?.initialize(this.displayObject, this.properties.endCriteria === ParticleEndCriteria.MOTION_END ? this.end : undefined);
+        this.properties.motion?.initialize(this.displayObject, this.properties.endCriteria === ParticleEndCriteria.MOTION_END ? () => this.end() : undefined);
+
+        this.removeCallback = removeCallback;
     }
 
     start(): void {
@@ -58,5 +58,6 @@ export abstract class Particle extends LoopUpdateable {
     end(): void {
         this.properties.motion?.end();
         this.displayObject.release();
+        this.removeCallback();
     }
 }

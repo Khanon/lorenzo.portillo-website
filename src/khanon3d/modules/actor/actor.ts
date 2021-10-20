@@ -7,7 +7,6 @@ import { StateMachine } from '../state-machine/state-machine';
 import { DisplayObject } from '../../models/display-object';
 import { ActorProperties } from './actor-properties';
 import { ActionsManager } from '../actions/actions-manager';
-import { ModifiersManager } from '../modifiers/modifiers-manager';
 import { SpriteAnimation } from '../sprite/sprite-animation';
 import { MeshAnimation } from '../mesh/mesh-animation';
 import * as Misc from '../../misc';
@@ -22,18 +21,25 @@ export abstract class Actor {
     private readonly animations: Misc.KeyValue<number, SpriteAnimation | MeshAnimation> = new Misc.KeyValue<number, SpriteAnimation | MeshAnimation>();
     private readonly keyFramesSubjects: Misc.KeyValue<number, Subject<void>> = new Misc.KeyValue<number, Subject<void>>();
 
-    readonly state: StateMachine<Actor> = new StateMachine<Actor>();
-    readonly action: ActionsManager<Actor> = new ActionsManager<Actor>();
-    readonly modifier: ModifiersManager = new ModifiersManager();
+    readonly state: StateMachine = new StateMachine();
+    readonly actions: ActionsManager<Actor> = new ActionsManager<Actor>();
     readonly physics: ActorSimplePhysics;
     particles: ParticlesFactory;
     protected sceneObservables: ObservablesContainer;
+
+    private removeCallback: () => void;
 
     constructor(readonly name: string, protected readonly properties?: ActorProperties) {
         if (this.properties?.usePhysics) {
             this.physics = new ActorSimplePhysics();
         }
     }
+
+    /**
+     * To be implemented by app actor.
+     * It will be invoked after scene loading.
+     */
+    abstract onInitialize(assetsManager: AssetsManager): void;
 
     /**
      * Invoked on getDisplayObject from scene loading.
@@ -51,21 +57,30 @@ export abstract class Actor {
     protected abstract setDisplayObject(displayObject: DisplayObject): void;
 
     /**
-     * To be implemented by app actor.
-     * It will be invoked after scene loading.
-     */
-    abstract initialize(assetsManager: AssetsManager): void;
-
-    /**
      * Child release, mainly assets
      */
     protected abstract onRelease(): void;
 
     /**
+     * Initialize actor
+     *
+     * @param assetsManager
+     * @param removeCallback
+     */
+    initialize(assetsManager: AssetsManager, removeCallback: () => void): void {
+        this.removeCallback = removeCallback;
+        this.onInitialize(assetsManager);
+    }
+
+    /**
      * Release
      */
     release(): void {
+        this.state.currentState?.end();
+        this.actions.stopAll();
+        this.particles.release();
         this.physics?.release();
+        this.displayObject.release();
         this.onRelease();
     }
 

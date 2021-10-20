@@ -5,7 +5,7 @@ import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-go
 import { RobocilloAnimations } from './robocillo-animations';
 import { SceneIntroGlobals } from '../../scene-intro-globals';
 import { RobocilloActionChat } from './robocillo-action-chat';
-import { RobocilloMessages } from './robocillo-messages';
+import { SceneIntroMessages } from '../../scene-intro-notifications';
 
 enum Happiness {
     MOVE_HANDS,
@@ -23,8 +23,9 @@ export class RobocilloStateIntro extends State<Actor2D> {
 
     private robocillo: Actor2D;
 
-    loading: boolean;
-    loadingSteps: number;
+    private loading: boolean;
+    private loadingSteps: number;
+    private timeout: number;
 
     onStart(): void {
         this.loading = true;
@@ -33,19 +34,23 @@ export class RobocilloStateIntro extends State<Actor2D> {
         this.goIn();
     }
 
-    onEnd(): void {}
+    onEnd(): void {
+        WorkerTimer.clearAllOnContext(this);
+    }
 
-    notify(id: RobocilloMessages): void {
+    notify(id: SceneIntroMessages): void {
         switch (id) {
-            case RobocilloMessages.WORLD_LOADED:
+            case SceneIntroMessages.WORLD_LOADED:
                 this.loading = false;
                 break;
         }
     }
 
     goIn(): void {
-        this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: RobocilloStateIntro.ANGLE_SUN }, () =>
-            WorkerTimer.setTimeout(() => this.stopSun(), 500, this)
+        this.robocillo.actions.play<IRobocilloActionGoTo>(
+            RobocilloActionGoTo.id,
+            { angle: RobocilloStateIntro.ANGLE_SUN },
+            () => (this.timeout = WorkerTimer.setTimeout(() => this.stopSun(), 500, this))
         );
     }
 
@@ -57,7 +62,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
     }
 
     goCenter(): void {
-        this.robocillo.action.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: this.ANGLE_CENTER }, () =>
+        this.robocillo.actions.play<IRobocilloActionGoTo>(RobocilloActionGoTo.id, { angle: this.ANGLE_CENTER }, () =>
             WorkerTimer.setTimeout(() => this.stopCenter(), 100, this)
         );
     }
@@ -74,7 +79,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
                 () =>
                     this.robocillo.setAnimation(RobocilloAnimations.PAPER_CHECK, false, () => {
                         this.checkPaper();
-                        this.robocillo.action.play(RobocilloActionChat.id);
+                        this.robocillo.actions.play(RobocilloActionChat.id);
                     }),
                 500 + Math.random() * 1000,
                 this

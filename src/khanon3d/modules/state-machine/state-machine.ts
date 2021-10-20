@@ -2,11 +2,11 @@ import { State } from './state';
 import { Logger } from '../logger/logger';
 import * as Misc from '../../misc';
 
-export class StateMachine<T> {
-    currentState: State<T>;
-    states: Misc.KeyValue<string, State<T>> = new Misc.KeyValue<string, State<T>>();
+export class StateMachine {
+    currentState: State<any>;
+    states: Misc.KeyValue<string, State<any>> = new Misc.KeyValue<string, State<any>>();
 
-    registerState(state: State<T>): State<T> {
+    registerState(state: State<any>): State<any> {
         this.states.add(state.id, state);
         return state;
     }
@@ -20,7 +20,7 @@ export class StateMachine<T> {
         this.currentState.start(() => this.onEndState());
     }
 
-    get(stateId: string): State<T> {
+    get(stateId: string): State<any> | undefined {
         const state = this.states.get(stateId);
         if (!state) {
             Logger.error('State not found:', stateId);
@@ -37,7 +37,7 @@ export class StateMachine<T> {
         return !!this.currentState;
     }
 
-    getCurrentState(): State<T> {
+    getCurrentState(): State<any> {
         return this.currentState;
     }
 

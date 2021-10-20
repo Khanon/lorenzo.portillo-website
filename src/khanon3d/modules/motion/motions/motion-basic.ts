@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 
 import { Motion } from '../motion';

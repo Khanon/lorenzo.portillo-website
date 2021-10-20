@@ -3,10 +3,8 @@ import { combineLatest, timer, Subject } from 'rxjs';
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { Control } from '@babylonjs/gui/2D/controls/control';
-import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
-import { GUI, Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic, ParticleSprite, SpriteTexture } from '../../../khanon3d';
+import { Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic, ParticleSprite, SpriteTexture } from '../../../khanon3d';
 import * as Misc from '../../../khanon3d/misc';
 
 import { EarthActor } from './actors/earth/earth-actor';
@@ -17,11 +15,10 @@ import { RobocilloAnimations } from './actors/robocillo/robocillo-animations';
 import { SceneIntroActionGravity } from './actions/action-gravity';
 import { SceneIntroGlobals } from './scene-intro-globals';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
-import { SceneIntroObservables } from './scene-intro-observables';
-import { RobocilloMessages } from './actors/robocillo/robocillo-messages';
 import { SunStateMotion } from './actors/sun/sun-state-motion';
 import { AppSceneProperties } from '../app-scene-properties';
 import { AppNotifications } from '../../app.notifications';
+import { SceneIntroMessages } from './scene-intro-notifications';
 
 export class SceneIntro extends Scene {
     static id: string = 'SceneIntro';
@@ -59,6 +56,9 @@ export class SceneIntro extends Scene {
     private loadingEndTx: SpriteTexture[];
     private readonly loadingEndTexts: string[][] = [['READY!'], ['Tap to continue']];
 
+    // Handlers
+    private goWorldHandler: () => void;
+
     constructor(protected readonly properties: AppSceneProperties) {
         super(properties);
     }
@@ -77,7 +77,6 @@ export class SceneIntro extends Scene {
         // Actions
         this.gravity = new SceneIntroActionGravity('gravity', null);
         this.actions.registerAction(this.gravity);
-        this.observables.add(SceneIntroObservables.GRAVITY_FLOOR_CONTACT, this.gravity.getFloorContactObserbable());
 
         // Textures
         this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, SceneIntroGlobals.fontBase_40);
@@ -131,11 +130,8 @@ export class SceneIntro extends Scene {
         });
 
         // Click to go to World after loading
-        this.canvas.addEventListener('click', (event) => {
-            if (this.worldLoaded) {
-                this.properties.appNotification(AppNotifications.GO_WORLD);
-            }
-        });
+        this.goWorldHandler = this.onGoWorld.bind(this);
+        this.canvas.addEventListener('click', this.goWorldHandler, true);
 
         this.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.code, event.code);
@@ -263,12 +259,20 @@ export class SceneIntro extends Scene {
     onStop(): void {}
 
     onRelease(): void {
+        this.canvas.removeEventListener('click', this.goWorldHandler, true);
         Misc.SpriteTextures.releaseList(this.loadingEndTx);
         this.releaseSubscriptions();
     }
 
     onError(errorMsg: string): void {
         CoreGlobals.onError$.next(errorMsg);
+    }
+
+    onGoWorld(): void {
+        console.log('aki onGorWorld!!', this.worldLoaded);
+        if (this.worldLoaded) {
+            this.properties.appNotification(AppNotifications.GO_WORLD);
+        }
     }
 
     subscribeCanvasResize(): void {
@@ -323,7 +327,7 @@ export class SceneIntro extends Scene {
 
     onWorldLoaded(): void {
         this.worldLoaded = true;
-        this.robocillo.notify(RobocilloMessages.WORLD_LOADED);
+        this.robocillo.notify(SceneIntroMessages.WORLD_LOADED);
 
         this.particles.new(
             new ParticleSprite({

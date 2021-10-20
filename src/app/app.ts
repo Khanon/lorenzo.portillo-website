@@ -1,21 +1,24 @@
-import { Core, WorkerTimer } from './khanon3d';
+import { Core } from '../khanon3d';
 
-import { SceneIntro } from './app/scene/scene-intro/scene-intro';
-import { SceneWorld } from './app/scene/scene-world/scene-world';
-import { AppNotifications } from './app/app.notifications';
+import { SceneIntro } from './scene/scene-intro/scene-intro';
+import { SceneWorld } from './scene/scene-world/scene-world';
+import { AppNotifications } from './app.notifications';
+import { StateMachine } from '../khanon3d/modules/state-machine/state-machine';
 
 class App {
     core: Core;
     blackScrenn: HTMLElement;
     canvasContainer: HTMLElement;
 
+    // States
+    state: StateMachine = new StateMachine();
+
     // Scenes
     sceneIntro: SceneIntro;
     sceneWorld: SceneWorld;
 
     constructor() {
-        // Avoid babylonJs canvas scale error
-        WorkerTimer.setTimeout(() => this.init(), 1, this);
+        this.init();
     }
 
     init(): void {
@@ -31,21 +34,21 @@ class App {
             fpsContainer: 'fps-container',
         });
         this.core.createCanvasOnDivElement(this.canvasContainer);
-        this.core.run();
+        this.core.run(() => {
+            this.sceneIntro = new SceneIntro({
+                assetsJsonUrl: './assets/scene-intro/assets.json',
+                clearColor: { a: 1.0, r: 0.25, g: 0.25, b: 0.25 },
+                playOnLoad: true,
+                appNotification: (msg: AppNotifications) => this.notify(msg),
+            });
+            this.sceneWorld = new SceneWorld({
+                assetsJsonUrl: './assets/scene-world/assets.json',
+                clearColor: { a: 1.0, r: 1, g: 0, b: 0 },
+            });
 
-        this.sceneIntro = new SceneIntro({
-            assetsJsonUrl: './assets/scene-intro/assets.json',
-            clearColor: { a: 1.0, r: 0.25, g: 0.25, b: 0.25 },
-            playOnLoad: true,
-            appNotification: (msg: AppNotifications) => this.notify(msg),
+            this.core.loadScene(this.sceneIntro);
+            this.core.loadScene(this.sceneWorld, (sceneWorld) => this.sceneIntro.onWorldLoaded$.next());
         });
-        this.sceneWorld = new SceneWorld({
-            assetsJsonUrl: './assets/scene-world/assets.json',
-            clearColor: { a: 1.0, r: 1, g: 0, b: 0 },
-        });
-
-        this.core.loadScene(this.sceneIntro);
-        this.core.loadScene(this.sceneWorld, (sceneWorld) => this.sceneIntro.onWorldLoaded$.next());
     }
 
     appError(errorMsg: string): void {
@@ -67,8 +70,9 @@ class App {
     }
 
     goWorld(): void {
-        // 8a8f
-        console.log('aki GO WORLD');
+        this.sceneIntro.stop();
+        this.sceneIntro.release();
+        this.sceneWorld.play();
     }
 
     notify(msg: AppNotifications): void {

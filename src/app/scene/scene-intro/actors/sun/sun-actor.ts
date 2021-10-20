@@ -15,7 +15,7 @@ export class SunActor extends Actor2D {
         return new Sprite(this.name, { textureId: 'sun', numFrames: 1 });
     }
 
-    initialize(): void {
+    onInitialize(): void {
         this.state.registerState(new SunStateMotion('motion', this));
         this.sprite.setFrame(0);
     }

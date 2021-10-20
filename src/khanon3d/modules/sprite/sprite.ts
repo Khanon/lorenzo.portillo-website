@@ -13,7 +13,7 @@ export class Sprite extends DisplayObject {
     private spriteTexture: SpriteTexture;
 
     private scale: number = 1;
-    private keyFramesTimeouts: NodeJS.Timeout[] = [];
+    /*private*/ keyFramesTimeouts: number[] = []; // 8a8f descomentar
     private endAnimationTimer: number;
 
     constructor(readonly name: string = '', readonly properties: SpriteProperties = {}) {
@@ -40,6 +40,7 @@ export class Sprite extends DisplayObject {
     }
 
     release(): void {
+        this.stop();
         this.babylonjs.dispose();
     }
 
@@ -139,7 +140,7 @@ export class Sprite extends DisplayObject {
     }
 
     private removeAnimationKeyFrames(): void {
-        this.keyFramesTimeouts.forEach((timeout) => clearTimeout(timeout));
+        this.keyFramesTimeouts.forEach((timeout) => WorkerTimer.clearTimeout(timeout));
         this.keyFramesTimeouts = [];
     }
 

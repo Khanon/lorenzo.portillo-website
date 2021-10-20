@@ -21,4 +21,5 @@ module.exports = merge(common, {
     performance: {
         hints: false,
     },
+    devtool: false,
 });
