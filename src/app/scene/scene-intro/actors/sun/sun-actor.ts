@@ -1,7 +1,6 @@
-import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-
-import { Actor2D, Sprite } from '../../../../../khanon3d';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+import { Actor2D, Sprite } from '@khanonjs/engine';
 
 import { SunStateMotion } from './sun-state-motion';
 

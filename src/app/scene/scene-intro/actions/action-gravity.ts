@@ -1,9 +1,6 @@
-import { Subject } from 'rxjs';
-
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-
-import { Action, Actor } from '../../../../khanon3d';
-import * as Misc from '../../../../khanon3d/misc';
+import { Action, Actor } from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
 import { SceneIntroGlobals } from '../scene-intro-globals';
 import { SceneIntroMessages } from '../scene-intro-notifications';

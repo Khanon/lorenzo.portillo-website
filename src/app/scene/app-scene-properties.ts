@@ -1,4 +1,4 @@
-import { SceneProperties } from '../../khanon3d/modules/scene/scene-properties';
+import { SceneProperties } from '@khanonjs/engine';
 
 import { AppNotifications } from '../app.notifications';
 

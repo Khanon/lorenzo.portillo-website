@@ -1,7 +1,6 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
-
-import { Actor2D, Sprite } from '../../../../../khanon3d';
+import { Actor2D, Sprite } from '@khanonjs/engine';
 
 import { LogoStateMotion } from './logo-state-motion';
 

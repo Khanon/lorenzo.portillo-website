@@ -1,4 +1,4 @@
-import { State } from '../../khanon3d';
+import { State } from '@khanonjs/engine';
 
 export class AppStateWorld extends State<void> {
     static id = 'AppStateWorld';

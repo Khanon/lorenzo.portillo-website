@@ -1,15 +1,16 @@
-import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
+import {
+    Actor2D, AssetsManager, ParticleEndCriteria, ParticleSprite, Sprite, SpriteTexture
+} from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
-import { Actor2D, Sprite, ParticleSprite, ParticleEndCriteria, SpriteTexture, AssetsManager } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/misc';
-
-import { RobocilloActionGoTo } from './robocillo-action-goto';
-import { RobocilloStateIntro } from './robocillo-state-intro';
-import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
+import { SceneIntroGlobals } from '../../scene-intro-globals';
 import { SceneIntroMessages } from '../../scene-intro-notifications';
 import { RobocilloActionChat } from './robocillo-action-chat';
-import { SceneIntroGlobals } from '../../scene-intro-globals';
+import { RobocilloActionGoTo } from './robocillo-action-goto';
+import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
+import { RobocilloStateIntro } from './robocillo-state-intro';
 
 export class RobocilloActor extends Actor2D {
     static paramsRatio0Pos = new Vector3(-20, 7, -140);
@@ -23,7 +24,7 @@ export class RobocilloActor extends Actor2D {
         ['Loading bytes...'],
         ['Generating errors...'],
         ['Shading shaders...'],
-        ['Composing meshes...'],
+        ['Composing meshes...']
     ];
 
     private floorContactTexture: SpriteTexture;
@@ -59,9 +60,9 @@ export class RobocilloActor extends Actor2D {
             keyFrames: [
                 {
                     id: RobocilloKeyFrames.FLOOR_CONTACT,
-                    frames: [56, 60],
-                },
-            ],
+                    frames: [56, 60]
+                }
+            ]
         });
         this.addAnimation(RobocilloAnimations.MOVE_HANDS, { delay: 75, frameStart: 64, frameEnd: 66, loop: true });
         this.addAnimation(RobocilloAnimations.RAISE_HANDS, { delay: 75, frameStart: 72, frameEnd: 74, loop: true });
@@ -79,12 +80,12 @@ export class RobocilloActor extends Actor2D {
 
     notify(id: SceneIntroMessages): void {
         switch (id) {
-            case SceneIntroMessages.WORLD_LOADED:
-                this.state.notify(id);
-                break;
-            case SceneIntroMessages.GRAVITY_FLOOR_CONTACT:
-                this.particleDust();
-                break;
+        case SceneIntroMessages.WORLD_LOADED:
+            this.state.notify(id);
+            break;
+        case SceneIntroMessages.GRAVITY_FLOOR_CONTACT:
+            this.particleDust();
+            break;
         }
     }
 
@@ -98,7 +99,7 @@ export class RobocilloActor extends Actor2D {
                 z: this.getZ() - 0.6,
                 scale: this.getScale(),
                 alpha: Math.random() / 2 + 0.1,
-                endCriteria: ParticleEndCriteria.ANIMATION_END,
+                endCriteria: ParticleEndCriteria.ANIMATION_END
             })
         );
     }

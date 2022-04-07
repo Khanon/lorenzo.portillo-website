@@ -1,12 +1,8 @@
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
-import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
-
-import { CoreGlobals, GUI, Scene } from '../../../khanon3d';
+import { CoreGlobals, GUI, Scene } from '@khanonjs/engine';
 
 import { AppSceneProperties } from '../app-scene-properties';
 
@@ -36,14 +32,14 @@ export class SceneWorld extends Scene {
 
         const light1: HemisphericLight = new HemisphericLight('light1', new Vector3(1, 0, 0), this.babylonjs);
 
-        /*const flatMaterial = new StandardMaterial('', this.babylonjs);
+        /* const flatMaterial = new StandardMaterial('', this.babylonjs);
         flatMaterial.disableLighting = true;
         flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13);
 
         const sphere = MeshBuilder.CreateSphere('sphere', {});
         sphere.material = flatMaterial;
         sphere.position.x = -1;
-        sphere.position.y = -1;*/
+        sphere.position.y = -1; */
 
         // Logo
         // this.logo = this.addSprite('', './assets/sprites/logo.png', { width: 453, height: 115, numFrames: 59 });
@@ -61,7 +57,7 @@ export class SceneWorld extends Scene {
             'sphere',
             { diameter: 1 },
             this.babylonjs
-        );*/
+        ); */
     }
 
     onPlay(): void {

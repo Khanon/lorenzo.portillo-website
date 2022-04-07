@@ -1,7 +1,6 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-
-import { Action, Actor2D } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/misc';
+import { Action, Actor2D } from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
 import { SceneIntroGlobals } from '../../scene-intro-globals';
 import { RobocilloAnimations } from './robocillo-animations';

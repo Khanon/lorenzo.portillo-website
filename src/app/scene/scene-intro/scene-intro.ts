@@ -1,23 +1,24 @@
-import { combineLatest, timer, Subject } from 'rxjs';
+import { combineLatest, Subject, timer } from 'rxjs';
 
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import {
+    CoreGlobals, Logger, MotionBasic, ParticleSprite, Scene, SpriteTexture, WorkerTimer
+} from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
-import { Scene, Logger, WorkerTimer, CoreGlobals, MotionBasic, ParticleSprite, SpriteTexture } from '../../../khanon3d';
-import * as Misc from '../../../khanon3d/misc';
-
+import { AppNotifications } from '../../app.notifications';
+import { AppSceneProperties } from '../app-scene-properties';
+import { SceneIntroActionGravity } from './actions/action-gravity';
 import { EarthActor } from './actors/earth/earth-actor';
-import { SunActor } from './actors/sun/sun-actor';
 import { LogoActor } from './actors/logo/logo-actor';
 import { RobocilloActor } from './actors/robocillo/robocillo-actor';
 import { RobocilloAnimations } from './actors/robocillo/robocillo-animations';
-import { SceneIntroActionGravity } from './actions/action-gravity';
-import { SceneIntroGlobals } from './scene-intro-globals';
 import { RobocilloStateIntro } from './actors/robocillo/robocillo-state-intro';
+import { SunActor } from './actors/sun/sun-actor';
 import { SunStateMotion } from './actors/sun/sun-state-motion';
-import { AppSceneProperties } from '../app-scene-properties';
-import { AppNotifications } from '../../app.notifications';
+import { SceneIntroGlobals } from './scene-intro-globals';
 import { SceneIntroMessages } from './scene-intro-notifications';
 
 export class SceneIntro extends Scene {
@@ -95,7 +96,7 @@ export class SceneIntro extends Scene {
         this.sun = this.actorsManager.addActor(new SunActor('sun'));
         this.robocillo = this.actorsManager.addActor(
             new RobocilloActor('robocillo', {
-                usePhysics: true,
+                usePhysics: true
             })
         );
         this.applyCanvasRatio(true);
@@ -141,12 +142,12 @@ export class SceneIntro extends Scene {
             // const obj = this.logo;
             const obj = this.robocillo;
             if (event.code === 'Space') {
-                /*if (this.actions.isPlaying('gravity')) {
+                /* if (this.actions.isPlaying('gravity')) {
                     this.actions.stop('gravity');
                 } else {
                     this.robocillo.physics.applyForce(new Vector3(0, 0, 0.01));
                     this.actions.play('gravity');
-                }*/
+                } */
                 this.robocillo.physics.applyForce(new Vector3(0, 0.1, 0));
                 Logger.info('vel y:', this.robocillo.physics.getVelocity().y);
                 Logger.info('pos y:', this.robocillo.physics.getTranslation().y);
@@ -344,8 +345,8 @@ export class SceneIntro extends Scene {
                     posSinVel: 0.1,
                     rotSin: new Vector3(0.05, 0, 0),
                     rotSinVel: 0.1,
-                    rotSinMoment: 8,
-                }),
+                    rotSinMoment: 8
+                })
             })
         );
 
@@ -365,8 +366,8 @@ export class SceneIntro extends Scene {
                     posSinMoment: 0.5,
                     rotSin: new Vector3(0.05, 0, 0),
                     rotSinVel: 0.1,
-                    rotSinMoment: 3,
-                }),
+                    rotSinMoment: 3
+                })
             })
         );
     }

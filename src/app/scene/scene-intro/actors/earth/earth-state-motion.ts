@@ -1,5 +1,5 @@
-import { Actor3D, State, WorkerTimer } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/misc';
+import { Actor3D, State, WorkerTimer } from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
 export class EarthStateMotion extends State<Actor3D> {
     private readonly endMotion = { y: -1110, scale: 1 };

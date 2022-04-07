@@ -1,11 +1,11 @@
-import { Actor2D, State, WorkerTimer } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/misc';
+import { Actor2D, State, WorkerTimer } from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
+import { SceneIntroGlobals } from '../../scene-intro-globals';
+import { SceneIntroMessages } from '../../scene-intro-notifications';
+import { RobocilloActionChat } from './robocillo-action-chat';
 import { IRobocilloActionGoTo, RobocilloActionGoTo } from './robocillo-action-goto';
 import { RobocilloAnimations } from './robocillo-animations';
-import { SceneIntroGlobals } from '../../scene-intro-globals';
-import { RobocilloActionChat } from './robocillo-action-chat';
-import { SceneIntroMessages } from '../../scene-intro-notifications';
 
 enum Happiness {
     MOVE_HANDS,
@@ -40,9 +40,9 @@ export class RobocilloStateIntro extends State<Actor2D> {
 
     notify(id: SceneIntroMessages): void {
         switch (id) {
-            case SceneIntroMessages.WORLD_LOADED:
-                this.loading = false;
-                break;
+        case SceneIntroMessages.WORLD_LOADED:
+            this.loading = false;
+            break;
         }
     }
 
@@ -94,23 +94,23 @@ export class RobocilloStateIntro extends State<Actor2D> {
 
     centerEnd(happiness?: Happiness): void {
         switch (happiness ?? Misc.Maths.randomInt(Happiness.MOVE_HANDS, Happiness.JUMP)) {
-            case Happiness.MOVE_HANDS:
-                this.robocillo.setAnimation(RobocilloAnimations.MOVE_HANDS);
-                WorkerTimer.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this);
-                break;
-            case Happiness.RAISE_HANDS:
-                this.robocillo.setAnimation(RobocilloAnimations.RAISE_HANDS);
-                WorkerTimer.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this);
-                break;
-            case Happiness.JUMP:
-                if (this.robocillo.physics.onFloor) {
-                    const vJump = SceneIntroGlobals.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(10);
-                    this.robocillo.setAnimation(RobocilloAnimations.JUMP_FRONT, false);
-                    this.robocillo.physics.resetVelocity();
-                    WorkerTimer.setTimeout(() => this.robocillo.physics.applyForce(vJump), 200, this);
-                }
-                WorkerTimer.setTimeout(() => this.centerEnd(), 1200, this);
-                break;
+        case Happiness.MOVE_HANDS:
+            this.robocillo.setAnimation(RobocilloAnimations.MOVE_HANDS);
+            WorkerTimer.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this);
+            break;
+        case Happiness.RAISE_HANDS:
+            this.robocillo.setAnimation(RobocilloAnimations.RAISE_HANDS);
+            WorkerTimer.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this);
+            break;
+        case Happiness.JUMP:
+            if (this.robocillo.physics.onFloor) {
+                const vJump = SceneIntroGlobals.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(10);
+                this.robocillo.setAnimation(RobocilloAnimations.JUMP_FRONT, false);
+                this.robocillo.physics.resetVelocity();
+                WorkerTimer.setTimeout(() => this.robocillo.physics.applyForce(vJump), 200, this);
+            }
+            WorkerTimer.setTimeout(() => this.centerEnd(), 1200, this);
+            break;
         }
     }
 }

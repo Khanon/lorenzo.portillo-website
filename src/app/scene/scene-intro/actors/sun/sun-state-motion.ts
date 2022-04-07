@@ -1,7 +1,6 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-
-import { Actor2D, State, WorkerTimer } from '../../../../../khanon3d';
-import * as Misc from '../../../../../khanon3d/misc';
+import { Actor2D, State, WorkerTimer } from '@khanonjs/engine';
+import * as Misc from '@khanonjs/engine/misc';
 
 export class SunStateMotion extends State<Actor2D> {
     static paramsRatio0Pos = new Vector3(0, 12, -79);

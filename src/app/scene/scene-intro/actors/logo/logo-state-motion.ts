@@ -1,4 +1,4 @@
-import { Actor2D, State } from '../../../../../khanon3d';
+import { Actor2D, State } from '@khanonjs/engine';
 
 export class LogoStateMotion extends State<Actor2D> {
     onStart(): void {

@@ -1,4 +1,4 @@
-import { Actor3D, DynamicTextureTextBlockProperties } from '../../../khanon3d';
+import { Actor3D, DynamicTextureTextBlockProperties } from '@khanonjs/engine';
 
 export class SceneIntroGlobals {
     static earth: Actor3D;
@@ -8,7 +8,7 @@ export class SceneIntroGlobals {
         fontStyle: '',
         fontName: 'roadgeek',
         textColor: '#ffffff',
-        centerH: true,
+        centerH: true
     };
 
     static fontBase_30: DynamicTextureTextBlockProperties = {
@@ -16,6 +16,6 @@ export class SceneIntroGlobals {
         fontStyle: '',
         fontName: 'roadgeek',
         textColor: '#ffffff',
-        centerH: true,
+        centerH: true
     };
 }

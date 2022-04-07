@@ -1,12 +1,8 @@
 import { Vector3 } from '@babylonjs/core';
-
-import { Action, Actor2D } from '../../../../../khanon3d';
-
-import { SpriteTexture } from '../../../../../khanon3d/modules/sprite/sprite-texture';
-import { ParticleSprite } from '../../../../../khanon3d/modules/particle/particles/particle-sprite';
-import { ParticleEndCriteria } from '../../../../../khanon3d/modules/particle/particle-end-criteria';
-import { MotionBasic } from '../../../../../khanon3d/modules/motion/motions/motion-basic';
-import { MotionEndCriteria } from '../../../../../khanon3d/modules/motion/motion-end-criteria';
+import {
+    Action, Actor2D, MotionBasic, MotionEndCriteria, ParticleEndCriteria, ParticleSprite,
+    SpriteTexture
+} from '@khanonjs/engine';
 
 export class RobocilloActionChat extends Action<Actor2D, void> {
     static id: string = 'RobocilloActionChat';
@@ -28,9 +24,9 @@ export class RobocilloActionChat extends Action<Actor2D, void> {
                     alphaEnd: 0,
                     alphaVel: 0.01,
                     posVel: new Vector3(0, 0.1, 0),
-                    endCriteria: MotionEndCriteria.ALPHA_END,
+                    endCriteria: MotionEndCriteria.ALPHA_END
                 }),
-                endCriteria: ParticleEndCriteria.MOTION_END,
+                endCriteria: ParticleEndCriteria.MOTION_END
             })
         );
 
