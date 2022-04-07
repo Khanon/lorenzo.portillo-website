@@ -8,7 +8,7 @@ const appDirectory = fs.realpathSync(process.cwd());
 module.exports = {
     entry: path.resolve(appDirectory, 'src/app/app.ts'), //path to the main .ts file
     output: {
-        filename: 'js/khanon3d.js', //name for the js file that is created/compiled in memory
+        filename: 'js/lorenzo-portillo-website.js', //name for the js file that is created/compiled in memory
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
@@ -16,11 +16,13 @@ module.exports = {
     devServer: {
         host: 'localhost',
         port: 8080, //port that we're using for local host (localhost:8080)
-        disableHostCheck: true,
-        contentBase: path.resolve(appDirectory, 'public'), // Tells webpack to serve from the public folder
-        publicPath: '/',
         hot: true,
         open: true,
+        static: {
+            // disableHostCheck: true,
+            // contentBase: path.resolve(appDirectory, 'public'), // Tells webpack to serve from the public folder
+            publicPath: '/',
+        }
     },
     module: {
         rules: [
