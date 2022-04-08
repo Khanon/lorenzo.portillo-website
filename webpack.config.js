@@ -6,7 +6,7 @@ const path = require('path');
 const appDirectory = fs.realpathSync(process.cwd());
 
 module.exports = {
-    entry: path.resolve(appDirectory, 'src/app/app.ts'), //path to the main .ts file
+    entry: path.resolve(appDirectory, 'src/app.ts'), //path to the main .ts file
     output: {
         filename: 'js/lorenzo-portillo-website.js', //name for the js file that is created/compiled in memory
     },
