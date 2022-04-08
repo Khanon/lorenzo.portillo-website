@@ -80,7 +80,7 @@ export class SceneIntro extends Scene {
         this.actions.registerAction(this.gravity);
 
         // Textures
-        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, SceneIntroGlobals.fontBase_40);
+        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, { ...SceneIntroGlobals.fontBase_40, bgColor: 'red' }); // 8a8f remove red
 
         // Add subscriptions
         this.subscribeCanvasResize();
@@ -354,7 +354,7 @@ export class SceneIntro extends Scene {
             new ParticleSprite({
                 spriteTexture: this.loadingEndTx[1],
                 x: -30,
-                y: 60,
+                y: 0, // y: 60, // 8a8f
                 z: 0,
                 scale: 0.3,
                 motion: new MotionBasic({

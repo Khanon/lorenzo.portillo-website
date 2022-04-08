@@ -15,7 +15,7 @@ export class EarthActor extends Actor3D {
         const meshBjs = MeshBuilder.CreateDisc(this.name, {
             radius: 1125,
             tessellation: 200
-        });
+        }, babylonJsScene);
         meshBjs.material = flatMaterial;
 
         return new Mesh(this.name, meshBjs);
