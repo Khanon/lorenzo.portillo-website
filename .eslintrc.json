@@ -26,6 +26,7 @@
         "no-multi-spaces": "warn",
         "no-unused-vars": "off",
         "sort-imports": "off",
+        "spaced-comment": "warn",
         "no-case-declarations": 0,
         "space-before-function-paren": "off",
         "no-useless-constructor": "off",
