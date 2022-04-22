@@ -26,12 +26,12 @@ class App {
         // Initialize app
         // TODO: remve FPS after development
         Core.initialize({
+            canvasParentHTMLElement: this.canvasContainer,
             fps: 60,
             onAppError: (errorMsg) => this.appError(errorMsg),
             isDevelopmentMode: this.isDevelopmentMode(),
             fpsContainer: 'fps-container'
         });
-        Core.createCanvasOnDivElement(this.canvasContainer);
         Core.run(() => {
             this.sceneIntro = new SceneIntro({
                 assetsJsonUrl: './assets/scene-intro/assets.json',
