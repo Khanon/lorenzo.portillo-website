@@ -70,7 +70,7 @@ export class SceneIntro extends Scene {
         this.camera.target = new Vector3(1, 0, 0);
         this.camera.inputs.clear();
         this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
-        this.camera.attachControl(this.canvas, true);
+        this.camera.attachControl(CoreGlobals.canvas, true);
 
         // Light
         this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylonjs);
@@ -132,9 +132,9 @@ export class SceneIntro extends Scene {
 
         // Click to go to World after loading
         this.goWorldHandler = this.onGoWorld.bind(this);
-        this.canvas.addEventListener('click', this.goWorldHandler, true);
+        CoreGlobals.canvas.addEventListener('click', this.goWorldHandler, true);
 
-        this.canvas.addEventListener('keydown', (event) => {
+        CoreGlobals.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.code, event.code);
             const inc = event.altKey ? (event.ctrlKey ? 0.01 : 0.1) : 1;
             // const obj = this.earth;
@@ -252,15 +252,15 @@ export class SceneIntro extends Scene {
             }
         });
 
-        this.canvas.addEventListener('pointermove', () => {});
-        this.canvas.addEventListener('pointerdown', () => {});
-        this.canvas.addEventListener('pointerup', () => {});
+        CoreGlobals.canvas.addEventListener('pointermove', () => {});
+        CoreGlobals.canvas.addEventListener('pointerdown', () => {});
+        CoreGlobals.canvas.addEventListener('pointerup', () => {});
     }
 
     onStop(): void {}
 
     onRelease(): void {
-        this.canvas.removeEventListener('click', this.goWorldHandler, true);
+        CoreGlobals.canvas.removeEventListener('click', this.goWorldHandler, true);
         Misc.SpriteTextures.releaseList(this.loadingEndTx);
         this.releaseSubscriptions();
     }
