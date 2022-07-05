@@ -80,7 +80,7 @@ export class SceneIntro extends Scene {
         this.actions.registerAction(this.gravity);
 
         // Textures
-        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, { ...SceneIntroGlobals.fontBase_40 });
+        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, { ...SceneIntroGlobals.fontBase_40 }); // 8a8f las propiedades de ese fontBase deberian estar en otro objeto que no sea TextBlockProperties. evitar la copia del objeto
 
         // Add subscriptions
         this.subscribeCanvasResize();
