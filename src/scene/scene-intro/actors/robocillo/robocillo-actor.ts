@@ -99,7 +99,8 @@ export class RobocilloActor extends Actor2D {
                 z: this.getZ() - 0.6,
                 scale: this.getScale(),
                 alpha: Math.random() / 2 + 0.1,
-                endCriteria: ParticleEndCriteria.ANIMATION_END
+                endCriteria: ParticleEndCriteria.TIMER,
+                endValue: 5000
             })
         );
     }

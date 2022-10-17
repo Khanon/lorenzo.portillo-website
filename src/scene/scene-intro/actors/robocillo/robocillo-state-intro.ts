@@ -32,6 +32,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
         this.loadingSteps = 0;
         this.robocillo = this.subject;
         this.goIn();
+        this.subscribeLoopUpdate(); // 8a8f test timer
     }
 
     onEnd(): void {
@@ -111,6 +112,14 @@ export class RobocilloStateIntro extends State<Actor2D> {
             }
             WorkerTimer.setTimeout(() => this.centerEnd(), 1200, this);
             break;
+        }
+    }
+
+    maxDelta = 0;
+    loopUpdate(delta: number): void { // 8a8f test timer
+        if (delta > this.maxDelta) {
+            this.maxDelta = delta;
+            console.log('aki max delta:', this.maxDelta);
         }
     }
 }
