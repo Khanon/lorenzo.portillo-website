@@ -4,7 +4,7 @@ import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import {
-    CoreGlobals, Logger, MotionBasic, ParticleSprite, Scene, SpriteTexture, WorkerTimer
+    CoreGlobals, Logger, MotionBasic, ParticleSprite, Scene, SpriteTexture
 } from '@khanonjs/engine';
 import * as Misc from '@khanonjs/engine/misc';
 
@@ -80,7 +80,7 @@ export class SceneIntro extends Scene {
         this.actions.registerAction(this.gravity);
 
         // Textures
-        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, { ...SceneIntroGlobals.fontBase_40 }); // 8a8f las propiedades de ese fontBase deberian estar en otro objeto que no sea TextBlockProperties. evitar la copia del objeto
+        this.loadingEndTx = Misc.SpriteTextures.createListFromTextBlock('', this.babylonjs, this.loadingEndTexts, { ...SceneIntroGlobals.fontBase_40 }); // TODO las propiedades de ese fontBase deberian estar en otro objeto que no sea TextBlockProperties. evitar la copia del objeto
 
         // Add subscriptions
         this.subscribeCanvasResize();
@@ -110,19 +110,18 @@ export class SceneIntro extends Scene {
         // Start motions
         this.earth.state.set('motion');
         this.sun.state.set('motion');
-        WorkerTimer.setTimeout(() => this.logo.state.set('motion'), 1300, this);
+        setTimeout(() => this.logo.state.set('motion'), 1300);
 
         // Start actions
         this.gravity.addActor(this.robocillo);
 
         // Start robocillo intro
-        WorkerTimer.setTimeout(
+        setTimeout(
             () => {
                 this.actions.play('gravity');
                 this.robocillo.state.set(RobocilloStateIntro.id);
             },
-            2000,
-            this
+            2000
         );
 
         // World loaded
@@ -151,7 +150,7 @@ export class SceneIntro extends Scene {
                 this.robocillo.physics.applyForce(new Vector3(0, 0.1, 0));
                 Logger.info('vel y:', this.robocillo.physics.getVelocity().y);
                 Logger.info('pos y:', this.robocillo.physics.getTranslation().y);
-                WorkerTimer.setInterval(
+                setInterval(
                     () => {
                         if (!this.robocillo.physics.onFloor) {
                             // Logger.info('');
@@ -159,8 +158,7 @@ export class SceneIntro extends Scene {
                             // Logger.info('pos y:', this.robocillo.physics.getTranslation().y);
                         }
                     },
-                    0,
-                    this
+                    0
                 );
             }
             if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {

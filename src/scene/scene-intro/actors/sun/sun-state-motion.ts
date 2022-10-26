@@ -1,5 +1,5 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { Actor2D, State, WorkerTimer } from '@khanonjs/engine';
+import { Actor2D, State } from '@khanonjs/engine';
 import * as Misc from '@khanonjs/engine/misc';
 
 export class SunStateMotion extends State<Actor2D> {
@@ -11,7 +11,7 @@ export class SunStateMotion extends State<Actor2D> {
     static endScale: number = 0;
 
     onStart(): void {
-        WorkerTimer.setTimeout(() => this.subscribeLoopUpdate(), 700, this);
+        this.addTimeout(() => this.subscribeLoopUpdate(), 700);
     }
 
     onEnd(): void {

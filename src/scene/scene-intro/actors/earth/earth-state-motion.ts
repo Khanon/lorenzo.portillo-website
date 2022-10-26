@@ -1,11 +1,11 @@
-import { Actor3D, State, WorkerTimer } from '@khanonjs/engine';
+import { Actor3D, State } from '@khanonjs/engine';
 import * as Misc from '@khanonjs/engine/misc';
 
 export class EarthStateMotion extends State<Actor3D> {
     private readonly endMotion = { y: -1110, scale: 1 };
 
     onStart(): void {
-        WorkerTimer.setTimeout(() => this.subscribeLoopUpdate(), 500, this);
+        this.addTimeout(() => this.subscribeLoopUpdate(), 500);
     }
 
     onEnd(): void {
