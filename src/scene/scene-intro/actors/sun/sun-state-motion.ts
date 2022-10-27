@@ -21,14 +21,14 @@ export class SunStateMotion extends State<Actor2D> {
         this.subject.setScale(SunStateMotion.endScale);
     }
 
-    loopUpdate(delta: number): void {
+    loopUpdate(): void {
         const step = Misc.Maths.increaseVectorWithInertia(
             [this.subject.getY(), this.subject.getZ()],
             [SunStateMotion.endPosition.y, SunStateMotion.endPosition.z],
-            0.05 * delta,
+            0.03,
             1
         );
-        const scale = Misc.Maths.increaseValueWithInertia(this.subject.getScale(), SunStateMotion.endScale, 0.005 * delta, 1, () => this.end());
+        const scale = Misc.Maths.increaseValueWithInertia(this.subject.getScale(), SunStateMotion.endScale, 0.003, 1, () => this.end());
         this.subject.setY(step[0]);
         this.subject.setZ(step[1]);
         this.subject.setScale(scale);

@@ -14,8 +14,8 @@ export class EarthStateMotion extends State<Actor3D> {
         this.subject.setScale(this.endMotion.scale);
     }
 
-    loopUpdate(delta: number): void {
-        const speed = 0.03 * delta;
+    loopUpdate(): void {
+        const speed = 0.02;
         const acc = 2;
         const step = Misc.Maths.increaseVectorWithInertia(
             [this.subject.getY(), this.subject.getScale()],

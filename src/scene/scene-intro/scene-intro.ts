@@ -338,11 +338,11 @@ export class SceneIntro extends Scene {
                 motion: new MotionBasic({
                     alphaStart: 0,
                     alphaEnd: 1,
-                    alphaVel: 0.1,
+                    alphaVel: 0.07,
                     posSin: new Vector3(0, 5, 0),
-                    posSinVel: 0.1,
+                    posSinVel: 0.07,
                     rotSin: new Vector3(0.05, 0, 0),
-                    rotSinVel: 0.1,
+                    rotSinVel: 0.07,
                     rotSinMoment: 8
                 })
             })
@@ -358,12 +358,12 @@ export class SceneIntro extends Scene {
                 motion: new MotionBasic({
                     alphaStart: 0,
                     alphaEnd: 1,
-                    alphaVel: 0.1,
+                    alphaVel: 0.07,
                     posSin: new Vector3(0, 5, 0),
-                    posSinVel: 0.1,
+                    posSinVel: 0.07,
                     posSinMoment: 0.5,
                     rotSin: new Vector3(0.05, 0, 0),
-                    rotSinVel: 0.1,
+                    rotSinVel: 0.07,
                     rotSinMoment: 3
                 })
             })

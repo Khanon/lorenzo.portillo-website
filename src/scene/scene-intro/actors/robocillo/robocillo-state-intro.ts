@@ -16,10 +16,10 @@ enum Happiness {
 export class RobocilloStateIntro extends State<Actor2D> {
     static id: string = 'RobocilloStateIntro';
 
-    static readonly paramRatio0AngleSun = -0.055;
-    static readonly paramRatio1AngleSun = -0.183;
+    static readonly paramRatio0AngleSun = -0.062;
+    static readonly paramRatio1AngleSun = -0.19;
     static ANGLE_SUN = 0;
-    private readonly ANGLE_CENTER = -0.004;
+    private readonly ANGLE_CENTER = -0.01;
 
     private robocillo: Actor2D;
 
@@ -100,7 +100,7 @@ export class RobocilloStateIntro extends State<Actor2D> {
             break;
         case Happiness.JUMP:
             if (this.robocillo.physics.onFloor) {
-                const vJump = SceneIntroGlobals.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(10);
+                const vJump = SceneIntroGlobals.earth.getPosition().subtract(this.robocillo.getPosition()).negate().normalize().scale(5);
                 this.robocillo.setAnimation(RobocilloAnimations.JUMP_FRONT, false);
                 this.robocillo.physics.resetVelocity();
                 this.addTimeout(() => this.robocillo.physics.applyForce(vJump), 200);
