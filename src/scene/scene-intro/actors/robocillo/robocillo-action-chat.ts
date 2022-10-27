@@ -22,8 +22,8 @@ export class RobocilloActionChat extends Action<Actor2D, void> {
                 motion: new MotionBasic({
                     alphaStart: 1,
                     alphaEnd: 0,
-                    alphaVel: 0.01,
-                    posVel: new Vector3(0, 0.1, 0),
+                    alphaVel: 0.007,
+                    posVel: new Vector3(0, 0.07, 0),
                     endCriteria: MotionEndCriteria.ALPHA_END
                 }),
                 endCriteria: ParticleEndCriteria.MOTION_END
