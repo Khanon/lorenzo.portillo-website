@@ -8,7 +8,7 @@ import { SceneIntroMessages } from '../scene-intro-notifications';
 export class SceneIntroActionGravity extends Action<Actor, void> {
     private readonly GRAVITY_POWER: number = 0.0345;
     private readonly HORIZONTAL_DECREASE_FACTOR = 0.01;
-    private readonly RESTITUTION_OVER_FACTOR = 1.5;
+    private readonly RESTITUTION_OVER_FACTOR = 1.0;
     private floorLength: number;
 
     private readonly actors: Actor[] = [];
@@ -31,7 +31,7 @@ export class SceneIntroActionGravity extends Action<Actor, void> {
         this.actors.push(actor);
     }
 
-    loopUpdate(delta: number): void {
+    loopUpdate(): void {
         this.actors.forEach((actor) => {
             const vToCenter = SceneIntroGlobals.earth.getPosition().subtract(actor.physics.getTranslation());
             const hSlowDownVector = Misc.Vectors.vectorialProjectionToPlane(actor.physics.getVelocity(), vToCenter).negate();

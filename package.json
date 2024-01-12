@@ -9,34 +9,27 @@
     "webpack-bundle-analyze": "webpack --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json",
     "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack --config webpack.prod.js",
     "build:deploy": "npm run build && npm run deploy",
-    "link": "npm link @khanonjs/engine",
-    "unlink": "rimraf ./node_modules/@khanonjs",
+    "link": "cd .. && cd khanon.js && npm run link && cd .. && cd lorenzo.portillo-website && npm link @khanonjs/engine",
+    "unlink": "rimraf ./node_modules/@khanonjs && cd .. && cd khanon.js && npm run unlink",
     "deploy": "..\\deploy-ionos.bat",
     "deploy:under-construction": "..\\deploy-ionos-under-construction.bat",
     "clean": "rimraf dist",
     "lint": "eslint ./src/**/*.*",
     "check-circular-refs": "dpdm ./src/app.ts",
     "start": "webpack serve --port 8080 --config webpack.dev.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "publish:patch": "npm version patch --no-git-tag-version -f && npm run publish",
-    "publish:minor": "npm version minor --no-git-tag-version -f && npm run publish",
-    "publish:major": "npm version major --no-git-tag-version -f && npm run publish",
-    "publish:git": "git add . && git commit -m \"[Published %npm_package_version%]\" && git push",
-    "publish": "node version.js && npm run build && npm run publish:git && npm run deploy"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Khanon/lorenzo.portillo-website.git"
   },
   "devDependencies": {
-    "@babylonjs/core": "^5.0.2",
-    "@babylonjs/gui": "^5.0.2",
-    "@babylonjs/inspector": "^5.0.2",
+    "@babylonjs/inspector": "^6.38.0",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "eslint": "^8.12.0",
-    "eslint-config-standard": "^16.0.3",
+    "eslint": "^8.56.0",
+    "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
@@ -55,9 +48,8 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "@babylonjs/core": "^5.0.2",
-    "@babylonjs/gui": "^5.0.2",
-    "@babylonjs/inspector": "^5.0.2",
+    "@babylonjs/core": "^6.38.0",
+    "@babylonjs/gui": "^6.38.0",
     "rxjs": "^7.1.0"
   }
 }

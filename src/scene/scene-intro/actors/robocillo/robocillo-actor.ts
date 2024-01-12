@@ -1,7 +1,12 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Scene as BabylonJsScene } from '@babylonjs/core/scene';
 import {
-    Actor2D, AssetsManager, ParticleEndCriteria, ParticleSprite, Sprite, SpriteTexture
+    Actor2D,
+    AssetsManager,
+    ParticleEndCriteria,
+    ParticleSprite,
+    Sprite,
+    SpriteTexture
 } from '@khanonjs/engine';
 import * as Misc from '@khanonjs/engine/misc';
 
@@ -9,7 +14,10 @@ import { SceneIntroGlobals } from '../../scene-intro-globals';
 import { SceneIntroMessages } from '../../scene-intro-notifications';
 import { RobocilloActionChat } from './robocillo-action-chat';
 import { RobocilloActionGoTo } from './robocillo-action-goto';
-import { RobocilloAnimations, RobocilloKeyFrames } from './robocillo-animations';
+import {
+    RobocilloAnimations,
+    RobocilloKeyFrames
+} from './robocillo-animations';
 import { RobocilloStateIntro } from './robocillo-state-intro';
 
 export class RobocilloActor extends Actor2D {

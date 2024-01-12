@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "module": "esNext",
-        "target": "esNext",
+        "module": "es6",
+        "target": "es6",
         "lib": [
             "dom",
             "es6",
         ],
         "importHelpers": true,
-        "declaration": true,
+        "declaration": false,
         "noResolve": false,
         "noImplicitThis": true,
         "noImplicitAny": false,

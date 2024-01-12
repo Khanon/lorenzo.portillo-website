@@ -1,5 +1,5 @@
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { Actor2D, State, WorkerTimer } from '@khanonjs/engine';
+import { Actor2D, State } from '@khanonjs/engine';
 import * as Misc from '@khanonjs/engine/misc';
 
 export class SunStateMotion extends State<Actor2D> {
@@ -11,7 +11,7 @@ export class SunStateMotion extends State<Actor2D> {
     static endScale: number = 0;
 
     onStart(): void {
-        WorkerTimer.setTimeout(() => this.subscribeLoopUpdate(), 700, this);
+        this.addTimeout(() => this.subscribeLoopUpdate(), 700);
     }
 
     onEnd(): void {
@@ -21,14 +21,14 @@ export class SunStateMotion extends State<Actor2D> {
         this.subject.setScale(SunStateMotion.endScale);
     }
 
-    loopUpdate(delta: number): void {
+    loopUpdate(): void {
         const step = Misc.Maths.increaseVectorWithInertia(
             [this.subject.getY(), this.subject.getZ()],
             [SunStateMotion.endPosition.y, SunStateMotion.endPosition.z],
-            0.05 * delta,
+            0.03,
             1
         );
-        const scale = Misc.Maths.increaseValueWithInertia(this.subject.getScale(), SunStateMotion.endScale, 0.005 * delta, 1, () => this.end());
+        const scale = Misc.Maths.increaseValueWithInertia(this.subject.getScale(), SunStateMotion.endScale, 0.003, 1, () => this.end());
         this.subject.setY(step[0]);
         this.subject.setZ(step[1]);
         this.subject.setScale(scale);

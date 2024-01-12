@@ -43,12 +43,12 @@ export class RobocilloActionGoTo extends Action<Actor2D, IRobocilloActionGoTo> {
         return Misc.Vectors.angleXBetweenLines(new Vector3(0, -1, 0), vToCenter);
     }
 
-    loopUpdate(delta: number): void {
+    loopUpdate(): void {
         if (Math.abs(this.getEarthAngle() - this.gotoAngle) > this.prevDistance) {
             this.done();
             this.stop();
         } else {
-            this.subject.physics.applyForce(this.vDirection.scale(0.015));
+            this.subject.physics.applyForce(this.vDirection.scale(0.010));
             this.prevDistance = Math.abs(this.getEarthAngle() - this.gotoAngle);
         }
     }

@@ -5,7 +5,6 @@ import { SceneIntro } from './scene/scene-intro/scene-intro';
 import { SceneWorld } from './scene/scene-world/scene-world';
 
 class App {
-    core: Core;
     blackScrenn: HTMLElement;
     canvasContainer: HTMLElement;
 
@@ -26,14 +25,14 @@ class App {
 
         // Initialize app
         // TODO: remve FPS after development
-        this.core = new Core({
+        Core.start({
+            canvasParentHTMLElement: this.canvasContainer,
             fps: 60,
             onAppError: (errorMsg) => this.appError(errorMsg),
             isDevelopmentMode: this.isDevelopmentMode(),
             fpsContainer: 'fps-container'
-        });
-        this.core.createCanvasOnDivElement(this.canvasContainer);
-        this.core.run(() => {
+        },
+        () => {
             this.sceneIntro = new SceneIntro({
                 assetsJsonUrl: './assets/scene-intro/assets.json',
                 clearColor: { a: 1.0, r: 0.25, g: 0.25, b: 0.25 },
@@ -45,8 +44,8 @@ class App {
                 clearColor: { a: 1.0, r: 1, g: 0, b: 0 }
             });
 
-            this.core.loadScene(this.sceneIntro);
-            this.core.loadScene(this.sceneWorld, (sceneWorld) => this.sceneIntro.onWorldLoaded$.next());
+            Core.loadScene(this.sceneIntro);
+            Core.loadScene(this.sceneWorld, (sceneWorld) => this.sceneIntro.onWorldLoaded$.next());
         });
     }
 

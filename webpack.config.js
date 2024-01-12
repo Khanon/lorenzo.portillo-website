@@ -11,7 +11,7 @@ module.exports = {
         filename: 'js/lorenzo-portillo-website.js', //name for the js file that is created/compiled in memory
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.ts', '.js'],
     },
     module: {
         rules: [

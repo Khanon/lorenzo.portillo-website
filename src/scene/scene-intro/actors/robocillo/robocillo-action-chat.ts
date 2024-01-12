@@ -1,6 +1,11 @@
 import { Vector3 } from '@babylonjs/core';
 import {
-    Action, Actor2D, MotionBasic, MotionEndCriteria, ParticleEndCriteria, ParticleSprite,
+    Action,
+    Actor2D,
+    MotionBasic,
+    MotionEndCriteria,
+    ParticleEndCriteria,
+    ParticleSprite,
     SpriteTexture
 } from '@khanonjs/engine';
 
@@ -22,8 +27,8 @@ export class RobocilloActionChat extends Action<Actor2D, void> {
                 motion: new MotionBasic({
                     alphaStart: 1,
                     alphaEnd: 0,
-                    alphaVel: 0.01,
-                    posVel: new Vector3(0, 0.1, 0),
+                    alphaVel: 0.007,
+                    posVel: new Vector3(0, 0.07, 0),
                     endCriteria: MotionEndCriteria.ALPHA_END
                 }),
                 endCriteria: ParticleEndCriteria.MOTION_END

@@ -1,2 +1,6 @@
 {
+    "files.exclude": {
+        "docs": true,
+        "khanonjs/node_modules": true
+    }
 }

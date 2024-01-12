@@ -28,7 +28,7 @@ export class SceneWorld extends Scene {
         this.camera.target = new Vector3(1, 0, 0);
         this.camera.inputs.clear();
         // this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
-        this.camera.attachControl(this.canvas, true);
+        this.camera.attachControl(CoreGlobals.canvas, true);
 
         const light1: HemisphericLight = new HemisphericLight('light1', new Vector3(1, 0, 0), this.babylonjs);
 
@@ -77,7 +77,7 @@ export class SceneWorld extends Scene {
         let click: number = 0;
         let zoom: boolean;
 
-        this.canvas.addEventListener('keydown', (event) => {
+        CoreGlobals.canvas.addEventListener('keydown', (event) => {
             console.log('aki keydown', event.key, event.code);
             const inc = event.altKey ? (event.ctrlKey ? 0.01 : 0.1) : 1;
             if (event.code === 'Numpad4' || event.code === 'ArrowLeft') {
@@ -106,7 +106,7 @@ export class SceneWorld extends Scene {
             }
         });
 
-        this.canvas.addEventListener('pointermove', () => {
+        CoreGlobals.canvas.addEventListener('pointermove', () => {
             if (click === 1) {
                 if (zoom) {
                     zoom = false;
@@ -122,7 +122,7 @@ export class SceneWorld extends Scene {
             lastPointerX = this.babylonjs.pointerX;
             lastPointerY = this.babylonjs.pointerY;
         });
-        this.canvas.addEventListener('pointerdown', () => {
+        CoreGlobals.canvas.addEventListener('pointerdown', () => {
             click++;
             if (click > 1) {
                 zoom = true;
@@ -131,7 +131,7 @@ export class SceneWorld extends Scene {
             lastPointerY = this.babylonjs.pointerY;
             // console.log('Mouse DOWN!');
         });
-        this.canvas.addEventListener('pointerup', () => {
+        CoreGlobals.canvas.addEventListener('pointerup', () => {
             click--;
             // console.log('Mouse UP!');
         });
