@@ -5,10 +5,5 @@
         "**/*.code-search": true,
         "bundle-stats.json": true
     },
-    "files.exclude": {
-        "docs": true,
-        "khanonjs/node_modules": true,
-        "rkhanonjs/node_modules": true
-    },
     "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -6,6 +6,7 @@ import {
 } from '@khanonjs/engine'
 
 import { SceneIntro } from './scenes/scene-intro/scene-intro'
+import { SceneWorld } from './scenes/scene-world/scene-world'
 
 @App({
   name: 'Lorenzo Portillo Website'
@@ -17,6 +18,7 @@ class LPWebsite implements AppInterface {
   }
 
   onClose() {
+    KJS.Scene.load(SceneWorld)
     Logger.info('App onClose')
   }
 

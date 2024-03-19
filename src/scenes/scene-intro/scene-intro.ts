@@ -1,16 +1,19 @@
 import {
+  ActorConstructor,
+  Logger,
+  ParticleConstructor,
+  ParticleSourceConstructor,
   Scene,
   SceneInterface
 } from '@khanonjs/engine'
-import { ActorConstructor } from '@khanonjs/engine/constructors/actor-constructor'
-import { ParticleConstructor } from '@khanonjs/engine/constructors/particle-constructor'
-import { ParticleSourceConstructor } from '@khanonjs/engine/constructors/particle-source-constructor'
+
+import { ActorRobocillo } from './actors/robocillo/robocillo-actor'
 
 @Scene({
-
+  actors: [ActorRobocillo]
 })
-export class SceneIntro extends SceneInterface{
-  protected onLoad(): void {
-
+export class SceneIntro extends SceneInterface {
+  onLoad(): void {
+    Logger.trace('aki SCENE INTRO onLoad')
   }
 }
