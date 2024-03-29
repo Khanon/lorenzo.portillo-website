@@ -9,4 +9,7 @@ import { SpriteRobocillo } from './robocillo-sprite'
   sprites: [SpriteRobocillo]
 })
 export class ActorRobocillo extends Actor2DInterface {
+  onLoaded(): void {
+    console.log('aki ActorRobocillo onLoaded')
+  }
 }

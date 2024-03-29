@@ -9,6 +9,7 @@
     "start": "webpack serve --port 8080 --config webpack.dev.js",
     "start:prod": "webpack serve --port 8080 --config webpack.prod.js",
     "webpack-bundle-analyze": "webpack --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json",
+    "compile": "tsc --noEmit",
     "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack --config webpack.prod.js",
     "build:deploy": "npm run build && npm run deploy",
     "link": "cd .. && cd khanon.js && npm run link && cd .. && cd lorenzo.portillo-website && npm link @khanonjs/engine",
@@ -38,7 +39,6 @@
     "npm-quick-run": "^1.18.0",
     "recursive-copy": "^2.0.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.1.0",
     "string-replace-loader": "^3.0.3",
     "ts-loader": "^9.1.2",
     "typescript": "^5.3.3",
@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "@babylonjs/core": "^6.38.0",
-    "@babylonjs/gui": "^6.38.0",
-    "rxjs": "^7.1.0"
+    "@babylonjs/gui": "^6.38.0"
   }
 }

@@ -37,6 +37,8 @@
         "space-before-function-paren": "off",
         "space-before-blocks": "warn",
         "no-useless-constructor": "off",
+        "keyword-spacing": "warn",
+        "handle-callback-err": "warn",
         "array-bracket-spacing": "warn",
         "space-in-parens": "warn",
         "eol-last": ["warn", "always"],
