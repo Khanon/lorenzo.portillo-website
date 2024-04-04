@@ -7,10 +7,12 @@ import {
   SceneInterface
 } from '@khanonjs/engine'
 
+import { Scenes } from '../scenes'
 import { ActorLogo } from './actors/logo/logo-actor'
 import { ActorRobocillo } from './actors/robocillo/robocillo-actor'
 
 @Scene({
+  name: Scenes.Intro,
   actors: [
     ActorRobocillo,
     ActorLogo

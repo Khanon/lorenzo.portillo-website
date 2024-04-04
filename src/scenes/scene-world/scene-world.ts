@@ -7,8 +7,10 @@ import {
   SceneInterface
 } from '@khanonjs/engine'
 
-@Scene({
+import { Scenes } from '../scenes'
 
+@Scene({
+  name: Scenes.World
 })
 export class SceneWorld extends SceneInterface {
   onLoad(): void {
