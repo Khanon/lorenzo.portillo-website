@@ -13,16 +13,37 @@ import { SceneWorld } from './scenes/scene-world/scene-world'
 })
 class LPWebsite implements AppInterface {
   onStart() {
-    Logger.info('App onStart')
-    KJS.Scene.load(SceneIntro)
+    Logger.trace('App onStart')
+    const progressIntro = KJS.Scene.load(SceneIntro)
+    const progressWorld = KJS.Scene.load(SceneWorld)
+
+    progressIntro.onComplete.add(() => {
+      Logger.trace('aki SceneIntro loaded!')
+      KJS.Scene.start(SceneIntro, null)
+    })
+    progressIntro.onProgress.add((progress: number) => {
+      Logger.trace('aki SceneIntro progress', progress)
+    })
+    progressIntro.onError.add(() => {
+      Logger.trace('aki SceneIntro error :(')
+    })
+
+    progressWorld.onComplete.add(() => {
+      Logger.trace('aki SceneWorld loaded!')
+    })
+    progressWorld.onProgress.add((progress: number) => {
+      Logger.trace('aki SceneWorld progress', progress)
+    })
+    progressWorld.onError.add(() => {
+      Logger.trace('aki SceneWorld error :(')
+    })
   }
 
   onClose() {
-    KJS.Scene.load(SceneWorld)
-    Logger.info('App onClose')
+    Logger.trace('App onClose')
   }
 
-  onError(error?: any) {
+  onError(error?: string) {
     Logger.error('App onError:', error)
   }
 }
