@@ -9,11 +9,15 @@ import {
 
 import { ActorLogo } from './actors/logo/logo-actor'
 import { ActorRobocillo } from './actors/robocillo/robocillo-actor'
+import { SceneStateIntro } from './states/scene-state-intro'
 
 @Scene({
   actors: [
     ActorRobocillo,
     ActorLogo
+  ],
+  states: [
+    SceneStateIntro
   ]
 })
 export class SceneIntro extends SceneInterface {

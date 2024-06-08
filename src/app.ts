@@ -6,6 +6,7 @@ import {
 } from '@khanonjs/engine'
 
 import { SceneIntro } from './scenes/scene-intro/scene-intro'
+import { SceneStateIntro } from './scenes/scene-intro/states/scene-state-intro'
 import { SceneWorld } from './scenes/scene-world/scene-world'
 
 @App({
@@ -19,7 +20,7 @@ class LPWebsite implements AppInterface {
 
     progressIntro.onComplete.add(() => {
       Logger.trace('aki SceneIntro loaded!')
-      KJS.Scene.start(SceneIntro, null)
+      KJS.Scene.start(SceneIntro, SceneStateIntro)
     })
     progressIntro.onProgress.add((progress: number) => {
       Logger.trace('aki SceneIntro progress', progress)
