@@ -1,3 +1,6 @@
+import { Vector3 } from '@babylonjs/core'
+import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight'
+import { Color4 } from '@babylonjs/core/Maths/math.color'
 import {
   ActorConstructor,
   Logger,
@@ -18,12 +21,16 @@ import { SceneStateIntro } from './states/scene-state-intro'
   ],
   states: [
     SceneStateIntro
-  ]
+  ],
+  configuration: {
+    clearColor: new Color4(0.25, 0.25, 0.25, 1.0)
+  }
 })
 export class SceneIntro extends SceneInterface {
-  custom: string
+  private light: HemisphericLight
 
   onLoad(): void {
     Logger.trace('aki SCENE INTRO onLoad')
+    this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
   }
 }
