@@ -10,12 +10,14 @@ import {
   SceneInterface
 } from '@khanonjs/engine'
 
+import { ActorEarth } from './actors/earth/earth-actor'
 import { ActorLogo } from './actors/logo/logo-actor'
 import { ActorRobocillo } from './actors/robocillo/robocillo-actor'
 import { SceneStateIntro } from './states/scene-state-intro'
 
 @Scene({
   actors: [
+    ActorEarth,
     ActorRobocillo,
     ActorLogo
   ],
@@ -29,8 +31,8 @@ import { SceneStateIntro } from './states/scene-state-intro'
 export class SceneIntro extends SceneInterface {
   private light: HemisphericLight
 
-  onLoad(): void {
-    Logger.trace('aki SCENE INTRO onLoad')
+  onLoaded(): void {
+    Logger.trace('aki SceneIntro onLoaded')
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
   }
 }

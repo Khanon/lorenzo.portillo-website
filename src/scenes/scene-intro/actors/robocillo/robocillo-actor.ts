@@ -11,6 +11,6 @@ import { SpriteRobocillo } from './robocillo-sprite'
 })
 export class ActorRobocillo extends Actor2DInterface {
   onLoaded(): void {
-    Logger.trace('aki ActorRobocillo onLoaded')
+    // Logger.trace('aki ActorRobocillo onLoaded')
   }
 }

@@ -10,6 +10,6 @@ import {
 })
 export class SpriteLogo extends SpriteInterface {
   onLoaded(scene: KJS.Scene) {
-    Logger.trace('aki SpriteLogo onLoaded', (scene as any).constructor.prototype)
+    // Logger.trace('aki SpriteLogo onLoaded', (scene as any).constructor.prototype)
   }
 }

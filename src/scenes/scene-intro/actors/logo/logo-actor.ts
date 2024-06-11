@@ -10,6 +10,6 @@ import { SpriteLogo } from './logo-sprite'
 })
 export class ActorLogo extends Actor2DInterface {
   onLoaded(): void {
-    console.log('aki ActorLogo onLoaded')
+    // console.log('aki ActorLogo onLoaded')
   }
 }

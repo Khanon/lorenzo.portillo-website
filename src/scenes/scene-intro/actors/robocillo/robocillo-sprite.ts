@@ -10,6 +10,6 @@ import {
 })
 export class SpriteRobocillo extends SpriteInterface {
   onLoaded(scene: KJS.Scene) {
-    Logger.trace('aki SpriteRobocillo onLoaded', scene)
+    // Logger.trace('aki SpriteRobocillo onLoaded', scene)
   }
 }
