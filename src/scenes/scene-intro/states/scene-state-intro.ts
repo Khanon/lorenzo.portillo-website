@@ -16,6 +16,8 @@ import { SceneIntroCamera } from '../scene-intro-camera'
 export class SceneStateIntro extends SceneStateInterface {
   onPlay() {
     Logger.trace('aki SceneStateIntro onPlay')
-    this.scene.spawnActor(ActorEarth)
+    this.scene.spawnActor(ActorEarth, (actor) => {
+      Logger.trace('aki SceneStateIntro spawnActor initialize', actor)
+    })
   }
 }

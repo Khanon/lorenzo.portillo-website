@@ -1,9 +1,7 @@
-import {
-  Scene as BabylonScene,
-  UniversalCamera
-} from '@babylonjs/core'
+import { UniversalCamera } from '@babylonjs/core'
 import { Vector3 } from '@babylonjs/core/Maths/math'
 import {
+  BabylonScene,
   Camera,
   CameraInterface
 } from '@khanonjs/engine'
