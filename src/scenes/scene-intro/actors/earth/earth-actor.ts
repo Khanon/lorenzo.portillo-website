@@ -7,8 +7,10 @@ import {
   Actor3D,
   Actor3DInterface,
   ActorComposition,
+  ActorCompositionDefinition,
   BabylonScene,
-  Logger
+  Logger,
+  SceneType
 } from '@khanonjs/engine'
 
 const compositionId: string = 'Earth'
@@ -16,10 +18,10 @@ const compositionId: string = 'Earth'
 @Actor3D()
 export class ActorEarth extends Actor3DInterface {
   @ActorComposition(compositionId)
-  earth(scene: BabylonScene) {
+  earth(composition: ActorCompositionDefinition, scene: SceneType) {
     Logger.trace('aki ActorComposition earth', scene)
 
-    /* const flatMaterial = new StandardMaterial('', scene)
+    const flatMaterial = new StandardMaterial('', scene.babylon.scene)
     flatMaterial.disableLighting = true
     flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
     const meshBjs = MeshBuilder.CreateDisc('', {
@@ -28,15 +30,11 @@ export class ActorEarth extends Actor3DInterface {
     })
     meshBjs.material = flatMaterial
 
-    // return new Mesh(this.name, meshBjs) */
-  }
-
-  onLoaded() {
-    Logger.trace('aki ActorEarth onLoaded')
+    // composition.add(new Mesh(this.name, meshBjs))  // 8a8f
   }
 
   onSpawn() {
     Logger.trace('aki ActorEarth onSpawn', this)
-    this.useComposition(compositionId)
+    const composition = this.setComposition(compositionId)
   }
 }

@@ -18,6 +18,7 @@ export class SceneStateIntro extends SceneStateInterface {
     Logger.trace('aki SceneStateIntro onPlay')
     this.scene.spawnActor(ActorEarth, (actor) => {
       Logger.trace('aki SceneStateIntro spawnActor initialize', actor)
+      // actor.
     })
   }
 }
