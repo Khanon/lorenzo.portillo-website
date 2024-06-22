@@ -4,37 +4,43 @@ import {
   StandardMaterial
 } from '@babylonjs/core'
 import {
-  Actor3D,
-  Actor3DInterface,
+  Actor,
   ActorComposition,
   ActorCompositionDefinition,
-  BabylonScene,
+  ActorInterface,
+  KJS,
   Logger,
+  Mesh,
+  MeshInterface,
   SceneType
 } from '@khanonjs/engine'
 
 const compositionId: string = 'Earth'
 
-@Actor3D()
-export class ActorEarth extends Actor3DInterface {
-  @ActorComposition(compositionId)
-  earth(composition: ActorCompositionDefinition, scene: SceneType) {
-    Logger.trace('aki ActorComposition earth', scene)
-
+@Mesh()
+class MeshEarth extends MeshInterface {
+  onSpawn(scene: KJS.Scene) {
     const flatMaterial = new StandardMaterial('', scene.babylon.scene)
     flatMaterial.disableLighting = true
     flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
-    const meshBjs = MeshBuilder.CreateDisc('', {
-      radius: 1125,
-      tessellation: 200
-    })
+    const meshBjs = MeshBuilder.CreateDisc('', { radius: 1125, tessellation: 200 }, scene.babylon.scene)
     meshBjs.material = flatMaterial
+    this.setMesh(meshBjs)
+  }
+}
 
-    // composition.add(new Mesh(this.name, meshBjs))  // 8a8f
+@Actor({
+  meshes: [MeshEarth]
+})
+export class ActorEarth extends ActorInterface {
+  @ActorComposition(compositionId)
+  compose(comkposition: ActorCompositionDefinition, scene: SceneType) {
+    Logger.trace('aki ActorComposition earth')
+    comkposition.addMesh(MeshEarth)
   }
 
-  onSpawn() {
+  onSpawn(scene: KJS.Scene) {
     Logger.trace('aki ActorEarth onSpawn', this)
-    const composition = this.setComposition(compositionId)
+    this.useComposition(compositionId)
   }
 }
