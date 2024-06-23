@@ -17,8 +17,7 @@ export class EarthMesh extends MeshInterface {
     Logger.trace('aki EarthMesh onSpawn')
     const flatMaterial = new StandardMaterial('', scene.babylon.scene)
     flatMaterial.disableLighting = true
-    // flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
-    flatMaterial.emissiveColor = new Color3(1, 0.13, 0.13)
+    flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
     const meshBjs = MeshBuilder.CreateDisc('', { radius: 1125, tessellation: 200 }, scene.babylon.scene)
     meshBjs.material = flatMaterial
     this.setMesh(meshBjs)
