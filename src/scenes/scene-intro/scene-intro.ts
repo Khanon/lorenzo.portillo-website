@@ -36,12 +36,4 @@ export class SceneIntro extends SceneInterface {
     Logger.trace('aki SceneIntro onLoaded')
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
   }
-
-  onLoopUpdate(delta: number): void {
-    Logger.trace('aki onLoopUpdate', delta)
-  }
-
-  onCanvasResize(canvasRect: Rect): void {
-    Logger.trace('aki onCanvasResize', canvasRect)
-  }
 }
