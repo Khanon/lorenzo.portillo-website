@@ -6,20 +6,21 @@ import {
   Logger,
   ParticleConstructor,
   ParticleSourceConstructor,
+  Rect,
   Scene,
   SceneInterface
 } from '@khanonjs/engine'
 
 import { ActorEarth } from './actors/earth/earth-actor'
-import { ActorLogo } from './actors/logo/logo-actor'
-import { ActorRobocillo } from './actors/robocillo/robocillo-actor'
+import { LogoActor } from './actors/logo/logo-actor'
+import { RobocilloActor } from './actors/robocillo/robocillo-actor'
 import { SceneStateIntro } from './states/scene-state-intro'
 
 @Scene({
   actors: [
     ActorEarth,
-    ActorRobocillo,
-    ActorLogo
+    RobocilloActor,
+    LogoActor
   ],
   states: [
     SceneStateIntro
@@ -34,5 +35,13 @@ export class SceneIntro extends SceneInterface {
   onLoaded(): void {
     Logger.trace('aki SceneIntro onLoaded')
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
+  }
+
+  onLoopUpdate(delta: number): void {
+    Logger.trace('aki onLoopUpdate', delta)
+  }
+
+  onCanvasResize(canvasRect: Rect): void {
+    Logger.trace('aki onCanvasResize', canvasRect)
   }
 }

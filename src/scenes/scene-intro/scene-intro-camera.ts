@@ -3,12 +3,14 @@ import { Vector3 } from '@babylonjs/core/Maths/math'
 import {
   BabylonScene,
   Camera,
-  CameraInterface
+  CameraInterface,
+  Logger
 } from '@khanonjs/engine'
 
 @Camera()
 export class SceneIntroCamera extends CameraInterface {
   initialize(scene: BabylonScene) {
+    Logger.trace('aki SceneIntroCamera initialize')
     // Fixed camera
     const camera = new UniversalCamera('camera', new Vector3(0, 0, 0), scene)
     camera.target = new Vector3(1, 0, 0)

@@ -16,7 +16,7 @@ class LPWebsite implements AppInterface {
   onStart() {
     // Logger.trace('App onStart')
     const progressIntro = KJS.Scene.load(SceneIntro)
-    const progressWorld = KJS.Scene.load(SceneWorld)
+    // const progressWorld = KJS.Scene.load(SceneWorld)
 
     progressIntro.onComplete.add(() => {
       // Logger.trace('aki SceneIntro loaded!')
@@ -29,7 +29,7 @@ class LPWebsite implements AppInterface {
       // Logger.trace('aki SceneIntro error :(')
     })
 
-    progressWorld.onComplete.add(() => {
+    /* progressWorld.onComplete.add(() => {
       // Logger.trace('aki SceneWorld loaded!')
     })
     progressWorld.onProgress.add((progress: number) => {
@@ -37,7 +37,7 @@ class LPWebsite implements AppInterface {
     })
     progressWorld.onError.add(() => {
       // Logger.trace('aki SceneWorld error :(')
-    })
+    }) */
   }
 
   onClose() {

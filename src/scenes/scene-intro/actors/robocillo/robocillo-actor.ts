@@ -1,15 +1,15 @@
 import {
-  Actor2D,
-  Actor2DInterface,
+  Actor,
+  ActorInterface,
   Logger
 } from '@khanonjs/engine'
 
-import { SpriteRobocillo } from './robocillo-sprite'
+import { RobocilloSprite } from './robocillo-sprite'
 
-@Actor2D({
-  sprites: [SpriteRobocillo]
+@Actor({
+  sprites: [RobocilloSprite]
 })
-export class ActorRobocillo extends Actor2DInterface {
+export class RobocilloActor extends ActorInterface {
   onLoaded(): void {
     // Logger.trace('aki ActorRobocillo onLoaded')
   }

@@ -1,14 +1,14 @@
 import {
-  Actor2D,
-  Actor2DInterface
+  Actor,
+  ActorInterface
 } from '@khanonjs/engine'
 
-import { SpriteLogo } from './logo-sprite'
+import { LogoSprite } from './logo-sprite'
 
-@Actor2D({
-  sprites: [SpriteLogo]
+@Actor({
+  sprites: [LogoSprite]
 })
-export class ActorLogo extends Actor2DInterface {
+export class LogoActor extends ActorInterface {
   onLoaded(): void {
     // console.log('aki ActorLogo onLoaded')
   }

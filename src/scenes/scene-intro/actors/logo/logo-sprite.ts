@@ -8,7 +8,7 @@ import {
 @Sprite({
   url: './assets/scene-intro/sprites/logo.png'
 })
-export class SpriteLogo extends SpriteInterface {
+export class LogoSprite extends SpriteInterface {
   onLoaded(scene: KJS.Scene) {
     // Logger.trace('aki SpriteLogo onLoaded', (scene as any).constructor.prototype)
   }
