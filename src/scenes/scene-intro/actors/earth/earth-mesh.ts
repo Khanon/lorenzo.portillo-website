@@ -27,6 +27,6 @@ export class EarthMesh extends MeshInterface {
     this.babylon.mesh.rotate(new Vector3(0, 1, 0), Math.PI / 2)
     this.babylon.mesh.position.x = -10
     this.babylon.mesh.position.y = -1110
-    this.setScale(1)
+    this.babylon.mesh.scaling = new Vector3(1, 1, 1)
   }
 }
