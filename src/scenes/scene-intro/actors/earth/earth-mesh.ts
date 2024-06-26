@@ -4,6 +4,7 @@ import {
   StandardMaterial
 } from '@babylonjs/core'
 import { Vector3 } from '@babylonjs/core/Maths/math.vector'
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode'
 import {
   KJS,
   Logger,
@@ -24,9 +25,9 @@ export class EarthMesh extends MeshInterface {
 
     // 8a8f
     // this.state.registerState(new EarthStateMotion('motion', this));
-    this.babylon.mesh.rotate(new Vector3(0, 1, 0), Math.PI / 2)
-    this.babylon.mesh.position.x = -10
-    this.babylon.mesh.position.y = -1110
-    this.babylon.mesh.scaling = new Vector3(1, 1, 1)
+    this.transform.rotate(new Vector3(0, 1, 0), Math.PI / 2)
+    this.transform.position.x = -10
+    this.transform.position.y = -1110
+    this.transform.scaling = new Vector3(1, 1, 1)
   }
 }

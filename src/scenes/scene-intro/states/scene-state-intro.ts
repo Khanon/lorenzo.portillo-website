@@ -7,7 +7,7 @@ import {
   UseCamera
 } from '@khanonjs/engine'
 
-import { ActorEarth } from '../actors/earth/earth-actor'
+import { EarthActor } from '../actors/earth/earth-actor'
 import { SceneIntroCamera } from '../scene-intro-camera'
 
 @SceneState({
@@ -17,8 +17,9 @@ import { SceneIntroCamera } from '../scene-intro-camera'
 export class SceneStateIntro extends SceneStateInterface {
   onStart() {
     Logger.trace('aki SceneStateIntro onStart')
-    this.scene.spawnActor(ActorEarth, (actor) => {
+    this.scene.spawn.actor(EarthActor, '', (actor) => {
       Logger.trace('aki SceneStateIntro spawnActor initialize', actor)
+      // actor.useComposition(ActorEarth.prototype.compose)
       // actor.
     })
   }

@@ -11,14 +11,14 @@ import {
   SceneInterface
 } from '@khanonjs/engine'
 
-import { ActorEarth } from './actors/earth/earth-actor'
+import { EarthActor } from './actors/earth/earth-actor'
 import { LogoActor } from './actors/logo/logo-actor'
 import { RobocilloActor } from './actors/robocillo/robocillo-actor'
 import { SceneStateIntro } from './states/scene-state-intro'
 
 @Scene({
   actors: [
-    ActorEarth,
+    EarthActor,
     RobocilloActor,
     LogoActor
   ],
