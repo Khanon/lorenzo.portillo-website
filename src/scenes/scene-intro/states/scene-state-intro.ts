@@ -17,11 +17,8 @@ import { SceneIntroCamera } from '../scene-intro-camera'
 export class SceneStateIntro extends SceneStateInterface {
   onStart() {
     Logger.trace('aki SceneStateIntro onStart')
-    this.scene.spawn.actor(EarthActor, '', (actor) => {
-      Logger.trace('aki SceneStateIntro spawnActor initialize', actor)
-      // actor.useComposition(ActorEarth.prototype.compose)
-      // actor.
-    })
+    const actor = this.scene.spawn.actor<EarthActor>(EarthActor, '')
+    actor.compositions // 8a8f
   }
 
   onLoopUpdate(delta: number): void {

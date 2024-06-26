@@ -1,14 +1,13 @@
 import {
   Actor,
   ActorComposition,
-  ActorCompositionDefinition,
   ActorInterface,
   KJS,
   Logger,
-  MeshInterface,
-  SceneType
+  MeshInterface
 } from '@khanonjs/engine'
 
+import { SceneIntro } from '../../scene-intro'
 import { EarthMesh } from './earth-mesh'
 
 @Actor({
@@ -16,7 +15,7 @@ import { EarthMesh } from './earth-mesh'
 })
 export class EarthActor extends ActorInterface<MeshInterface> {
   @ActorComposition('Earth')
-  compose(scene: SceneType) {
+  compose(scene: SceneIntro) {
     Logger.trace('aki ActorComposition earth', this)
     const body = this.setBody(EarthMesh)
   }
@@ -24,6 +23,7 @@ export class EarthActor extends ActorInterface<MeshInterface> {
   onSpawn(scene: KJS.Scene) {
     Logger.trace('aki ActorEarth onSpawn', this)
     this.useComposition('Earth')
+    // this.useComposition(this.)
     // this.body  // 8a8f this should get the type from composition.setBody constructor argument.
     // this.transform.
   }
