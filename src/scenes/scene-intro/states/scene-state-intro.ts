@@ -8,6 +8,7 @@ import {
 } from '@khanonjs/engine'
 
 import { EarthActor } from '../actors/earth/earth-actor'
+import { EarthMesh } from '../actors/earth/earth-mesh'
 import { SceneIntroCamera } from '../scene-intro-camera'
 
 @SceneState({
@@ -17,8 +18,7 @@ import { SceneIntroCamera } from '../scene-intro-camera'
 export class SceneStateIntro extends SceneStateInterface {
   onStart() {
     Logger.trace('aki SceneStateIntro onStart')
-    const actor = this.scene.spawn.actor<EarthActor>(EarthActor, '')
-    actor.compositions // 8a8f
+    this.scene.spawn.actor(EarthActor)
   }
 
   onLoopUpdate(delta: number): void {
