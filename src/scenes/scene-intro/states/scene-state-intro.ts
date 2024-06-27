@@ -3,12 +3,10 @@ import {
   Rect,
   SceneState,
   SceneStateInterface,
-  SceneType,
   UseCamera
 } from '@khanonjs/engine'
 
 import { EarthActor } from '../actors/earth/earth-actor'
-import { EarthMesh } from '../actors/earth/earth-mesh'
 import { SceneIntroCamera } from '../scene-intro-camera'
 
 @SceneState({
