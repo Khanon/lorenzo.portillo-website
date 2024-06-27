@@ -15,7 +15,6 @@ import {
 @Mesh()
 export class EarthMesh extends MeshInterface {
   onSpawn(scene: KJS.Scene) {
-    Logger.trace('aki EarthMesh onSpawn')
     const flatMaterial = new StandardMaterial('', scene.babylon.scene)
     flatMaterial.disableLighting = true
     flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
