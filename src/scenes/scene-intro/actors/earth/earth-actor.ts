@@ -14,7 +14,11 @@ import { EarthMesh } from './earth-mesh'
 })
 export class EarthActor extends ActorInterface<MeshInterface> {
   // @ActorMesh()  // 8a8f
-  // earthMesh: MeshInterface
+  // // earthMesh: MeshInterface
+
+  // onLoopUpdate(delta: number): void {
+  //   console.log('aki delta', delta)
+  // }
 
   onSpawn(scene: KJS.Scene) {
     this.composition.setBody(EarthMesh)

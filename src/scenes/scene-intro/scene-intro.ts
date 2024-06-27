@@ -33,7 +33,6 @@ export class SceneIntro extends SceneInterface {
   private light: HemisphericLight
 
   onLoaded(): void {
-    Logger.trace('aki SceneIntro onLoaded')
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
   }
 }

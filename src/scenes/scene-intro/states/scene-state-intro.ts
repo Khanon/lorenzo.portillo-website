@@ -15,15 +15,14 @@ import { SceneIntroCamera } from '../scene-intro-camera'
 })
 export class SceneStateIntro extends SceneStateInterface {
   onStart() {
-    Logger.trace('aki SceneStateIntro onStart')
     this.scene.spawn.actor(EarthActor)
   }
 
-  onLoopUpdate(delta: number): void {
-    // Logger.trace('aki onLoopUpdate', delta)
-  }
+  // onLoopUpdate(delta: number): void {
+  //   Logger.trace('aki onLoopUpdate', delta)
+  // }
 
-  onCanvasResize(size: Rect): void {
-    Logger.trace('aki onCanvasResize', size)
-  }
+  // onCanvasResize(size: Rect): void {
+  //   Logger.trace('aki onCanvasResize', size)
+  // }
 }
