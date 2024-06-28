@@ -10,7 +10,10 @@ import { SceneStateIntro } from './scenes/scene-intro/states/scene-state-intro'
 import { SceneWorld } from './scenes/scene-world/scene-world'
 
 @App({
-  name: 'Lorenzo Portillo Website'
+  name: 'Lorenzo Portillo Website',
+  loopUpdate: {
+    fps: 165
+  }
 })
 class LPWebsite implements AppInterface {
   onStart() {
