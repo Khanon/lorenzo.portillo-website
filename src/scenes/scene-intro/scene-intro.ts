@@ -14,13 +14,16 @@ import {
 import { EarthActor } from './actors/earth/earth-actor'
 import { LogoActor } from './actors/logo/logo-actor'
 import { RobocilloActor } from './actors/robocillo/robocillo-actor'
+import { SunActor } from './actors/sun-actor/sun-actor'
+import { updateRatio } from './canvas-ratio-consts'
 import { SceneStateIntro } from './states/scene-state-intro'
 
 @Scene({
   actors: [
     EarthActor,
-    RobocilloActor,
-    LogoActor
+    SunActor
+    // RobocilloActor,
+    // LogoActor
   ],
   states: [
     SceneStateIntro
@@ -34,5 +37,9 @@ export class SceneIntro extends SceneInterface {
 
   onLoaded(): void {
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
+  }
+
+  onCanvasResize(size: Rect): void {
+    updateRatio(size)
   }
 }

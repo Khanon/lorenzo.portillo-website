@@ -3,8 +3,6 @@ import {
   MeshBuilder,
   StandardMaterial
 } from '@babylonjs/core'
-import { Vector3 } from '@babylonjs/core/Maths/math.vector'
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode'
 import {
   KJS,
   Logger,
@@ -18,7 +16,7 @@ export class EarthMesh extends MeshInterface {
     const flatMaterial = new StandardMaterial('', scene.babylon.scene)
     flatMaterial.disableLighting = true
     flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
-    const meshBjs = MeshBuilder.CreateDisc('', { radius: 1125, tessellation: 200 }, scene.babylon.scene)
+    const meshBjs = MeshBuilder.CreateDisc('EarthMesh', { radius: 1125, tessellation: 200 }, scene.babylon.scene)
     meshBjs.material = flatMaterial
     this.setMesh(meshBjs)
   }
