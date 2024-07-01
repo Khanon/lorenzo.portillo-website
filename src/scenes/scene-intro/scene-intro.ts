@@ -10,6 +10,7 @@ import {
   Scene,
   SceneInterface
 } from '@khanonjs/engine'
+import { Core } from '@khanonjs/engine/core'
 
 import { EarthActor } from './actors/earth/earth-actor'
 import { LogoActor } from './actors/logo/logo-actor'
@@ -37,6 +38,7 @@ export class SceneIntro extends SceneInterface {
 
   onLoaded(): void {
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
+    updateRatio(Core.canvasRect)
   }
 
   onCanvasResize(size: Rect): void {

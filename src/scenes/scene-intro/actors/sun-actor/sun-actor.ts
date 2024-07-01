@@ -3,6 +3,7 @@ import {
   Actor,
   ActorInterface,
   Helper,
+  Logger,
   SpriteInterface
 } from '@khanonjs/engine'
 
@@ -31,6 +32,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
     const sun = this.composer.setBody(SunSprite)
     sun.setFrame(0)
     this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
+    Logger.trace('aki START POSITION', ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos, this.transform.position)
     // this.transform.scale = 1
   }
 
@@ -50,5 +52,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
     this.transform.position.y = step[0]
     this.transform.position.z = step[1]
     // this.transform.scale = scale
+    // Logger.trace('aki TRANSFORM', step[0], step[1])
+    // Logger.trace('aki POSITION', this.composer.body.babylon.sprite.position)
   }
 }
