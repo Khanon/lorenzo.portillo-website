@@ -2,7 +2,7 @@
     "spriteTextures": [
         {
             "id": "sun",
-            "url": "./assets/scene-intro/sprites/sun.png",
+            "url": "./assets/scene-intro/sprites/wtf.png",
             "cellWidth": 270,
             "cellHeight": 270
         },

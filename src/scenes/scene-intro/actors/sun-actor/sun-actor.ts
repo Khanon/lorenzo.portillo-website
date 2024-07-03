@@ -30,7 +30,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
   onSpawn() {
     const ratio = getRatio()
     const sun = this.composer.setBody(SunSprite)
-    sun.setFrame(0)
+    sun.setFrame(0) // 8a8f evitar esto
     this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
     Logger.trace('aki START POSITION', ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos, this.transform.position)
     // this.transform.scale = 1
