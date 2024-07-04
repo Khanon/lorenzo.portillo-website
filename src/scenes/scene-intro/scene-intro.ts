@@ -1,4 +1,8 @@
-import { Vector3 } from '@babylonjs/core'
+import {
+  DefaultRenderingPipeline,
+  FxaaPostProcess,
+  Vector3
+} from '@babylonjs/core'
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight'
 import { Color4 } from '@babylonjs/core/Maths/math.color'
 import {
@@ -38,6 +42,12 @@ export class SceneIntro extends SceneInterface {
 
   onLoaded(): void {
     this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
+
+    const pipeline = new DefaultRenderingPipeline(undefined, undefined, this.babylon.scene)
+    pipeline.samples = 4
+    // pipeline.fxaaEnabled = true
+    this.babylon.scene.postProcessRenderPipelineManager.addPipeline(pipeline)
+
     updateRatio(Core.canvasRect)
   }
 

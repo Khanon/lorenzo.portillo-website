@@ -14,10 +14,11 @@ import { SunSprite } from './sun-sprite'
   sprites: [SunSprite]
 })
 export class SunActor extends ActorInterface<SpriteInterface> {
+  scale = 1
+  oSize = 0
+
   paramsRatio0StartPos = new Vector3(0, 280, -237)
   paramsRatio1StartPos = new Vector3(0, 280, -500)
-  paramsRatio0StartScale = 0.35
-  paramsRatio1StartScale = 0.4
 
   paramsRatio0EndPos = new Vector3(0, 12, -79)
   paramsRatio1EndPos = new Vector3(0, 25, -215)
@@ -29,11 +30,9 @@ export class SunActor extends ActorInterface<SpriteInterface> {
 
   onSpawn() {
     const ratio = getRatio()
-    const sun = this.composer.setBody(SunSprite)
-    sun.setFrame(0) // 8a8f evitar esto
+    this.composer.setBody(SunSprite)
     this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
-    Logger.trace('aki START POSITION', ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos, this.transform.position)
-    // this.transform.scale = 1
+    this.oSize = this.composer.body.babylon.spriteManager.cellWidth
   }
 
   onLoopUpdate(delta: number): void {
@@ -45,14 +44,12 @@ export class SunActor extends ActorInterface<SpriteInterface> {
     const step = Helper.Maths.increaseVectorWithInertia(
       [this.transform.position.y, this.transform.position.z],
       [this.targetPosition.y, this.targetPosition.z],
-      0.05 * delta,
-      1
+      0.014 * delta,
+      0.8
     )
-    // const scale = Helper.Maths.increaseValueWithInertia(this.transform.scale, this.targetScale, 0.005 * delta, 1)
+    this.scale = Helper.Maths.increaseValueWithInertia(this.scale, this.targetScale, 0.0014 * delta, 1)
     this.transform.position.y = step[0]
     this.transform.position.z = step[1]
-    // this.transform.scale = scale
-    // Logger.trace('aki TRANSFORM', step[0], step[1])
-    // Logger.trace('aki POSITION', this.composer.body.babylon.sprite.position)
+    this.transform.size = this.oSize * this.scale
   }
 }
