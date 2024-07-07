@@ -3,6 +3,7 @@ import {
   Actor,
   ActorInterface,
   Helper,
+  KJS,
   Logger,
   SpriteInterface
 } from '@khanonjs/engine'

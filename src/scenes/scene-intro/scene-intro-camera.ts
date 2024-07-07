@@ -4,9 +4,9 @@ import {
   BabylonScene,
   Camera,
   CameraInterface,
-  Helper,
   Rect
 } from '@khanonjs/engine'
+import { Vectors } from '@khanonjs/engine/modules/helper/vectors'
 
 import {
   END_RATIO_CANVAS,
@@ -32,6 +32,6 @@ export class SceneIntroCamera extends CameraInterface {
     const canvasRatio = size.width / size.height
     const factorCamera = 1 / (END_RATIO_CANVAS - MIDDLE_RATIO_CANVAS)
     const ratioCamera = (canvasRatio - MIDDLE_RATIO_CANVAS) * factorCamera
-    this.babylon.camera.position = Helper.Vectors.dragPoint(ratioCamera, this.paramsRatio0CameraPos, this.paramsRatio1CameraPos)
+    this.babylon.camera.position = Vectors.dragPoint(ratioCamera, this.paramsRatio0CameraPos, this.paramsRatio1CameraPos)
   }
 }
