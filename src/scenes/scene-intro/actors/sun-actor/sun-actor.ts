@@ -2,9 +2,10 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 import {
   Actor,
   ActorInterface,
+  ActorSprite,
   Helper,
-  KJS,
   Logger,
+  SpriteConstructor,
   SpriteInterface
 } from '@khanonjs/engine'
 
@@ -12,7 +13,7 @@ import { getRatio } from '../../canvas-ratio-consts'
 import { SunSprite } from './sun-sprite'
 
 @Actor({
-  sprites: [SunSprite]
+  // sprites: [SunSprite]
 })
 export class SunActor extends ActorInterface<SpriteInterface> {
   scale = 1
@@ -29,9 +30,17 @@ export class SunActor extends ActorInterface<SpriteInterface> {
   targetPosition: Vector3
   targetScale: number = 0
 
+  @ActorSprite({
+    url: './assets/scene-intro/sprites/sun.png',
+    width: 270,
+    height: 270
+  }) sun: SpriteConstructor
+
   onSpawn() {
     const ratio = getRatio()
-    this.composer.setBody(SunSprite)
+    const _test = this.sun
+    // this.composer.setBody(SunSprite)
+    this.composer.setBody(this.sun)
     this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
     this.oSize = this.composer.body.babylon.spriteManager.cellWidth
   }
