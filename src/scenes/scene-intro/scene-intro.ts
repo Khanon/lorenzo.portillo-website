@@ -16,9 +16,9 @@ import {
 import { Core } from '@khanonjs/engine/core'
 
 import { EarthActor } from './actors/earth/earth-actor'
-import { LogoActor } from './actors/logo/logo-actor'
+import { LogoActor } from './actors/logo-actor'
 import { RobocilloActor } from './actors/robocillo/robocillo-actor'
-import { SunActor } from './actors/sun-actor/sun-actor'
+import { SunActor } from './actors/sun-actor'
 import { updateRatio } from './canvas-ratio-consts'
 import { SceneStateIntro } from './states/scene-state-intro'
 

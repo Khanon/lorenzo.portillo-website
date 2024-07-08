@@ -9,12 +9,9 @@ import {
   SpriteInterface
 } from '@khanonjs/engine'
 
-import { getRatio } from '../../canvas-ratio-consts'
-import { SunSprite } from './sun-sprite'
+import { getRatio } from '../canvas-ratio-consts'
 
-@Actor({
-  // sprites: [SunSprite]
-})
+@Actor()
 export class SunActor extends ActorInterface<SpriteInterface> {
   scale = 1
   oSize = 0

@@ -7,7 +7,8 @@ import {
 } from '@khanonjs/engine'
 
 import { EarthActor } from '../actors/earth/earth-actor'
-import { SunActor } from '../actors/sun-actor/sun-actor'
+import { LogoActor } from '../actors/logo-actor'
+import { SunActor } from '../actors/sun-actor'
 import { SceneIntroCamera } from '../scene-intro-camera'
 
 @SceneState({
@@ -18,6 +19,7 @@ export class SceneStateIntro extends SceneStateInterface {
   onStart() {
     this.scene.spawn.actor(EarthActor)
     this.scene.spawn.actor(SunActor)
+    this.scene.spawn.actor(LogoActor)
   }
 
   // onLoopUpdate(delta: number): void {
