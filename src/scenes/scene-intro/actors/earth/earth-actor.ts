@@ -14,7 +14,7 @@ import { EarthMesh } from './earth-mesh'
 })
 export class EarthActor extends ActorInterface<MeshInterface> {
   onSpawn(): void {
-    this.composer.setBody(EarthMesh)
+    this.setBody(EarthMesh)
     this.transform.rotate(new Vector3(0, 1, 0), Math.PI / 2)
     this.transform.position.x = -10
     this.transform.position.y = 100

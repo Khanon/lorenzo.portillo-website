@@ -25,9 +25,9 @@ import { SceneStateIntro } from './states/scene-state-intro'
 @Scene({
   actors: [
     EarthActor,
-    SunActor
+    SunActor,
+    LogoActor
     // RobocilloActor,
-    // LogoActor
   ],
   states: [
     SceneStateIntro

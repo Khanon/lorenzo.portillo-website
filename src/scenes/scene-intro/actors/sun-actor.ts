@@ -13,9 +13,6 @@ import { getRatio } from '../canvas-ratio-consts'
 
 @Actor()
 export class SunActor extends ActorInterface<SpriteInterface> {
-  scale = 1
-  oSize = 0
-
   paramsRatio0StartPos = new Vector3(0, 280, -237)
   paramsRatio1StartPos = new Vector3(0, 280, -500)
 
@@ -35,11 +32,8 @@ export class SunActor extends ActorInterface<SpriteInterface> {
 
   onSpawn() {
     const ratio = getRatio()
-    const _test = this.sun
-    // this.composer.setBody(SunSprite)
-    this.composer.setBody(this.sun)
+    this.setBody(this.sun)
     this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
-    this.oSize = this.composer.body.babylon.spriteManager.cellWidth
   }
 
   onLoopUpdate(delta: number): void {
@@ -54,9 +48,8 @@ export class SunActor extends ActorInterface<SpriteInterface> {
       0.014 * delta,
       0.8
     )
-    this.scale = Helper.Maths.increaseValueWithInertia(this.scale, this.targetScale, 0.0014 * delta, 1)
     this.transform.position.y = step[0]
     this.transform.position.z = step[1]
-    this.transform.size = this.oSize * this.scale
+    this.body.scale = Helper.Maths.increaseValueWithInertia(this.body.scale, this.targetScale, 0.0014 * delta, 1)
   }
 }
