@@ -1,7 +1,5 @@
-import { UniversalCamera } from '@babylonjs/core'
-import { Vector3 } from '@babylonjs/core/Maths/math'
+import * as BABYLON from '@babylonjs/core'
 import {
-  BabylonScene,
   Camera,
   CameraInterface,
   Rect
@@ -15,13 +13,13 @@ import {
 
 @Camera()
 export class SceneIntroCamera extends CameraInterface {
-  paramsRatio0CameraPos = new Vector3(-430, 0, 0)
-  paramsRatio1CameraPos = new Vector3(-200, 58, 0)
+  paramsRatio0CameraPos = new BABYLON.Vector3(-430, 0, 0)
+  paramsRatio1CameraPos = new BABYLON.Vector3(-200, 58, 0)
 
-  initialize(scene: BabylonScene) {
+  initialize(scene: BABYLON.Scene) {
     // Fixed camera
-    const camera = new UniversalCamera('camera', new Vector3(0, 0, 0), scene)
-    camera.target = new Vector3(1, 0, 0)
+    const camera = new BABYLON.UniversalCamera('camera', new BABYLON.Vector3(0, 0, 0), scene)
+    camera.target = new BABYLON.Vector3(1, 0, 0)
     camera.inputs.clear()
     camera.minZ = 0.01 // Let it go closer to the earth (reduce distance with near clipping plane)
     return camera
