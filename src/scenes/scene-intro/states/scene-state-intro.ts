@@ -1,6 +1,5 @@
 import {
   Logger,
-  Rect,
   SceneState,
   SceneStateInterface,
   UseCamera
