@@ -1,6 +1,6 @@
 import {
-  KJS,
   Logger,
+  SceneInterface,
   Sprite,
   SpriteInterface
 } from '@khanonjs/engine'
@@ -9,7 +9,7 @@ import {
   url: './assets/scene-intro/sprites/robocillo.png'
 })
 export class RobocilloSprite extends SpriteInterface {
-  onLoaded(scene: KJS.Scene) {
+  onLoaded(scene: SceneInterface) {
     // Logger.trace('aki SpriteRobocillo onLoaded', scene)
   }
 }

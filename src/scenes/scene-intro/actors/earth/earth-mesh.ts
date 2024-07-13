@@ -4,15 +4,15 @@ import {
   StandardMaterial
 } from '@babylonjs/core'
 import {
-  KJS,
   Logger,
   Mesh,
-  MeshInterface
+  MeshInterface,
+  SceneInterface
 } from '@khanonjs/engine'
 
 @Mesh()
 export class EarthMesh extends MeshInterface {
-  onSpawn(scene: KJS.Scene) {
+  onSpawn(scene: SceneInterface) {
     const flatMaterial = new StandardMaterial('', scene.babylon.scene)
     flatMaterial.disableLighting = true
     flatMaterial.emissiveColor = new Color3(0.13, 0.13, 0.13)
