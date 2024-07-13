@@ -30,7 +30,7 @@ export class LogoActor extends ActorInterface<SpriteInterface> {
 
   onSpawn(): void {
     this.setBody(this.logo)
-    setTimeout(() => this.body.playAnimation({ name: 'showup', delay: 30, loop: false }), 800)
+    setTimeout(() => this.body.playAnimation({ id: 'showup', delay: 30, loop: false }), 800)
   }
 
   onLoopUpdate(delta: number): void {
