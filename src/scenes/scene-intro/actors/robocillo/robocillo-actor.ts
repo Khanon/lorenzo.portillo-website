@@ -1,8 +1,8 @@
 import {
   Actor,
   ActorInterface,
-  ActorSprite,
   Logger,
+  Sprite,
   SpriteConstructor,
   SpriteInterface
 } from '@khanonjs/engine'
@@ -12,7 +12,7 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
 
 @Actor()
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
-  @ActorSprite({
+  @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
     animations: [
       { id: RobocilloAnimationIds.STOP_SIDE, delay: 75, frameStart: 0, frameEnd: 0, loop: false },
@@ -43,6 +43,6 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   onSpawn(): void {
     // Logger.trace('aki ActorRobocillo onSpawn')
-    this.setBody(this.roboti)
+    // this.setBody(this.roboti)
   }
 }

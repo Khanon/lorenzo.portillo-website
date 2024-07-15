@@ -2,9 +2,9 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 import {
   Actor,
   ActorInterface,
-  ActorSprite,
   Helper,
   Logger,
+  Sprite,
   SpriteConstructor,
   SpriteInterface
 } from '@khanonjs/engine'
@@ -21,7 +21,7 @@ export class LogoActor extends ActorInterface<SpriteInterface> {
   paramsRatio0Scale = 0.35
   paramsRatio1Scale = 0.4
 
-  @ActorSprite({
+  @Sprite({
     url: './assets/scene-intro/sprites/logo.png',
     cellWidth: 402,
     cellHeight: 83,

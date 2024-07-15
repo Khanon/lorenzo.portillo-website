@@ -2,9 +2,9 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 import {
   Actor,
   ActorInterface,
-  ActorSprite,
   Helper,
   Logger,
+  Sprite,
   SpriteConstructor,
   SpriteInterface
 } from '@khanonjs/engine'
@@ -24,7 +24,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
   targetPosition: Vector3
   targetScale: number = 0
 
-  @ActorSprite({
+  @Sprite({
     url: './assets/scene-intro/sprites/sun.png',
     width: 270,
     height: 270
