@@ -7,6 +7,9 @@ import {
 
 import { EarthActor } from '../actors/earth/earth-actor'
 import { LogoActor } from '../actors/logo-actor'
+import { RobocilloStateIntro } from '../actors/robocillo/robocilllo-state-intro'
+import { RobocilloActionGoto } from '../actors/robocillo/robocillo-action-goto'
+import { RobocilloActor } from '../actors/robocillo/robocillo-actor'
 import { SunActor } from '../actors/sun-actor'
 import { SceneIntroCamera } from '../scene-intro-camera'
 
@@ -16,9 +19,14 @@ import { SceneIntroCamera } from '../scene-intro-camera'
 })
 export class SceneStateIntro extends SceneStateInterface {
   onStart() {
-    this.scene.spawn.actor(EarthActor)
-    this.scene.spawn.actor(SunActor)
-    this.scene.spawn.actor(LogoActor)
+    // this.scene.spawn.actor(EarthActor)
+    // this.scene.spawn.actor(SunActor)
+    // this.scene.spawn.actor(LogoActor)
+    const robocillo = this.scene.spawn.actor(RobocilloActor)
+    // robocillo.
+    // robocillo.playAction(RobocilloActionGoto)
+
+    robocillo.startState(RobocilloStateIntro)
   }
 
   // onLoopUpdate(delta: number): void {

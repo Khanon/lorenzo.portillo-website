@@ -1,5 +1,6 @@
 import {
   Actor,
+  ActorAction,
   ActorInterface,
   Logger,
   Sprite,
@@ -7,10 +8,15 @@ import {
   SpriteInterface
 } from '@khanonjs/engine'
 
+import { RobocilloStateIntro } from './robocilllo-state-intro'
+import { RobocilloActionGoto } from './robocillo-action-goto'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { RobocilloKeyFrames } from './robocillo-keyframes'
 
-@Actor()
+@Actor({
+  states: [RobocilloStateIntro],
+  actions: [RobocilloActionGoto]
+})
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
@@ -41,8 +47,23 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     ]
   }) roboti: SpriteConstructor
 
+  @ActorAction()
+  moveLeft(delta: number) {
+    Logger.trace('aki ACTOR moveLeft', this)
+    // this.stopAction(this.moveLeft)
+  }
+
+  @ActorAction()
+  moveRight(delta: number) {
+    Logger.trace('aki ACTOR moveRight', delta)
+  }
+
   onSpawn(): void {
-    // Logger.trace('aki ActorRobocillo onSpawn')
-    // this.setBody(this.roboti)
+    Logger.trace('aki ActorRobocillo onSpawn')
+    this.setBody(this.roboti)
+    // this.playAction(this.moveLeft)
+    // setTimeout(() => {
+    //   this.playAction(this.moveRight)
+    // }, 2000)
   }
 }
