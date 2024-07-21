@@ -1,9 +1,9 @@
 import {
   DefaultRenderingPipeline,
   Vector3
-} from '@babylonjs/core'
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight'
-import { Color4 } from '@babylonjs/core/Maths/math.color'
+} from '@babylonjs/core' // 8a8f pasar a BABYLON
+import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight' // 8a8f pasar a BABYLON
+import { Color4 } from '@babylonjs/core/Maths/math.color' // 8a8f pasar a BABYLON
 import {
   ActorConstructor,
   Logger,
@@ -20,7 +20,7 @@ import { LogoActor } from './actors/logo-actor'
 import { RobocilloActor } from './actors/robocillo/robocillo-actor'
 import { SunActor } from './actors/sun-actor'
 import { updateRatio } from './canvas-ratio-consts'
-import { SceneStateIntro } from './states/scene-state-intro'
+import { SceneIntroState } from './scene-intro-state'
 
 @Scene({
   actors: [
@@ -30,7 +30,7 @@ import { SceneStateIntro } from './states/scene-state-intro'
     RobocilloActor
   ],
   states: [
-    SceneStateIntro
+    SceneIntroState
   ],
   configuration: {
     clearColor: new Color4(0.25, 0.25, 0.25, 1.0)

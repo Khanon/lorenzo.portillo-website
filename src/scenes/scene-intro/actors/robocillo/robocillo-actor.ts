@@ -8,6 +8,8 @@ import {
   SpriteInterface
 } from '@khanonjs/engine'
 
+import { ActorSimplePhysics } from '../../../../physics/actor-simple-physics'
+import { EarthActor } from '../earth/earth-actor'
 import { RobocilloStateIntro } from './robocilllo-state-intro'
 import { RobocilloActionGoto } from './robocillo-action-goto'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
@@ -18,6 +20,9 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
   actions: [RobocilloActionGoto]
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
+  earth: EarthActor
+  physics: ActorSimplePhysics
+
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
     animations: [
@@ -50,20 +55,26 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
   @ActorAction()
   moveLeft(delta: number) {
     Logger.trace('aki ACTOR moveLeft', this)
-    // this.stopAction(this.moveLeft)
+    this.stopAction(this.moveLeft)
   }
 
   @ActorAction()
   moveRight(delta: number) {
-    Logger.trace('aki ACTOR moveRight', delta)
+    Logger.trace('aki ACTOR moveRight', this)
+    this.stopAction(this.moveRight)
   }
 
   onSpawn(): void {
     Logger.trace('aki ActorRobocillo onSpawn')
     this.setBody(this.roboti)
-    // this.playAction(this.moveLeft)
-    // setTimeout(() => {
-    //   this.playAction(this.moveRight)
-    // }, 2000)
+    this.playAction(this.moveLeft)
+    this.playAction(this.moveRight)
+    this.physics = new ActorSimplePhysics(this)
+    this.destroy()
+  }
+
+  onDestroy(): void {
+    Logger.trace('aki ActorRobocillo onDestroy')
+    this.physics.release()
   }
 }
