@@ -1,4 +1,4 @@
-import { Vector3 } from '@babylonjs/core/Maths/math.vector'
+import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorInterface,
@@ -13,15 +13,15 @@ import { getRatio } from '../canvas-ratio-consts'
 
 @Actor()
 export class SunActor extends ActorInterface<SpriteInterface> {
-  paramsRatio0StartPos = new Vector3(0, 280, -237)
-  paramsRatio1StartPos = new Vector3(0, 280, -500)
+  paramsRatio0StartPos = new BABYLON.Vector3(0, 280, -237)
+  paramsRatio1StartPos = new BABYLON.Vector3(0, 280, -500)
 
-  paramsRatio0EndPos = new Vector3(0, 12, -79)
-  paramsRatio1EndPos = new Vector3(0, 25, -215)
+  paramsRatio0EndPos = new BABYLON.Vector3(0, 12, -79)
+  paramsRatio1EndPos = new BABYLON.Vector3(0, 25, -215)
   paramsRatio0EndScale = 0.6
   paramsRatio1EndScale = 0.9
 
-  targetPosition: Vector3
+  targetPosition: BABYLON.Vector3
   targetScale: number = 0
 
   @Sprite({

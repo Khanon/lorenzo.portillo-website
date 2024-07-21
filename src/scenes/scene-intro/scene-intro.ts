@@ -1,9 +1,4 @@
-import {
-  DefaultRenderingPipeline,
-  Vector3
-} from '@babylonjs/core' // 8a8f pasar a BABYLON
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight' // 8a8f pasar a BABYLON
-import { Color4 } from '@babylonjs/core/Maths/math.color' // 8a8f pasar a BABYLON
+import * as BABYLON from '@babylonjs/core'
 import {
   ActorConstructor,
   Logger,
@@ -33,14 +28,14 @@ import { SceneIntroState } from './scene-intro-state'
     SceneIntroState
   ],
   configuration: {
-    clearColor: new Color4(0.25, 0.25, 0.25, 1.0)
+    clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)
   }
 })
 export class SceneIntro extends SceneInterface {
-  private light: HemisphericLight
+  private light: BABYLON.HemisphericLight
 
   onLoaded(): void {
-    this.light = new HemisphericLight('light', new Vector3(1, 0, 0), this.babylon.scene)
+    this.light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 0, 0), this.babylon.scene)
     updateRatio(Core.canvasRect)
   }
 

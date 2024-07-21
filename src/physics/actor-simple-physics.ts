@@ -1,5 +1,4 @@
 import * as BABYLON from '@babylonjs/core'
-import { Observer } from '@babylonjs/core/Misc/observable'
 import {
   ActorInterface,
   Helper,
@@ -8,7 +7,7 @@ import {
 } from '@khanonjs/engine'
 
 export class ActorSimplePhysics {
-  private loopUpdate$: Observer<number>
+  private loopUpdate$: BABYLON.Observer<number>
 
   private velocity: BABYLON.Vector3 = new BABYLON.Vector3()
   private maxVelocity: number = Number.MAX_VALUE

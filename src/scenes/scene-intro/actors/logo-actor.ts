@@ -1,4 +1,4 @@
-import { Vector3 } from '@babylonjs/core/Maths/math.vector'
+import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorInterface,
@@ -16,8 +16,8 @@ import {
 
 @Actor()
 export class LogoActor extends ActorInterface<SpriteInterface> {
-  paramsRatio0Pos = new Vector3(0, 136, -2)
-  paramsRatio1Pos = new Vector3(0, 115, 240)
+  paramsRatio0Pos = new BABYLON.Vector3(0, 136, -2)
+  paramsRatio1Pos = new BABYLON.Vector3(0, 115, 240)
   paramsRatio0Scale = 0.35
   paramsRatio1Scale = 0.4
 

@@ -1,4 +1,4 @@
-import { Vector3 } from '@babylonjs/core/Maths/math.vector'
+import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorInterface,
@@ -15,7 +15,7 @@ import { EarthMesh } from './earth-mesh'
 export class EarthActor extends ActorInterface<MeshInterface> {
   onSpawn(): void {
     this.setBody(EarthMesh)
-    this.transform.rotate(new Vector3(0, 1, 0), Math.PI / 2)
+    this.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2)
     this.transform.position.x = -10
     this.transform.position.y = 100
   }
