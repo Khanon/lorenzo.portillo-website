@@ -6,7 +6,9 @@ import {
   ParticleSourceConstructor,
   Rect,
   Scene,
-  SceneInterface
+  SceneInterface,
+  Sprite,
+  SpriteConstructor
 } from '@khanonjs/engine'
 import { Core } from '@khanonjs/engine/core'
 
