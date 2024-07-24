@@ -19,8 +19,8 @@ import { SceneIntroCamera } from './scene-intro-camera'
 export class SceneIntroState extends SceneStateInterface {
   onStart() {
     const earth = this.scene.spawn.actor(EarthActor)
-    this.scene.spawn.actor(SunActor)
-    this.scene.spawn.actor(LogoActor)
+    const sun = this.scene.spawn.actor(SunActor)
+    const logo = this.scene.spawn.actor(LogoActor)
     const robocillo = this.scene.spawn.actor(RobocilloActor)
     robocillo.earth = earth
     robocillo.startState(RobocilloStateIntro)
