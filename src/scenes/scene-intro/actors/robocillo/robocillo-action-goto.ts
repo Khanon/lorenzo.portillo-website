@@ -10,10 +10,8 @@ import {
 import { RobocilloActor } from './robocillo-actor'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 
-@ActorAction({
-  countFrames: 5
-})
-export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: number }, RobocilloActor> {
+@ActorAction()
+export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: number, onDone: () => void }, RobocilloActor> {
   private vDirection: BABYLON.Vector3
   private gotoAngle: number
   private prevDistance: number
@@ -24,9 +22,9 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
   }
 
   onSetup(): void {
+    Logger.trace('aki GOTO onSetup')
     this.gotoAngle = this.setup.gotoAngle
     this.prevDistance = Number.MAX_VALUE
-
     if (this.gotoAngle < this.getEarthAngle()) {
       this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.transform.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0))
         .negate()
@@ -38,18 +36,20 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
   }
 
   onStop(): void {
-    Logger.trace('aki ROBOTILLO GOTO STOP')
-    // this.subject.physics.scaleVelocity(0.1)
-    // this.subject.setAnimation(RobocilloAnimations.STOP_SIDE, false)
-    // this.unSubscribeLoopUpdate()
+    Logger.trace('aki GOTO onStop', this.gotoAngle)
+    this.actor.physics.scaleVelocity(0.1)
+    this.actor.body.playAnimation(RobocilloAnimationIds.STOP_SIDE, false)
+    this.loopUpdate = false
+    this.setup.onDone()
   }
 
   onLoopUpdate(delta: number): void {
-    if (Math.abs(this.getEarthAngle() - this.gotoAngle) > this.prevDistance) {
-      this.stop()
-    } else {
-      // this.subject.physics.applyForce(this.vDirection.scale(0.015))
-      this.prevDistance = Math.abs(this.getEarthAngle() - this.gotoAngle)
-    }
+    // Logger.trace('aki GOTO onLoopUpdate', this.actor.transform.position)
+    // if (Math.abs(this.getEarthAngle() - this.gotoAngle) > this.prevDistance) {
+    //   this.stop()
+    // } else {
+    this.actor.physics.applyForce(this.vDirection.scale(/* 0.015 */0.00015))
+    // this.prevDistance = Math.abs(this.getEarthAngle() - this.gotoAngle)
+    // }
   }
 }

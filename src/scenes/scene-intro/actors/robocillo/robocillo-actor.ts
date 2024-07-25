@@ -11,13 +11,17 @@ import {
 import { ActorSimplePhysics } from '../../../../physics/actor-simple-physics'
 import { EarthActor } from '../earth/earth-actor'
 import { RobocilloStateIntro } from './robocilllo-state-intro'
+import { RobocilloActionChat } from './robocillo-action-chat'
 import { RobocilloActionGoto } from './robocillo-action-goto'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { RobocilloKeyFrames } from './robocillo-keyframes'
 
 @Actor({
   states: [RobocilloStateIntro],
-  actions: [RobocilloActionGoto]
+  actions: [
+    RobocilloActionGoto,
+    RobocilloActionChat
+  ]
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor
@@ -25,6 +29,8 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
+    width: 34,
+    height: 34,
     animations: [
       { id: RobocilloAnimationIds.STOP_SIDE, delay: 75, frameStart: 0, frameEnd: 0, loop: false },
       { id: RobocilloAnimationIds.PAPER_TAKE, delay: 75, frameStart: 8, frameEnd: 15, loop: false },
@@ -52,29 +58,12 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     ]
   }) roboti: SpriteConstructor
 
-  @ActorAction()
-  moveLeft(delta: number) {
-    Logger.trace('aki ACTOR moveLeft', this)
-    this.stopAction(this.moveLeft)
-  }
-
-  @ActorAction()
-  moveRight(delta: number) {
-    Logger.trace('aki ACTOR moveRight', this)
-    this.stopAction(this.moveRight)
-  }
-
   onSpawn(): void {
-    Logger.trace('aki ActorRobocillo onSpawn')
     this.setBody(this.roboti)
-    this.playAction(this.moveLeft)
-    this.playAction(this.moveRight)
     this.physics = new ActorSimplePhysics(this)
-    this.destroy()
   }
 
   onDestroy(): void {
-    Logger.trace('aki ActorRobocillo onDestroy')
-    this.physics.release()
+    this.physics?.release()
   }
 }
