@@ -23,7 +23,7 @@ class LPWebsite implements AppInterface {
 
     progressIntro.onComplete.add(() => {
       // Logger.trace('aki SceneIntro loaded!')
-      KJS.Scene.start(SceneIntro, SceneIntroState)
+      KJS.Scene.start(SceneIntro, SceneIntroState, {})
     })
     progressIntro.onProgress.add((progress: number) => {
       // Logger.trace('aki SceneIntro progress', progress)

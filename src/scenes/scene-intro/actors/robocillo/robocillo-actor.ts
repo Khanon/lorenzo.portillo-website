@@ -2,6 +2,7 @@ import {
   Actor,
   ActorAction,
   ActorInterface,
+  Helper,
   Logger,
   Sprite,
   SpriteConstructor,
@@ -9,6 +10,7 @@ import {
 } from '@khanonjs/engine'
 
 import { ActorSimplePhysics } from '../../../../physics/actor-simple-physics'
+import { getRatio } from '../../canvas-ratio-consts'
 import { EarthActor } from '../earth/earth-actor'
 import { RobocilloStateIntro } from './robocilllo-state-intro'
 import { RobocilloActionChat } from './robocillo-action-chat'
@@ -61,6 +63,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
   onSpawn(): void {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
+    this.body.scale = 0.78
   }
 
   onDestroy(): void {

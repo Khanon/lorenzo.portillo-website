@@ -13,5 +13,5 @@ import { RobocilloAnimationIds } from './robocillo-animation-ids'
 @ActorAction({
   countFrames: 5
 })
-export class RobocilloActionChat extends ActorActionInterface<{ gotoAngle: number }, RobocilloActor> {
+export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActor> {
 }

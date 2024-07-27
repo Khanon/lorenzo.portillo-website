@@ -1,4 +1,5 @@
 import {
+  KJS,
   Logger,
   SceneState,
   SceneStateInterface,
@@ -23,7 +24,7 @@ export class SceneIntroState extends SceneStateInterface {
     const logo = this.scene.spawn.actor(LogoActor)
     const robocillo = this.scene.spawn.actor(RobocilloActor)
     robocillo.earth = earth
-    robocillo.startState(RobocilloStateIntro)
+    KJS.setTimeout(() => robocillo.startState(RobocilloStateIntro, {}), 2000)
   }
 
   // onLoopUpdate(delta: number): void {

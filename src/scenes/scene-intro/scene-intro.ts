@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core'
 import {
   ActorConstructor,
+  KJS,
   Logger,
   ParticleConstructor,
   ParticleSourceConstructor,
@@ -10,7 +11,6 @@ import {
   Sprite,
   SpriteConstructor
 } from '@khanonjs/engine'
-import { Core } from '@khanonjs/engine/core'
 
 import { EarthActor } from './actors/earth/earth-actor'
 import { LogoActor } from './actors/logo-actor'
@@ -38,7 +38,7 @@ export class SceneIntro extends SceneInterface {
 
   onLoaded(): void {
     this.light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 0, 0), this.babylon.scene)
-    updateRatio(Core.canvasRect)
+    updateRatio(KJS.getCanvasRect())
   }
 
   onCanvasResize(size: Rect): void {

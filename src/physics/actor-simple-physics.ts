@@ -3,6 +3,7 @@ import {
   ActorInterface,
   Helper,
   KJS,
+  Logger,
   SpriteInterface
 } from '@khanonjs/engine'
 
@@ -29,10 +30,12 @@ export class ActorSimplePhysics {
 
   setTranslation(translation: BABYLON.Vector3): void {
     this.translationMatrix.setTranslation(translation)
+    this.actor.transform.position = this.getTranslation()
   }
 
   setTranslationFromFloats(x: number, y: number, z: number): void {
     this.translationMatrix.setTranslationFromFloats(x, y, z)
+    this.actor.transform.position = this.getTranslation()
   }
 
   getTranslation(): BABYLON.Vector3 {
@@ -41,10 +44,12 @@ export class ActorSimplePhysics {
 
   setRotation(rotation: BABYLON.Vector3): void {
     this.rotationVector.set(rotation.x, rotation.y, rotation.z)
+    this.actor.transform.angle = this.getRotation().x
   }
 
   setRotationFromFloats(x: number, y: number, z: number): void {
     this.rotationVector.set(x, y, z)
+    this.actor.transform.angle = this.getRotation().x
   }
 
   getRotation(): BABYLON.Vector3 {

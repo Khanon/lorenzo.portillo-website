@@ -29,10 +29,9 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
   private timeout: Timeout
 
   onStart(): void {
-    const ratio = 0.4 // getRatio() // 8a8f descomentar
+    const ratio = getRatio()
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
     this.ANGLE_SUN = Helper.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
-
     this.loading = true
     this.loadingSteps = 0
     this.goIn()
@@ -46,7 +45,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
   }
 
   goIn(): void {
-    this.actor.playAction(RobocilloActionGoto).setup({
+    this.actor.playAction(RobocilloActionGoto, {
       gotoAngle: this.ANGLE_SUN,
       onDone: () => {
         this.timeout = KJS.setTimeout(() => this.stopSun(), 500, this)
@@ -62,7 +61,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
   }
 
   goCenter(): void {
-    this.actor.playAction(RobocilloActionGoto).setup({
+    this.actor.playAction(RobocilloActionGoto, {
       gotoAngle: this.ANGLE_CENTER,
       onDone: () => {
         this.timeout = KJS.setTimeout(() => this.stopCenter(), 100, this)
@@ -82,7 +81,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
         () =>
           this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_CHECK, false, () => {
             this.checkPaper()
-            this.actor.playAction(RobocilloActionChat)
+            this.actor.playAction(RobocilloActionChat, {})
           }),
         500 + Math.random() * 1000,
         this
