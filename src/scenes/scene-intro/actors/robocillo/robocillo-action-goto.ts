@@ -17,8 +17,8 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
   private prevDistance: number
 
   getEarthAngle(): number {
-    Logger.trace('aki getEarthAngle this.actor.earth.transform.position', this.actor.earth.transform.position)
-    Logger.trace('aki getEarthAngle this.actor.transform.position', this.actor.transform.position)
+    // Logger.trace('aki getEarthAngle this.actor.earth.transform.position', this.actor.earth.transform.position)
+    // Logger.trace('aki getEarthAngle this.actor.transform.position', this.actor.transform.position)
     const vToCenter = this.actor.earth.transform.position.subtract(this.actor.transform.position)
     return Helper.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
   }
@@ -26,8 +26,8 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
   onPlay(): void {
     this.gotoAngle = this.setup.gotoAngle
     this.prevDistance = Number.MAX_VALUE
-    Logger.trace('aki GOTO onPlay this.gotoAngle', this.gotoAngle)
-    Logger.trace('aki GOTO onPlay this.getEarthAngle()', this.getEarthAngle())
+    // Logger.trace('aki GOTO onPlay this.gotoAngle', this.gotoAngle)
+    // Logger.trace('aki GOTO onPlay this.getEarthAngle()', this.getEarthAngle())
     if (this.gotoAngle < this.getEarthAngle()) {
       this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.transform.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0))
         .negate()
@@ -35,12 +35,12 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
     } else {
       this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.transform.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0)).normalize()
     }
-    Logger.trace('aki GOTO onPlay this.vDirection', this.vDirection)
+    // Logger.trace('aki GOTO onPlay this.vDirection', this.vDirection)
     this.actor.body.playAnimation(RobocilloAnimationIds.WALK)
   }
 
   onStop(): void {
-    Logger.trace('aki GOTO onStop', this.gotoAngle)
+    // Logger.trace('aki GOTO onStop', this.gotoAngle)
     this.actor.physics.scaleVelocity(0.1)
     this.actor.body.playAnimation(RobocilloAnimationIds.STOP_SIDE, false)
     this.loopUpdate = false

@@ -23,6 +23,7 @@ export class SceneIntroState extends SceneStateInterface {
     const sun = this.scene.spawn.actor(SunActor)
     const logo = this.scene.spawn.actor(LogoActor)
     const robocillo = this.scene.spawn.actor(RobocilloActor)
+    robocillo.notify('mensajito', 'a', 69, 'b') // 8a8f eliminar
     robocillo.earth = earth
     KJS.setTimeout(() => robocillo.startState(RobocilloStateIntro, {}), 2000)
   }
