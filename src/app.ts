@@ -15,7 +15,7 @@ import { SceneWorld } from './scenes/scene-world/scene-world'
     fps: 165
   }
 })
-class LPWebsite extends AppInterface {
+export class LPWebsite extends AppInterface {
   onStart() {
     // Logger.trace('App onStart')
     const progressIntro = KJS.Scene.load(SceneIntro)

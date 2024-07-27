@@ -3,6 +3,7 @@ import {
   ActorConstructor,
   KJS,
   Logger,
+  Notification,
   ParticleConstructor,
   ParticleSourceConstructor,
   Rect,
@@ -12,6 +13,7 @@ import {
   SpriteConstructor
 } from '@khanonjs/engine'
 
+import { LPWebsite } from '../../app'
 import { EarthActor } from './actors/earth/earth-actor'
 import { LogoActor } from './actors/logo-actor'
 import { RobocilloActor } from './actors/robocillo/robocillo-actor'

@@ -3,8 +3,8 @@ import {
   ActorAction,
   ActorInterface,
   Helper,
+  KJS,
   Logger,
-  Notification,
   Sprite,
   SpriteConstructor,
   SpriteInterface
@@ -12,6 +12,8 @@ import {
 
 import { ActorSimplePhysics } from '../../../../physics/actor-simple-physics'
 import { getRatio } from '../../canvas-ratio-consts'
+import { SceneIntro } from '../../scene-intro'
+import { SceneIntroState } from '../../scene-intro-state'
 import { EarthActor } from '../earth/earth-actor'
 import { RobocilloStateIntro } from './robocilllo-state-intro'
 import { RobocilloActionChat } from './robocillo-action-chat'
@@ -60,20 +62,6 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
       { id: RobocilloAnimationIds.JUMP_FRONT, delay: 75, frameStart: 80, frameEnd: 85, loop: false }
     ]
   }) roboti: SpriteConstructor
-
-  @Notification({
-    message: 'mensajito'
-  })
-  notifyMe1(v1, v2, v3): void {
-    Logger.trace('aki Notified me!! mensajito', v1, v2, v3, this)
-  }
-
-  @Notification({
-    message: 'hola'
-  })
-  notifyMe2(): void {
-    Logger.trace('aki Notified me!! hola')
-  }
 
   onSpawn(): void {
     this.setBody(this.roboti)
