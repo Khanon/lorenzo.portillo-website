@@ -1,3 +1,4 @@
+import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorAction,
@@ -18,6 +19,7 @@ import { EarthActor } from '../earth/earth-actor'
 import { RobocilloStateIntro } from './robocilllo-state-intro'
 import { RobocilloActionChat } from './robocillo-action-chat'
 import { RobocilloActionGoto } from './robocillo-action-goto'
+import { RobocilloActionGravity } from './robocillo-action-gravity'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { RobocilloKeyFrames } from './robocillo-keyframes'
 
@@ -25,12 +27,22 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
   states: [RobocilloStateIntro],
   actions: [
     RobocilloActionGoto,
-    RobocilloActionChat
+    RobocilloActionChat,
+    RobocilloActionGravity
   ]
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor
   physics: ActorSimplePhysics
+  loadingChats: string[] = [
+    'Loading...',
+    'Developing bugs...',
+    'Mixing bits...',
+    'Loading bytes...',
+    'Generating errors...',
+    'Shading shaders...',
+    'Composing meshes...'
+  ]
 
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
@@ -60,13 +72,16 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
       { id: RobocilloAnimationIds.MOVE_HANDS, delay: 75, frameStart: 64, frameEnd: 66, loop: true },
       { id: RobocilloAnimationIds.RAISE_HANDS, delay: 75, frameStart: 72, frameEnd: 74, loop: true },
       { id: RobocilloAnimationIds.JUMP_FRONT, delay: 75, frameStart: 80, frameEnd: 85, loop: false }
-    ]
+    ],
+    noMipmap: true,
+    samplingMode: BABYLON.Texture.BILINEAR_SAMPLINGMODE
   }) roboti: SpriteConstructor
 
   onSpawn(): void {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
+    Helper.Arrays.shuffle(this.loadingChats)
   }
 
   onDestroy(): void {

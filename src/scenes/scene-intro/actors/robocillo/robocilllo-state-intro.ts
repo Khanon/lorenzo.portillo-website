@@ -11,6 +11,7 @@ import {
 import { getRatio } from '../../canvas-ratio-consts'
 import { RobocilloActionChat } from './robocillo-action-chat'
 import { RobocilloActionGoto } from './robocillo-action-goto'
+import { RobocilloActionGravity } from './robocillo-action-gravity'
 import { RobocilloActor } from './robocillo-actor'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { HappyState } from './robocillo-happy-state'
@@ -30,6 +31,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
 
   onStart(): void {
     const ratio = getRatio()
+    this.actor.playAction(RobocilloActionGravity, {})
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
     this.ANGLE_SUN = Helper.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
     this.loading = true
@@ -48,7 +50,9 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
     this.actor.playAction(RobocilloActionGoto, {
       gotoAngle: this.ANGLE_SUN,
       onDone: () => {
-        this.timeout = KJS.setTimeout(() => this.stopSun(), 500, this)
+        this.timeout = KJS.setTimeout(() => {
+          this.stopSun()
+        }, 500, this)
       }
     })
   }
@@ -81,7 +85,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
         () =>
           this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_CHECK, false, () => {
             this.checkPaper()
-            this.actor.playAction(RobocilloActionChat, {})
+            this.actor.playAction(RobocilloActionChat, { text: '' })
           }),
         500 + Math.random() * 1000,
         this
