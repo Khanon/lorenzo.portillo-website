@@ -1,16 +1,10 @@
 import * as BABYLON from '@babylonjs/core'
 import {
-  ActorConstructor,
   KJS,
   Logger,
-  Notification,
-  ParticleConstructor,
-  ParticleSourceConstructor,
   Rect,
   Scene,
-  SceneInterface,
-  Sprite,
-  SpriteConstructor
+  SceneInterface
 } from '@khanonjs/engine'
 
 import { LPWebsite } from '../../app'

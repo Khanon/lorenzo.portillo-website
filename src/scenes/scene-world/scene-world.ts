@@ -1,8 +1,5 @@
 import {
-  ActorConstructor,
   Logger,
-  ParticleConstructor,
-  ParticleSourceConstructor,
   Scene,
   SceneInterface
 } from '@khanonjs/engine'
