@@ -34,15 +34,6 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor
   physics: ActorSimplePhysics
-  loadingChats: string[] = [
-    'Loading...',
-    'Developing bugs...',
-    'Mixing bits...',
-    'Loading bytes...',
-    'Generating errors...',
-    'Shading shaders...',
-    'Composing meshes...'
-  ]
 
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
@@ -81,7 +72,6 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
-    Helper.Arrays.shuffle(this.loadingChats)
   }
 
   onDestroy(): void {

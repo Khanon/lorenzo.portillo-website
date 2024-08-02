@@ -17,11 +17,12 @@ import { RobocilloAnimationIds } from './robocillo-animation-ids'
 })
 export class RobocilloActionChat extends ActorActionInterface<{ text: string }, RobocilloActor> {
   @Sprite({
+    url: './assets/scene-intro/sprites/test.png',
     width: 100,
     height: 100
   }) chatSprite: SpriteConstructor
 
   onPlay() {
-    this.scene.spawn.sprite(this.chatSprite)
+    // this.scene.spawn.sprite(this.chatSprite)
   }
 }

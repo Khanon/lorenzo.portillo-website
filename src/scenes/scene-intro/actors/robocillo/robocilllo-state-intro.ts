@@ -25,12 +25,23 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
   private readonly ANGLE_CENTER = -0.004
   ANGLE_SUN = 0
 
+  loadingChats: string[] = [
+    'Loading...',
+    'Developing bugs...',
+    'Mixing bits...',
+    'Loading bytes...',
+    'Generating errors...',
+    'Shading shaders...',
+    'Composing meshes...'
+  ]
+
   private loading: boolean
   private loadingSteps: number
   private timeout: Timeout
 
   onStart(): void {
     const ratio = getRatio()
+    Helper.Arrays.shuffle(this.loadingChats)
     this.actor.playAction(RobocilloActionGravity, {})
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
     this.ANGLE_SUN = Helper.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
