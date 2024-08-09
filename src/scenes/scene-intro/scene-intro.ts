@@ -37,6 +37,11 @@ export class SceneIntro extends SceneInterface {
     updateRatio(KJS.getCanvasRect())
   }
 
+  onUnload(): void {
+    this.light.dispose()
+    this.light = undefined
+  }
+
   onCanvasResize(size: Rect): void {
     updateRatio(size)
   }

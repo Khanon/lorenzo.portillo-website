@@ -26,7 +26,7 @@ export class SceneIntroCamera extends CameraInterface {
   }
 
   onCanvasResize(size: Rect): void {
-    // Camera responsive, this.MIDDLE_RATIO_CANVAS is ratio = 0; this.END_RATIO_CANVAS is ratio = 1
+    // Camera responsive, MIDDLE_RATIO_CANVAS is ratio = 0; END_RATIO_CANVAS is ratio = 1
     const canvasRatio = size.width / size.height
     const factorCamera = 1 / (END_RATIO_CANVAS - MIDDLE_RATIO_CANVAS)
     const ratioCamera = (canvasRatio - MIDDLE_RATIO_CANVAS) * factorCamera
