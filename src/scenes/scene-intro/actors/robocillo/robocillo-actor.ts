@@ -22,13 +22,19 @@ import { RobocilloActionGoto } from './robocillo-action-goto'
 import { RobocilloActionGravity } from './robocillo-action-gravity'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { RobocilloKeyFrames } from './robocillo-keyframes'
+import { RobocilloParticleChat } from './robocillo-particle-chat'
 
 @Actor({
-  states: [RobocilloStateIntro],
+  states: [
+    RobocilloStateIntro
+  ],
   actions: [
     RobocilloActionGoto,
     RobocilloActionChat,
     RobocilloActionGravity
+  ],
+  particles: [
+    RobocilloParticleChat
   ]
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
@@ -72,6 +78,8 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
+    this.attachParticle(RobocilloParticleChat, 0, new BABYLON.Vector3(0, 0, 0))
+    this.startParticle(0)
   }
 
   onDestroy(): void {
