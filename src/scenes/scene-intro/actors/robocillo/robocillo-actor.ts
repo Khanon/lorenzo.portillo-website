@@ -24,7 +24,6 @@ import { RobocilloActionGoto } from './robocillo-action-goto'
 import { RobocilloActionGravity } from './robocillo-action-gravity'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { RobocilloKeyFrames } from './robocillo-keyframes'
-import { RobocilloParticleWalkDust } from './robocillo-particle-walkdust'
 
 @Actor({
   states: [
@@ -34,9 +33,6 @@ import { RobocilloParticleWalkDust } from './robocillo-particle-walkdust'
     RobocilloActionGoto,
     RobocilloActionChat,
     RobocilloActionGravity
-  ],
-  particles: [
-    RobocilloParticleWalkDust
   ]
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
@@ -102,8 +98,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
-    this.attachParticle(RobocilloParticleWalkDust, 0, new BABYLON.Vector3(0, 0, 0))
-    // this.attachParticle(this.walkDust, 0, new BABYLON.Vector3(0, 0, 0))
+    this.attachParticle(this.walkDust, 0, new BABYLON.Vector3(0, 0, 0))
     this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => {
       this.startParticle(0)
     })
