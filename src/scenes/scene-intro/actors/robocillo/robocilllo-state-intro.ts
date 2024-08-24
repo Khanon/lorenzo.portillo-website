@@ -15,7 +15,6 @@ import { RobocilloActionGravity } from './robocillo-action-gravity'
 import { RobocilloActor } from './robocillo-actor'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { HappyState } from './robocillo-happy-state'
-import { RobocilloParticleChat } from './robocillo-particle-chat'
 
 @ActorState()
 export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor> {
@@ -42,7 +41,6 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
 
   onStart(): void {
     const ratio = getRatio()
-    // this.actor.playAction(RobocilloActionChat, { text: '' }) // 8a8f eliminar
     Helper.Arrays.shuffle(this.loadingChats)
     this.actor.playAction(RobocilloActionGravity, {})
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))

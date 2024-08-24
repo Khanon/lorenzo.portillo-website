@@ -1,3 +1,4 @@
+import * as BABYLON from '@babylonjs/core'
 import {
   KJS,
   Logger,
@@ -9,6 +10,7 @@ import { EarthActor } from './actors/earth/earth-actor'
 import { LogoActor } from './actors/logo-actor'
 import { RobocilloStateIntro } from './actors/robocillo/robocilllo-state-intro'
 import { RobocilloActor } from './actors/robocillo/robocillo-actor'
+import { RobocilloParticleWalkDust } from './actors/robocillo/robocillo-particle-walkdust'
 import { SunActor } from './actors/sun-actor'
 import { SceneIntroCamera } from './scene-intro-camera'
 

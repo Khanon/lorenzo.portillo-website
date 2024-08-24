@@ -6,6 +6,8 @@ import {
   Helper,
   KJS,
   Logger,
+  Particle,
+  ParticleInterface,
   Sprite,
   SpriteConstructor,
   SpriteInterface
@@ -22,7 +24,7 @@ import { RobocilloActionGoto } from './robocillo-action-goto'
 import { RobocilloActionGravity } from './robocillo-action-gravity'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { RobocilloKeyFrames } from './robocillo-keyframes'
-import { RobocilloParticleChat } from './robocillo-particle-chat'
+import { RobocilloParticleWalkDust } from './robocillo-particle-walkdust'
 
 @Actor({
   states: [
@@ -34,12 +36,34 @@ import { RobocilloParticleChat } from './robocillo-particle-chat'
     RobocilloActionGravity
   ],
   particles: [
-    RobocilloParticleChat
+    RobocilloParticleWalkDust
   ]
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor
   physics: ActorSimplePhysics
+
+  @Sprite({
+    url: './assets/scene-intro/sprites/particle-walk-dust.png',
+    width: 34,
+    height: 34,
+    animations: [
+      { id: 0, frameStart: 0, frameEnd: 4 }
+    ],
+    noMipmap: true,
+    samplingMode: BABYLON.Texture.BILINEAR_SAMPLINGMODE
+  }) dust: SpriteConstructor
+
+  @Particle()
+  walkDust(particle: ParticleInterface) {
+    Logger.trace('aki particle method', this)
+    particle.setSprite(this.dust)
+    particle.setAnimation(0)
+    particle.babylon.particleSystem.minSize = 25
+    particle.babylon.particleSystem.maxSize = 25
+    particle.babylon.particleSystem.updateSpeed = 0.02
+    particle.babylon.particleSystem.targetStopDuration = 0.3
+  }
 
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
@@ -78,8 +102,11 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
-    this.attachParticle(RobocilloParticleChat, 0, new BABYLON.Vector3(0, 0, 0))
-    this.startParticle(0)
+    this.attachParticle(RobocilloParticleWalkDust, 0, new BABYLON.Vector3(0, 0, 0))
+    // this.attachParticle(this.walkDust, 0, new BABYLON.Vector3(0, 0, 0))
+    this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => {
+      this.startParticle(0)
+    })
   }
 
   onDestroy(): void {
