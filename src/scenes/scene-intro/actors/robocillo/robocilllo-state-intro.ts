@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core'
 import {
+  ActorActionInterface,
   ActorState,
   ActorStateInterface,
   Helper,
@@ -25,23 +26,13 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
   private readonly ANGLE_CENTER = -0.004
   ANGLE_SUN = 0
 
-  loadingChats: string[] = [
-    'Loading...',
-    'Developing bugs...',
-    'Mixing bits...',
-    'Loading bytes...',
-    'Generating errors...',
-    'Shading shaders...',
-    'Composing meshes...'
-  ]
-
   private loading: boolean
   private loadingSteps: number
   private timeout: Timeout
+  private actionChat: RobocilloActionChat
 
   onStart(): void {
     const ratio = getRatio()
-    Helper.Arrays.shuffle(this.loadingChats)
     this.actor.playAction(RobocilloActionGravity, {})
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
     this.ANGLE_SUN = Helper.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
@@ -87,7 +78,10 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
   stopCenter(): void {
     this.actor.body.playAnimation(RobocilloAnimationIds.SIDE_TO_FRONT, false)
     KJS.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_TAKE, false), 500, this)
-    KJS.setTimeout(() => this.checkPaper(), 500, this)
+    KJS.setTimeout(() => {
+      this.actionChat = this.actor.playAction(RobocilloActionChat, {})
+      this.checkPaper()
+    }, 500, this)
   }
 
   checkPaper(): void {
@@ -95,10 +89,10 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
       KJS.setTimeout(
         () =>
           this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_CHECK, false, () => {
+            this.actionChat.spawnText()
             this.checkPaper()
-            this.actor.playAction(RobocilloActionChat, { text: '' })
           }),
-        500 + Math.random() * 1000,
+        700 + Math.random() * 800,
         this
       )
       this.loadingSteps++

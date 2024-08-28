@@ -52,7 +52,6 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   @Particle()
   walkDust(particle: ParticleInterface) {
-    Logger.trace('aki particle method', this)
     particle.setSprite(this.dust)
     particle.setAnimation(0)
     particle.babylon.particleSystem.minSize = 25

@@ -1,22 +1,29 @@
-import * as BABYLON from '@babylonjs/core'
 import {
   ActorAction,
   ActorActionInterface,
   Helper,
-  KJS,
   Logger,
-  Rect,
   Sprite,
   SpriteConstructor,
   SpriteInterface
 } from '@khanonjs/engine'
 
 import { RobocilloActor } from './robocillo-actor'
-import { RobocilloAnimationIds } from './robocillo-animation-ids'
 
 @ActorAction()
-export class RobocilloActionChat extends ActorActionInterface<{ text: string }, RobocilloActor> {
+export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActor> {
   sprite: SpriteInterface
+  textId: number = 0
+
+  loadingChats: string[] = [
+    'Loading bad ideas...',
+    'Developing bugs...',
+    'Mixing bits...',
+    'Loading bytes...',
+    'Generating errors...',
+    'Shading shaders...',
+    'Wasting energy...'
+  ]
 
   @Sprite({
     width: 100,
@@ -26,28 +33,44 @@ export class RobocilloActionChat extends ActorActionInterface<{ text: string }, 
   deleteSprite() {
     if (this.sprite) {
       this.sprite.destroy()
+      this.sprite = undefined
     }
   }
 
   onPlay() {
+    this.loopUpdate = false
+    Helper.Arrays.shuffle(this.loadingChats)
+  }
+
+  onStop(): void {
+    this.deleteSprite()
+  }
+
+  spawnText() {
+    this.loopUpdate = true
     this.deleteSprite()
     this.sprite = this.scene.spawn.sprite(this.chatSprite)
-    this.sprite.drawText('Loading...', {
+    this.sprite.drawText(this.loadingChats[this.textId], {
       fontSize: 30,
       fontStyle: '',
       fontName: 'roadgeek',
       textColor: '#ffffff',
       centerH: true
     })
-    this.sprite.transform.position.y += 70
+    this.sprite.transform.position.y += 38
     this.sprite.transform.position.x -= 5
     this.sprite.scale = 0.3
-    KJS.setTimeout(() => {
-      this.deleteSprite()
-    }, 1000)
+    this.textId++
+    if (this.textId > this.loadingChats.length - 1) {
+      this.textId = 0
+    }
   }
 
-  onStop(): void {
-    this.deleteSprite()
+  onLoopUpdate(delta: number): void {
+    this.sprite.transform.position.y += 0.1
+    this.sprite.transform.color.a -= 0.005
+    if (this.sprite.transform.color.a < 0) {
+      this.sprite.transform.color.a = 0
+    }
   }
 }
