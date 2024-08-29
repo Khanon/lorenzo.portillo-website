@@ -89,16 +89,20 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
       KJS.setTimeout(
         () =>
           this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_CHECK, false, () => {
-            this.actionChat.spawnText()
+            this.actionChat.spawnChat()
             this.checkPaper()
           }),
         700 + Math.random() * 800,
         this
       )
       this.loadingSteps++
+      if (this.loadingSteps > 5) { // 8a8f remove
+        this.loading = false
+      }
     } else {
       this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_THROW, false, () => {
         this.centerEnd(HappyState.JUMP)
+        this.actionChat.spawnChatEnd()
       })
     }
   }
@@ -115,7 +119,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
       break
     case HappyState.JUMP:
       if (this.actor.physics.onFloor) {
-        const vJump = this.actor.earth.transform.position.subtract(this.actor.transform.position).negate().normalize().scale(10)
+        const vJump = this.actor.earth.transform.position.subtract(this.actor.transform.position).negate().normalize().scale(0.9)
         this.actor.body.playAnimation(RobocilloAnimationIds.JUMP_FRONT, false)
         this.actor.physics.resetVelocity()
         KJS.setTimeout(() => this.actor.physics.applyForce(vJump), 200, this)

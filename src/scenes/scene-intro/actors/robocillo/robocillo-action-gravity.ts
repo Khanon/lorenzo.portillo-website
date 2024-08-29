@@ -2,9 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorAction,
   ActorActionInterface,
-  ActorInterface,
-  Helper,
-  SpriteInterface
+  Helper
 } from '@khanonjs/engine'
 
 import { Notifications } from '../../../../models/notifications'
@@ -12,9 +10,9 @@ import { RobocilloActor } from './robocillo-actor'
 
 @ActorAction()
 export class RobocilloActionGravity extends ActorActionInterface<any, RobocilloActor> {
-  private readonly GRAVITY_POWER: number = 0.0145 // 0.0345  // 8a8f
+  private readonly GRAVITY_POWER: number = 0.0145
   private readonly HORIZONTAL_DECREASE_FACTOR = 0.01
-  private readonly RESTITUTION_OVER_FACTOR = 1.5
+  private readonly RESTITUTION_MIN_FACTOR = 0.3
   private floorLength: number
 
   onPlay(): void {
@@ -49,7 +47,7 @@ export class RobocilloActionGravity extends ActorActionInterface<any, RobocilloA
       // Restitution on floor contact
       const restitutionVector = Helper.Vectors.vectorialProjectionToLine(this.actor.physics.getVelocity(), vToCenter).negate()
       const restitutionVectorLength = restitutionVector.length()
-      if (restitutionVectorLength > this.RESTITUTION_OVER_FACTOR) {
+      if (restitutionVectorLength > this.RESTITUTION_MIN_FACTOR) {
         this.actor.physics.applyForce(restitutionVector.scale(1.5))
         this.actor.notify(Notifications.GRAVITY_FLOOR_CONTACT)
       }
