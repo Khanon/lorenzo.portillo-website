@@ -6,6 +6,7 @@ import {
   Helper,
   KJS,
   Logger,
+  Notification,
   Particle,
   ParticleInterface,
   Sprite,
@@ -13,6 +14,7 @@ import {
   SpriteInterface
 } from '@khanonjs/engine'
 
+import { Notifications } from '../../../../models/notifications'
 import { ActorSimplePhysics } from '../../../../physics/actor-simple-physics'
 import { getRatio } from '../../canvas-ratio-consts'
 import { SceneIntro } from '../../scene-intro'
@@ -38,6 +40,7 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor
   physics: ActorSimplePhysics
+  particleDust = 'particle-dust'
 
   @Sprite({
     url: './assets/scene-intro/sprites/particle-walk-dust.png',
@@ -93,13 +96,20 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     samplingMode: BABYLON.Texture.BILINEAR_SAMPLINGMODE
   }) roboti: SpriteConstructor
 
+  @Notification({
+    message: Notifications.GRAVITY_FLOOR_CONTACT
+  })
+  floorContact() {
+    this.startParticle(this.particleDust)
+  }
+
   onSpawn(): void {
     this.setBody(this.roboti)
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
-    this.attachParticle(this.walkDust, 0, new BABYLON.Vector3(0, 0, 0))
+    this.attachParticle(this.walkDust, this.particleDust, new BABYLON.Vector3(0, 0, 0))
     this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => {
-      this.startParticle(0)
+      this.startParticle(this.particleDust)
     })
   }
 
