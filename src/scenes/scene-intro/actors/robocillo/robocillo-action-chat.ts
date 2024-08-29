@@ -32,7 +32,7 @@ export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActo
     'Loading bad ideas...',
     'Developing bugs...',
     'Mixing bits...',
-    'Loading bytes...',
+    'Moving bytes to restricted areas...',
     'Generating errors...',
     'Shading shaders...',
     'Wasting energy...'
