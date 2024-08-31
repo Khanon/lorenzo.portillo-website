@@ -16,9 +16,6 @@ import {
 
 import { Notifications } from '../../../../models/notifications'
 import { ActorSimplePhysics } from '../../../../physics/actor-simple-physics'
-import { getRatio } from '../../canvas-ratio-consts'
-import { SceneIntro } from '../../scene-intro'
-import { SceneIntroState } from '../../scene-intro-state'
 import { EarthActor } from '../earth/earth-actor'
 import { RobocilloStateIntro } from './robocilllo-state-intro'
 import { RobocilloActionChat } from './robocillo-action-chat'
