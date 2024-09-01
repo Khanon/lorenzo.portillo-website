@@ -2,7 +2,8 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorAction,
   ActorActionInterface,
-  Helper
+  Helper,
+  KJS
 } from '@khanonjs/engine'
 
 import { Notifications } from '../../../../models/notifications'

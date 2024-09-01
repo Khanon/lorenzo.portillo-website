@@ -105,9 +105,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
     this.attachParticle(this.walkDust, this.particleDust, new BABYLON.Vector3(0, 0, 0))
-    this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => {
-      this.startParticle(this.particleDust)
-    })
+    this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => this.startParticle(this.particleDust))
   }
 
   onDestroy(): void {
