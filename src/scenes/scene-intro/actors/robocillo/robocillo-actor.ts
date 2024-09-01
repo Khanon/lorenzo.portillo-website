@@ -57,7 +57,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     particle.babylon.particleSystem.minSize = 25
     particle.babylon.particleSystem.maxSize = 25
     particle.babylon.particleSystem.updateSpeed = 0.02
-    particle.babylon.particleSystem.targetStopDuration = 0.3
+    particle.babylon.particleSystem.targetStopDuration = 0.1
   }
 
   @Sprite({
