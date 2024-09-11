@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "target": "ES2022",
-        "module": "CommonJS",
         "moduleResolution": "node",
+        "module": "ES2020",
+        "target": "es2021",
         "lib": [
           "dom",
           "es6"
@@ -26,6 +26,9 @@
     },
     "include": [
       "src/**/*"
+    ],
+    "types": [
+        "babylonjs"
     ],
     "exclude": [
       "qkhanonjsold/**/*",

@@ -25,8 +25,12 @@ body {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
 }
 
-/*
-#error-container {
+canvas {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
+}
+
+/*#error-container {
     display: none;
     background-color: rgb(36, 36, 36);
     min-height: 100vh;
