@@ -28,7 +28,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
 
   private loading: boolean
   private loadingSteps: number
-  private timeout: Timeout
+  private timeout: Timeout | undefined
   private actionChat: RobocilloActionChat
 
   onStart(): void {

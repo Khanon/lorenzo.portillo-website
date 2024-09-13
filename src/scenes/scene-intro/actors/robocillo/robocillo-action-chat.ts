@@ -13,9 +13,9 @@ import { RobocilloActor } from './robocillo-actor'
 
 @ActorAction()
 export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActor> {
-  spriteChat: SpriteInterface
-  spriteChatEnd1: SpriteInterface
-  spriteChatEnd2: SpriteInterface
+  spriteChat: SpriteInterface | undefined
+  spriteChatEnd1: SpriteInterface | undefined
+  spriteChatEnd2: SpriteInterface | undefined
 
   posSin = new BABYLON.Vector3(0, 5, 0)
   rotSin = new BABYLON.Vector3(0.05, 0, 0)

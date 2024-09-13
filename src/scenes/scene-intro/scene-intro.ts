@@ -30,7 +30,7 @@ import { SceneIntroState } from './scene-intro-state'
   }
 })
 export class SceneIntro extends SceneInterface {
-  private light: BABYLON.HemisphericLight
+  private light: BABYLON.HemisphericLight | undefined
 
   onLoaded(): void {
     this.light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 0, 0), this.babylon.scene)
@@ -38,7 +38,7 @@ export class SceneIntro extends SceneInterface {
   }
 
   onUnload(): void {
-    this.light.dispose()
+    this.light?.dispose()
     this.light = undefined
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import * as BABYLON from '@babylonjs/core'
 import {
   KJS,
@@ -22,7 +23,7 @@ export class SceneIntroState extends SceneStateInterface {
     const logo = this.scene.spawn.actor(LogoActor)
     const robocillo = this.scene.spawn.actor(RobocilloActor)
     robocillo.earth = earth
-    KJS.setTimeout(() => robocillo.startState(RobocilloStateIntro, {}), 2000)
+    KJS.setTimeout(() => robocillo.switchState(RobocilloStateIntro, {}), 2000)
   }
 
   // onLoopUpdate(delta: number): void {

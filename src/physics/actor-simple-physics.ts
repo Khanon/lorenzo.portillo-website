@@ -8,7 +8,7 @@ import {
 } from '@khanonjs/engine'
 
 export class ActorSimplePhysics {
-  private loopUpdate$: BABYLON.Observer<number>
+  private loopUpdate$: BABYLON.Observer<number> | null = null
 
   private velocity: BABYLON.Vector3 = new BABYLON.Vector3()
   private maxVelocity: number = Number.MAX_VALUE
@@ -24,7 +24,7 @@ export class ActorSimplePhysics {
   release(): void {
     if (this.loopUpdate$) {
       KJS.loopUpdateRemoveObserver(this.loopUpdate$)
-      this.loopUpdate$ = undefined
+      this.loopUpdate$ = null
     }
   }
 
