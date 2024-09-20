@@ -82,8 +82,8 @@ export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActo
       textColor: '#ffffff',
       centerH: true
     })
-    this.spriteChat.transform.position.y += 38
-    this.spriteChat.transform.position.x -= 5
+    this.spriteChat.position.y += 38
+    this.spriteChat.position.x -= 5
     this.spriteChat.scale = 0.3
     this.textId++
     if (this.textId > this.loadingChats.length - 1) {
@@ -117,24 +117,24 @@ export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActo
 
   onLoopUpdate(delta: number): void {
     if (this.spriteChat) {
-      this.spriteChat.transform.position.y += 0.1
-      this.spriteChat.transform.color.a -= 0.005
-      if (this.spriteChat.transform.color.a < 0) {
+      this.spriteChat.position.y += 0.1
+      this.spriteChat.color.a -= 0.005
+      if (this.spriteChat.color.a < 0) {
         this.deleteSprite()
       }
     }
     if (this.spriteChatEnd1 && this.spriteChatEnd2) {
       this.spriteChatEnd1_RotSinTime += delta * 0.04
-      this.spriteChatEnd1.transform.angle = this.rotSin.scale(Math.sin(this.spriteChatEnd1_RotSinTime)).x
+      this.spriteChatEnd1.angle = this.rotSin.scale(Math.sin(this.spriteChatEnd1_RotSinTime)).x
 
       this.spriteChatEnd1_PosSinTime += delta * 0.03
-      this.spriteChatEnd1.transform.position = this.spriteChatEnd1_Position.add(this.posSin.scale(Math.sin(this.spriteChatEnd1_PosSinTime)))
+      this.spriteChatEnd1.position = this.spriteChatEnd1_Position.add(this.posSin.scale(Math.sin(this.spriteChatEnd1_PosSinTime)))
 
       this.spriteChatEnd2_RotSinTime += delta * 0.03
-      this.spriteChatEnd2.transform.angle = this.rotSin.scale(Math.sin(this.spriteChatEnd2_RotSinTime)).x
+      this.spriteChatEnd2.angle = this.rotSin.scale(Math.sin(this.spriteChatEnd2_RotSinTime)).x
 
       this.spriteChatEnd2_PosSinTime += delta * 0.03
-      this.spriteChatEnd2.transform.position = this.spriteChatEnd2_Position.add(this.posSin.scale(Math.sin(this.spriteChatEnd2_PosSinTime)))
+      this.spriteChatEnd2.position = this.spriteChatEnd2_Position.add(this.posSin.scale(Math.sin(this.spriteChatEnd2_PosSinTime)))
     }
   }
 }
