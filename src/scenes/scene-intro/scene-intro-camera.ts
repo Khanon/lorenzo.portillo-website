@@ -2,6 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   Camera,
   CameraInterface,
+  Logger,
   Rect
 } from '@khanonjs/engine'
 import { Vectors } from '@khanonjs/engine/modules/helper/vectors'
@@ -16,7 +17,7 @@ export class SceneIntroCamera extends CameraInterface {
   paramsRatio0CameraPos = new BABYLON.Vector3(-430, 0, 0)
   paramsRatio1CameraPos = new BABYLON.Vector3(-200, 58, 0)
 
-  initialize(scene: BABYLON.Scene) {
+  onInitialize(scene: BABYLON.Scene) {
     // Fixed camera
     const camera = new BABYLON.UniversalCamera('camera', new BABYLON.Vector3(0, 0, 0), scene)
     camera.target = new BABYLON.Vector3(1, 0, 0)

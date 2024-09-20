@@ -3,6 +3,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   KJS,
   Logger,
+  SceneAction,
   SceneState,
   SceneStateInterface
 } from '@khanonjs/engine'
@@ -14,10 +15,17 @@ import { RobocilloActor } from './actors/robocillo/robocillo-actor'
 import { SunActor } from './actors/sun-actor'
 import { SceneIntroCamera } from './scene-intro-camera'
 
-@SceneState()
+@SceneState({
+  actors: [
+    EarthActor,
+    SunActor,
+    LogoActor,
+    RobocilloActor
+  ]
+})
 export class SceneIntroState extends SceneStateInterface {
   onStart() {
-    this.setCamera(SceneIntroCamera, {})
+    this.switchCamera(SceneIntroCamera, {})
     const earth = this.scene.spawn.actor(EarthActor)
     const sun = this.scene.spawn.actor(SunActor)
     const logo = this.scene.spawn.actor(LogoActor)

@@ -16,12 +16,6 @@ import { updateRatio } from './canvas-ratio-consts'
 import { SceneIntroState } from './scene-intro-state'
 
 @Scene({
-  actors: [
-    EarthActor,
-    SunActor,
-    LogoActor,
-    RobocilloActor
-  ],
   states: [
     SceneIntroState
   ],
