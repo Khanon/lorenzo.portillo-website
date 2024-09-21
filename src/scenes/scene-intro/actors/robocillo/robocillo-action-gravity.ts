@@ -26,7 +26,7 @@ export class RobocilloActionGravity extends ActorActionInterface<any, RobocilloA
   }
 
   onLoopUpdate(delta: number): void {
-    const vToCenter = this.actor.earth.transform.position.subtract(this.actor.physics.getTranslation())
+    const vToCenter = this.actor.earth.t.position.subtract(this.actor.physics.getTranslation())
     const hSlowDownVector = Helper.Vectors.vectorialProjectionToPlane(this.actor.physics.getVelocity(), vToCenter).negate()
 
     // Horizontal slow down factor
@@ -43,7 +43,7 @@ export class RobocilloActionGravity extends ActorActionInterface<any, RobocilloA
     } else {
       // Floor contact
       this.actor.physics.onFloor = true
-      this.actor.physics.setTranslation(this.actor.earth.transform.position.add(vToCenter.negate().normalize().scale(this.floorLength)))
+      this.actor.physics.setTranslation(this.actor.earth.t.position.add(vToCenter.negate().normalize().scale(this.floorLength)))
 
       // Restitution on floor contact
       const restitutionVector = Helper.Vectors.vectorialProjectionToLine(this.actor.physics.getVelocity(), vToCenter).negate()

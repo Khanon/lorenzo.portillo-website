@@ -119,7 +119,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor
       break
     case HappyState.JUMP:
       if (this.actor.physics.onFloor) {
-        const vJump = this.actor.earth.transform.position.subtract(this.actor.transform.position).negate().normalize().scale(0.9)
+        const vJump = this.actor.earth.t.position.subtract(this.actor.transform.position).negate().normalize().scale(0.9)
         this.actor.body.playAnimation(RobocilloAnimationIds.JUMP_FRONT, false)
         this.actor.physics.resetVelocity()
         KJS.setTimeout(() => this.actor.physics.applyForce(vJump), 200, this)

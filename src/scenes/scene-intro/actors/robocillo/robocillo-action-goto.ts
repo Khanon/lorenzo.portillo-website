@@ -16,7 +16,7 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
   private prevDistance: number
 
   getEarthAngle(): number {
-    const vToCenter = this.actor.earth.transform.position.subtract(this.actor.transform.position)
+    const vToCenter = this.actor.earth.t.position.subtract(this.actor.transform.position)
     return Helper.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
   }
 
@@ -24,11 +24,11 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
     this.gotoAngle = this.setup.gotoAngle
     this.prevDistance = Number.MAX_VALUE
     if (this.gotoAngle < this.getEarthAngle()) {
-      this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.transform.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0))
+      this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.t.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0))
         .negate()
         .normalize()
     } else {
-      this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.transform.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0)).normalize()
+      this.vDirection = BABYLON.Vector3.Cross(this.actor.earth.t.position.subtract(this.actor.transform.position), new BABYLON.Vector3(1, 0, 0)).normalize()
     }
     this.actor.body.playAnimation(RobocilloAnimationIds.WALK)
   }
