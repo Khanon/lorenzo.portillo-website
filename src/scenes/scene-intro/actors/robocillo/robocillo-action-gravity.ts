@@ -10,7 +10,7 @@ import { Notifications } from '../../../../models/notifications'
 import { RobocilloActor } from './robocillo-actor'
 
 @ActorAction()
-export class RobocilloActionGravity extends ActorActionInterface<any, RobocilloActor> {
+export class RobocilloActionGravity extends ActorActionInterface<any, any, RobocilloActor> {
   private readonly GRAVITY_POWER: number = 0.0145
   private readonly HORIZONTAL_DECREASE_FACTOR = 0.01
   private readonly RESTITUTION_MIN_FACTOR = 0.3

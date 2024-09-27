@@ -4,6 +4,7 @@ import {
   ActorActionInterface,
   Helper,
   Logger,
+  SceneInterface,
   Sprite,
   SpriteConstructor,
   SpriteInterface
@@ -12,7 +13,7 @@ import {
 import { RobocilloActor } from './robocillo-actor'
 
 @ActorAction()
-export class RobocilloActionChat extends ActorActionInterface<any, RobocilloActor> {
+export class RobocilloActionChat extends ActorActionInterface<any, SceneInterface, RobocilloActor> {
   spriteChat: SpriteInterface | undefined
   spriteChatEnd1: SpriteInterface | undefined
   spriteChatEnd2: SpriteInterface | undefined

@@ -18,7 +18,7 @@ import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { HappyState } from './robocillo-happy-state'
 
 @ActorState()
-export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor> {
+export class RobocilloStateIntro extends ActorStateInterface<any, any, RobocilloActor> {
   readonly paramsRatio0Pos = new BABYLON.Vector3(-20, 7, -140)
   readonly paramsRatio1Pos = new BABYLON.Vector3(-20, -48, -440)
   readonly paramRatio0AngleSun = -0.055

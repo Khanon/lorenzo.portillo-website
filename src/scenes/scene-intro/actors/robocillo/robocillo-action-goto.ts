@@ -10,7 +10,7 @@ import { RobocilloActor } from './robocillo-actor'
 import { RobocilloAnimationIds } from './robocillo-animation-ids'
 
 @ActorAction()
-export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: number, onDone: () => void }, RobocilloActor> {
+export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: number, onDone: () => void }, any, RobocilloActor> {
   private vDirection: BABYLON.Vector3
   private gotoAngle: number
   private prevDistance: number
