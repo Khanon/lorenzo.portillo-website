@@ -22,7 +22,8 @@ export class SceneIntroCamera extends CameraInterface {
     const camera = new BABYLON.UniversalCamera('camera', new BABYLON.Vector3(0, 0, 0), scene)
     camera.target = new BABYLON.Vector3(1, 0, 0)
     camera.inputs.clear()
-    camera.minZ = 0.01 // Let it go closer to the earth (reduce distance with near clipping plane)
+    camera.minZ = 0.01
+
     return camera
   }
 

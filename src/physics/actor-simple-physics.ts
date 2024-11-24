@@ -1,3 +1,7 @@
+/**
+ * Designed for 2D sprites
+ */
+
 import * as BABYLON from '@babylonjs/core'
 import {
   ActorInterface,
@@ -13,7 +17,7 @@ export class ActorSimplePhysics {
   private velocity: BABYLON.Vector3 = new BABYLON.Vector3()
   private maxVelocity: number = Number.MAX_VALUE
   private translationMatrix: BABYLON.Matrix = new BABYLON.Matrix()
-  private rotationVector: BABYLON.Vector3 = new BABYLON.Vector3()
+  private rotation: number = 0
 
   onFloor: boolean = false
 
@@ -42,18 +46,13 @@ export class ActorSimplePhysics {
     return this.translationMatrix.getTranslation()
   }
 
-  setRotation(rotation: BABYLON.Vector3): void {
-    this.rotationVector.set(rotation.x, rotation.y, rotation.z)
-    this.actor.transform.angle = this.getRotation().x
+  setRotation(rotation: number): void {
+    this.rotation = rotation
+    this.actor.transform.rotation = this.getRotation()
   }
 
-  setRotationFromFloats(x: number, y: number, z: number): void {
-    this.rotationVector.set(x, y, z)
-    this.actor.transform.angle = this.getRotation().x
-  }
-
-  getRotation(): BABYLON.Vector3 {
-    return this.rotationVector
+  getRotation(): number {
+    return this.rotation
   }
 
   applyForce(force: BABYLON.Vector3): void {
@@ -105,6 +104,8 @@ export class ActorSimplePhysics {
     // Apply velocity to position
     this.translationMatrix.addTranslationFromFloats(this.velocity.x * delta, this.velocity.y * delta, this.velocity.z * delta)
     this.actor.transform.position = this.getTranslation()
-    this.actor.transform.angle = this.getRotation().x
+
+    // Set rotation
+    this.actor.transform.rotation = this.getRotation()
   }
 }

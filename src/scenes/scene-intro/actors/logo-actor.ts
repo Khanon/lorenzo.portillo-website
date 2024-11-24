@@ -40,6 +40,7 @@ export class LogoActor extends ActorInterface<SpriteInterface> {
     } else {
       this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos)
     }
-    this.body.scale = Helper.Maths.dragValue(ratio, this.paramsRatio0Scale, this.paramsRatio1Scale)
+    const scale = Helper.Maths.dragValue(ratio, this.paramsRatio0Scale, this.paramsRatio1Scale)
+    this.body.scale = scale
   }
 }

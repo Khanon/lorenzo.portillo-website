@@ -56,6 +56,6 @@ export class RobocilloActionGravity extends ActorActionInterface<any, any, Roboc
 
     // Rotate the actor according to angle with earth center
     const earthAngle = Helper.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
-    this.actor.physics.setRotationFromFloats(earthAngle, 0, 0)
+    this.actor.physics.setRotation(earthAngle)
   }
 }

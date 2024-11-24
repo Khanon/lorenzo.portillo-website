@@ -13,11 +13,11 @@ import { getRatio } from '../canvas-ratio-consts'
 
 @Actor()
 export class SunActor extends ActorInterface<SpriteInterface> {
-  paramsRatio0StartPos = new BABYLON.Vector3(0, 280, -237)
-  paramsRatio1StartPos = new BABYLON.Vector3(0, 280, -500)
+  paramsRatio0StartPos = new BABYLON.Vector3(1.0, 280, -237)
+  paramsRatio1StartPos = new BABYLON.Vector3(1.0, 280, -500)
 
-  paramsRatio0EndPos = new BABYLON.Vector3(0, 12, -79)
-  paramsRatio1EndPos = new BABYLON.Vector3(0, 25, -215)
+  paramsRatio0EndPos = new BABYLON.Vector3(1.0, 12, -79)
+  paramsRatio1EndPos = new BABYLON.Vector3(1.0, 25, -215)
   paramsRatio0EndScale = 0.6
   paramsRatio1EndScale = 0.9
 
@@ -50,6 +50,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
     )
     this.transform.position.y = step[0]
     this.transform.position.z = step[1]
-    this.body.scale = Helper.Maths.increaseValueWithInertia(this.body.scale, this.targetScale, 0.0014 * delta, 1)
+    const scale = Helper.Maths.increaseValueWithInertia(this.body.scale, this.targetScale, 0.0014 * delta, 1)
+    this.body.scale = scale
   }
 }

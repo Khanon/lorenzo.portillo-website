@@ -32,7 +32,9 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
     RobocilloActionGoto,
     RobocilloActionChat,
     RobocilloActionGravity
-  ]
+  ],
+  renderingGroupId: 1,
+  visibility: 0
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor
@@ -61,20 +63,26 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
   }
 
   @Sprite({
+    url: './assets/scene-intro/sprites/hat.png',
+    width: 30,
+    height: 22
+  }) hat: SpriteConstructor
+
+  @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
     width: 34,
     height: 34,
     animations: [
-      { id: RobocilloAnimationIds.STOP_SIDE, delay: 75, frameStart: 0, frameEnd: 0, loop: false },
-      { id: RobocilloAnimationIds.PAPER_TAKE, delay: 75, frameStart: 8, frameEnd: 15, loop: false },
-      { id: RobocilloAnimationIds.PAPER_CHECK, delay: 75, frameStart: 16, frameEnd: 21, loop: false },
-      { id: RobocilloAnimationIds.PAPER_THROW, delay: 75, frameStart: 24, frameEnd: 27, loop: false },
-      { id: RobocilloAnimationIds.SIDE_TO_FRONT, delay: 75, frameStart: 32, frameEnd: 34, loop: false },
-      { id: RobocilloAnimationIds.FRONT_TO_SIDE, delay: 75, frameStart: 40, frameEnd: 42, loop: false },
-      { id: RobocilloAnimationIds.STOP_FRONT, delay: 75, frameStart: 48, frameEnd: 48, loop: false },
+      { id: RobocilloAnimationIds.STOP_SIDE, delay: 90, frameStart: 0, frameEnd: 0, loop: false },
+      { id: RobocilloAnimationIds.PAPER_TAKE, delay: 90, frameStart: 8, frameEnd: 15, loop: false },
+      { id: RobocilloAnimationIds.PAPER_CHECK, delay: 90, frameStart: 16, frameEnd: 21, loop: false },
+      { id: RobocilloAnimationIds.PAPER_THROW, delay: 90, frameStart: 24, frameEnd: 27, loop: false },
+      { id: RobocilloAnimationIds.SIDE_TO_FRONT, delay: 90, frameStart: 32, frameEnd: 34, loop: false },
+      { id: RobocilloAnimationIds.FRONT_TO_SIDE, delay: 90, frameStart: 40, frameEnd: 42, loop: false },
+      { id: RobocilloAnimationIds.STOP_FRONT, delay: 90, frameStart: 48, frameEnd: 48, loop: false },
       {
         id: RobocilloAnimationIds.WALK,
-        delay: 75,
+        delay: 90,
         frameStart: 56,
         frameEnd: 63,
         loop: true,
@@ -85,9 +93,9 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
           }
         ]
       },
-      { id: RobocilloAnimationIds.MOVE_HANDS, delay: 75, frameStart: 64, frameEnd: 66, loop: true },
-      { id: RobocilloAnimationIds.RAISE_HANDS, delay: 75, frameStart: 72, frameEnd: 74, loop: true },
-      { id: RobocilloAnimationIds.JUMP_FRONT, delay: 75, frameStart: 80, frameEnd: 85, loop: false }
+      { id: RobocilloAnimationIds.MOVE_HANDS, delay: 90, frameStart: 64, frameEnd: 66, loop: true },
+      { id: RobocilloAnimationIds.RAISE_HANDS, delay: 90, frameStart: 72, frameEnd: 74, loop: true },
+      { id: RobocilloAnimationIds.JUMP_FRONT, delay: 90, frameStart: 80, frameEnd: 85, loop: false }
     ],
     noMipmap: true,
     samplingMode: BABYLON.Texture.BILINEAR_SAMPLINGMODE
@@ -102,10 +110,11 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   onSpawn(): void {
     this.setBody(this.roboti)
+    this.addNode(this.hat, 'hat', { position: new BABYLON.Vector3(0, 7, -1) })
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
     this.attachParticle(this.walkDust, this.particleDust, new BABYLON.Vector3(0, 0, 0))
-    this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => this.startParticle(this.particleDust))
+    this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => this.floorContact())
   }
 
   onDestroy(): void {

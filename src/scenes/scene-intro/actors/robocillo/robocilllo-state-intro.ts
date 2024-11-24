@@ -33,6 +33,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
 
   onStart(): void {
     const ratio = getRatio()
+    this.actor.visibility = 1
     this.actor.playAction(RobocilloActionGravity, {})
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
     this.ANGLE_SUN = Helper.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
@@ -41,7 +42,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
     this.goIn()
   }
 
-  onStop(): void {
+  onEnd(): void {
     if (this.timeout) {
       KJS.clearTimeout(this.timeout)
       this.timeout = undefined
@@ -96,7 +97,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
         this
       )
       this.loadingSteps++
-      if (this.loadingSteps > 5) { // 8a8f remove
+      if (this.loadingSteps > 5) { // 8a8f eliminar
         this.loading = false
       }
     } else {

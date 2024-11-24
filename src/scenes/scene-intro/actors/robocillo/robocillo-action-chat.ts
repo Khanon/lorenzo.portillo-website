@@ -119,20 +119,20 @@ export class RobocilloActionChat extends ActorActionInterface<any, SceneInterfac
   onLoopUpdate(delta: number): void {
     if (this.spriteChat) {
       this.spriteChat.position.y += 0.1
-      this.spriteChat.color.a -= 0.005
-      if (this.spriteChat.color.a < 0) {
+      this.spriteChat.visibility -= 0.005
+      if (this.spriteChat.visibility <= 0) {
         this.deleteSprite()
       }
     }
     if (this.spriteChatEnd1 && this.spriteChatEnd2) {
       this.spriteChatEnd1_RotSinTime += delta * 0.04
-      this.spriteChatEnd1.angle = this.rotSin.scale(Math.sin(this.spriteChatEnd1_RotSinTime)).x
+      this.spriteChatEnd1.rotation = this.rotSin.scale(Math.sin(this.spriteChatEnd1_RotSinTime)).x
 
       this.spriteChatEnd1_PosSinTime += delta * 0.03
       this.spriteChatEnd1.position = this.spriteChatEnd1_Position.add(this.posSin.scale(Math.sin(this.spriteChatEnd1_PosSinTime)))
 
       this.spriteChatEnd2_RotSinTime += delta * 0.03
-      this.spriteChatEnd2.angle = this.rotSin.scale(Math.sin(this.spriteChatEnd2_RotSinTime)).x
+      this.spriteChatEnd2.rotation = this.rotSin.scale(Math.sin(this.spriteChatEnd2_RotSinTime)).x
 
       this.spriteChatEnd2_PosSinTime += delta * 0.03
       this.spriteChatEnd2.position = this.spriteChatEnd2_Position.add(this.posSin.scale(Math.sin(this.spriteChatEnd2_PosSinTime)))
