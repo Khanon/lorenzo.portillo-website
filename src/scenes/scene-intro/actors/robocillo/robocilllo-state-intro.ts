@@ -1,6 +1,5 @@
 import * as BABYLON from '@babylonjs/core'
 import {
-  ActorActionInterface,
   ActorState,
   ActorStateInterface,
   Helper,
