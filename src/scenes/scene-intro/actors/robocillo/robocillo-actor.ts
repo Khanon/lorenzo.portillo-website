@@ -110,7 +110,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   onSpawn(): void {
     this.setBody(this.roboti)
-    this.addNode(this.hat, 'hat', { position: new BABYLON.Vector3(0, 7, -1) })
+    // this.addNode(this.hat, 'hat', { position: new BABYLON.Vector3(0, 7, -1) })
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
     this.attachParticle(this.walkDust, this.particleDust, new BABYLON.Vector3(0, 0, 0))

@@ -5,42 +5,23 @@ import {
   Logger
 } from '@khanonjs/engine'
 
+import { AppStateIntro } from './app-state-intro'
+import { AppStateWorld } from './app-state-world'
 import { SceneIntro } from './scenes/scene-intro/scene-intro'
 import { SceneIntroState } from './scenes/scene-intro/scene-intro-state'
 import { SceneWorld } from './scenes/scene-world/scene-world'
+import { SceneWorldState } from './scenes/scene-world/scene-world-state'
 
 @App({
   name: 'Lorenzo Portillo Website',
   loopUpdate: {
     fps: 165
-  }
+  },
+  removeTimeoutsOnStateSwitch: true
 })
 export class LPWebsite extends AppInterface {
   onStart() {
-    // Logger.trace('App onStart')
-    const progressIntro = KJS.Scene.load(SceneIntro)
-    // const progressWorld = KJS.Scene.load(SceneWorld)
-
-    progressIntro.onComplete.add(() => {
-      // Logger.trace('aki SceneIntro loaded!')
-      KJS.Scene.start(SceneIntro, SceneIntroState, {})
-    })
-    progressIntro.onProgress.add((progress: number) => {
-      // Logger.trace('aki SceneIntro progress', progress)
-    })
-    progressIntro.onError.add(() => {
-      // Logger.trace('aki SceneIntro error :(')
-    })
-
-    /* progressWorld.onComplete.add(() => {
-      // Logger.trace('aki SceneWorld loaded!')
-    })
-    progressWorld.onProgress.add((progress: number) => {
-      // Logger.trace('aki SceneWorld progress', progress)
-    })
-    progressWorld.onError.add(() => {
-      // Logger.trace('aki SceneWorld error :(')
-    }) */
+    this.switchState(AppStateIntro, {})
   }
 
   onClose() {

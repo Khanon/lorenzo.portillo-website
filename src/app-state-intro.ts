@@ -7,7 +7,6 @@ import {
 import { SceneIntro } from './scenes/scene-intro/scene-intro'
 import { SceneIntroState } from './scenes/scene-intro/scene-intro-state'
 
-// 8a8f TODO
 @AppState({
   scenes: [
     SceneIntro
@@ -16,9 +15,5 @@ import { SceneIntroState } from './scenes/scene-intro/scene-intro-state'
 export class AppStateIntro extends AppStateInterface {
   onStart() {
     KJS.Scene.start(SceneIntro, SceneIntroState, {})
-  }
-
-  onEnd() {
-    KJS.Scene.stop(SceneIntro)
   }
 }

@@ -3,7 +3,8 @@ import {
   ActorAction,
   ActorActionInterface,
   Helper,
-  KJS
+  KJS,
+  Logger
 } from '@khanonjs/engine'
 
 import { Notifications } from '../../../../models/notifications'
