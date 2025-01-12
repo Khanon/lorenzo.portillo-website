@@ -7,7 +7,6 @@ import {
 import { SceneWorld } from './scenes/scene-world/scene-world'
 import { SceneWorldState } from './scenes/scene-world/scene-world-state'
 
-// 8a8f TODO
 @AppState({
   scenes: [
     SceneWorld
