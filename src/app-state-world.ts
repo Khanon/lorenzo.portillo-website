@@ -1,7 +1,8 @@
 import {
   AppState,
   AppStateInterface,
-  KJS
+  KJS,
+  Logger
 } from '@khanonjs/engine'
 
 import { SceneWorld } from './scenes/scene-world/scene-world'

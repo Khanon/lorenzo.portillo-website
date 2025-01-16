@@ -14,12 +14,15 @@ import { SceneWorldState } from './scene-world-state'
 @Scene({
   states: [
     SceneWorldState
-  ]
+  ],
+  configuration: {
+    clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)
+  }
 })
 export class SceneWorld extends SceneInterface {
   @Mesh({
-    url: '/assets/scene-world/meshes/world/world3d.babylon',
-    meshId: 'Icosphere'
+    url: '/assets/scene-world/meshes/peasant/amature.babylon',
+    meshId: 'Peasant_girl'
   }) world: MeshConstructor
 
   light1: BABYLON.HemisphericLight

@@ -17,8 +17,7 @@ import { SceneIntroState } from './scene-intro-state'
   ],
   configuration: {
     clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)
-  },
-  debugInspector: true
+  }
 })
 export class SceneIntro extends SceneInterface {
   private light: BABYLON.HemisphericLight | undefined
