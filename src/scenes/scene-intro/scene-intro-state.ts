@@ -34,12 +34,4 @@ export class SceneIntroState extends SceneStateInterface {
     robocillo.earth = earth
     KJS.setTimeout(() => robocillo.switchState(RobocilloStateIntro, {}), 2000)
   }
-
-  // onLoopUpdate(delta: number): void {
-  //   Logger.trace('aki onLoopUpdate', delta)
-  // }
-
-  // onCanvasResize(size: Rect): void {
-  //   Logger.trace('aki onCanvasResize', size)
-  // }
 }

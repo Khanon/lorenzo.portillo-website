@@ -20,11 +20,6 @@ import { SceneWorldState } from './scene-world-state'
   }
 })
 export class SceneWorld extends SceneInterface {
-  @Mesh({
-    url: '/assets/scene-world/meshes/peasant/amature.babylon',
-    meshId: 'Peasant_girl'
-  }) world: MeshConstructor
-
   light1: BABYLON.HemisphericLight
 
   onLoaded() {
