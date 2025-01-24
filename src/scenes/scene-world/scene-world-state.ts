@@ -18,15 +18,32 @@ import { SceneWorldCamera } from './scene-world-camera'
 })
 export class SceneWorldState extends SceneStateInterface {
   @Mesh({
-    url: '/assets/scene-world/meshes/peasant/amature.babylon',
-    meshId: 'Peasant_girl'
-  }) world: MeshConstructor
+    url: '/assets/scene-world/meshes/character/character-test-peasant.glb'
+  }) peasant: MeshConstructor
+
+  @Mesh({
+    url: '/assets/scene-world/meshes/character/character-test-monster.glb'
+  }) monster: MeshConstructor
+
+  @Mesh({
+    url: '/assets/scene-world/meshes/character/character-test-monster.glb'
+  }) monster1: MeshConstructor
 
   onStart() {
     this.switchCamera(SceneWorldCamera, {})
-    const girl = this.scene.spawn.mesh(this.world)
-    girl.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01)
-    girl.rotate(BABYLON.Axis.X, -Math.PI / 2, BABYLON.Space.WORLD)
-    girl.rotate(BABYLON.Axis.Y, Math.PI / 2, BABYLON.Space.WORLD)
+    const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
+      mesh.position.z += (index + 1) * 0.3
+    })
+    const monster = this.scene.spawn.mesh(this.monster, 2, (mesh, index) => {
+      mesh.position.z += (index + 4) * 0.3
+    })
+    const monster1 = this.scene.spawn.mesh(this.monster1, 2, (mesh, index) => {
+      mesh.position.z -= (index + 1) * 0.3
+    })
+
+    // girl.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01)
+    // girl.rotate(BABYLON.Axis.X, -Math.PI / 2, BABYLON.Space.WORLD)
+    // girl.rotate(BABYLON.Axis.Y, Math.PI / 2, BABYLON.Space.WORLD)
+    // girl.playAnimation(0)
   }
 }
