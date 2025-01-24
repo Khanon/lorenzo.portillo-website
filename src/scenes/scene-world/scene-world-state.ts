@@ -25,20 +25,13 @@ export class SceneWorldState extends SceneStateInterface {
     url: '/assets/scene-world/meshes/character/character-test-monster.glb'
   }) monster: MeshConstructor
 
-  @Mesh({
-    url: '/assets/scene-world/meshes/character/character-test-monster.glb'
-  }) monster1: MeshConstructor
-
   onStart() {
     this.switchCamera(SceneWorldCamera, {})
     const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
-      mesh.position.z += (index + 1) * 0.3
+      mesh.position.z -= (index + 1) * 0.3
     })
     const monster = this.scene.spawn.mesh(this.monster, 2, (mesh, index) => {
-      mesh.position.z += (index + 4) * 0.3
-    })
-    const monster1 = this.scene.spawn.mesh(this.monster1, 2, (mesh, index) => {
-      mesh.position.z -= (index + 1) * 0.3
+      mesh.position.z += (index + 1) * 0.3
     })
 
     // girl.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01)
