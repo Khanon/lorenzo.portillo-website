@@ -35,7 +35,7 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
 
   onStop(): void {
     this.actor.physics.scaleVelocity(0.1)
-    this.actor.body.playAnimation(RobocilloAnimationIds.STOP_SIDE, false)
+    this.actor.body.playAnimation(RobocilloAnimationIds.STOP_SIDE, { loop: false })
     this.loopUpdate = false
     this.setup.onDone()
   }
