@@ -9,11 +9,15 @@ import {
   SpriteConstructor
 } from '@khanonjs/engine'
 
+import { SceneWorldGUI } from './scene-world-gui'
 import { SceneWorldState } from './scene-world-state'
 
 @Scene({
   states: [
     SceneWorldState
+  ],
+  guis: [
+    SceneWorldGUI
   ],
   configuration: {
     clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)
