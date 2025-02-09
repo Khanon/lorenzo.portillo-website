@@ -34,7 +34,7 @@ import { RobocilloKeyFrames } from './robocillo-keyframes'
     RobocilloActionGravity
   ],
   renderingGroupId: 1,
-  visibility: 0
+  enabled: false
 })
 export class RobocilloActor extends ActorInterface<SpriteInterface> {
   earth: EarthActor

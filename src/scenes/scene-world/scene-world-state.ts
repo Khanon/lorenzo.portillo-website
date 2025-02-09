@@ -10,10 +10,12 @@ import {
   SceneStateInterface
 } from '@khanonjs/engine'
 
+import { Warrok } from './actors/warrok'
 import { SceneWorldCamera } from './scene-world-camera'
 
 @SceneState({
   actors: [
+    Warrok
   ]
 })
 export class SceneWorldState extends SceneStateInterface {
@@ -55,7 +57,7 @@ export class SceneWorldState extends SceneStateInterface {
 
   onStart() {
     this.switchCamera(SceneWorldCamera, {})
-    const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
+    /* const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
       mesh.position.z -= (index + 1) * 0.3
       mesh.playAnimation(index === 0 ? 'Taunt' : 'Dying')
     })
@@ -72,6 +74,6 @@ export class SceneWorldState extends SceneStateInterface {
         // loop: true,
         speedRatio: 1 - (0.8 * index)
       })
-    })
+    }) */
   }
 }

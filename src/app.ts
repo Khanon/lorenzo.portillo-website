@@ -32,15 +32,8 @@ export class LPWebsite extends AppInterface {
     this.switchState(AppStateWorld, {})
     // this.switchState(AppStateIntro, {})
     // this.switchState(AppStateIntro, {}).onComplete.add(() => {
-    setTimeout(() => {
-      this.switchState(AppStateIntro, {})
-      setTimeout(() => {
-        this.switchState(AppStateWorld, {})
-        setTimeout(() => {
-          this.switchState(AppStateIntro, {})
-        }, 2000)
-      }, 2000)
-      /* KJS.Scene.stop(SceneIntro)
+    /* setTimeout(() => {
+      KJS.Scene.stop(SceneIntro)
       KJS.clearAllTimeouts()
       setTimeout(() => {
         KJS.Scene.start(SceneIntro, SceneIntroState, {})
@@ -51,8 +44,8 @@ export class LPWebsite extends AppInterface {
             KJS.Scene.start(SceneIntro, SceneIntroState, {})
           }, 3000)
         }, 3000)
-      }, 3000) */
-    }, 2000)
+      }, 3000)
+    }, 2000) */
     // })
   }
 
