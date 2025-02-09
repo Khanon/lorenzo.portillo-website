@@ -13,11 +13,12 @@ import { SceneWorldGUI } from './scene-world-gui'
 import { SceneWorldState } from './scene-world-state'
 
 @Scene({
+  url: './assets/scene-world/meshes/test-scene/test-scene.babylon',
   states: [
     SceneWorldState
   ],
   guis: [
-    SceneWorldGUI
+    // SceneWorldGUI
   ],
   configuration: {
     clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)
