@@ -29,7 +29,7 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
 })
 export class LPWebsite extends AppInterface {
   onStart() {
-    this.switchState(AppStateWorld, {})
+    this.switchState(AppStateIntro/* AppStateWorld */, {})
     // this.switchState(AppStateIntro, {})
     // this.switchState(AppStateIntro, {}).onComplete.add(() => {
     /* setTimeout(() => {

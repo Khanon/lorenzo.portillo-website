@@ -9,15 +9,11 @@ import {
 
 import { LPWebsite } from '../../app'
 import { updateRatio } from './canvas-ratio-consts'
-import { SceneIntroGUI } from './scene-intro-gui'
 import { SceneIntroState } from './scene-intro-state'
 
 @Scene({
   states: [
     SceneIntroState
-  ],
-  guis: [
-    SceneIntroGUI
   ],
   configuration: {
     clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)

@@ -31,6 +31,6 @@ export class Warrok extends ActorInterface<MeshInterface> {
   }
 
   onLoopUpdate(delta: number): void {
-    this.t.addRotation(0, 0.01, 0)
+    // this.t.addRotation(0, 0.01, 0)
   }
 }

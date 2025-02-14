@@ -13,7 +13,7 @@ import { SceneWorldGUI } from './scene-world-gui'
 import { SceneWorldState } from './scene-world-state'
 
 @Scene({
-  url: './assets/scene-world/meshes/test-scene/test-scene.babylon',
+  url: './assets/scene-world/meshes/test-scene/test-scene.glb',
   states: [
     SceneWorldState
   ],

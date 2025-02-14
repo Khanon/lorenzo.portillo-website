@@ -32,6 +32,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
 
   onStart(): void {
     const ratio = getRatio()
+    this.actor.enabled = true
     this.actor.visibility = 1
     this.actor.playAction(RobocilloActionGravity, {})
     this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))

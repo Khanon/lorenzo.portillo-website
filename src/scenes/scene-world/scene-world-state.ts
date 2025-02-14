@@ -56,7 +56,7 @@ export class SceneWorldState extends SceneStateInterface {
   }) monster1: MeshConstructor
 
   onStart() {
-    this.switchCamera(SceneWorldCamera, {})
+    // this.switchCamera(SceneWorldCamera, {})
     /* const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
       mesh.position.z -= (index + 1) * 0.3
       mesh.playAnimation(index === 0 ? 'Taunt' : 'Dying')
