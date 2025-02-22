@@ -12,6 +12,8 @@ import {
 
 import { Warrok } from './actors/warrok'
 import { SceneWorldCamera } from './scene-world-camera'
+import { SceneWorldGUI1 } from './scene-world-gui-1'
+import { SceneWorldGUI2 } from './scene-world-gui-2'
 
 @SceneState({
   actors: [
@@ -56,7 +58,7 @@ export class SceneWorldState extends SceneStateInterface {
   }) monster1: MeshConstructor
 
   onStart() {
-    // this.switchCamera(SceneWorldCamera, {})
+    this.switchCamera(SceneWorldCamera, {})
     /* const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
       mesh.position.z -= (index + 1) * 0.3
       mesh.playAnimation(index === 0 ? 'Taunt' : 'Dying')
