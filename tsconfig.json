@@ -1,37 +1,37 @@
 {
-    "compilerOptions": {
-        "moduleResolution": "node",
-        "module": "ES2020",
-        "target": "es2021",
-        "lib": [
-          "dom",
-          "es6"
-        ],
-        "importHelpers": true,
-        "declaration": false,
-        "noResolve": false,
-        "noImplicitThis": true,
-        "noImplicitAny": false,
-        "noImplicitReturns": false,
-        "strictFunctionTypes": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "strictPropertyInitialization": false,
-        "strictNullChecks": true,
-        "experimentalDecorators": true,
-        "sourceMap": true,
-        "preserveConstEnums":true,
-        "esModuleInterop": true,
-        "noUnusedLocals": false
-    },
-    "include": [
-      "src/**/*"
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES2020",
+    "target": "es2021",
+    "lib": [
+      "dom",
+      "es6"
     ],
-    "types": [
-        "babylonjs"
-    ],
-    "exclude": [
-      "qkhanonjsold/**/*",
-      "rkhanonjs/**/*"
-    ]
+    "importHelpers": true,
+    "declaration": false,
+    "noResolve": false,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "strictFunctionTypes": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "preserveConstEnums": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": false
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "types": [
+    "babylonjs"
+  ],
+  "exclude": [
+    "qkhanonjsold/**/*",
+    "rkhanonjs/**/*"
+  ]
 }
