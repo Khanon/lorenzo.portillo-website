@@ -4,8 +4,7 @@ import {
   ActorStateInterface,
   Helper,
   KJS,
-  Logger,
-  Timeout
+  Logger
 } from '@khanonjs/engine'
 
 import { getRatio } from '../../canvas-ratio-consts'
@@ -27,7 +26,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
 
   private loading: boolean
   private loadingSteps: number
-  private timeout: Timeout | undefined
+  private timeout: KJS.Timeout | undefined
   private actionChat: RobocilloActionChat
 
   onStart(): void {
