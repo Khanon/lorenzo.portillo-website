@@ -43,8 +43,8 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   @Sprite({
     url: './assets/scene-intro/sprites/particle-walk-dust.png',
-    width: 34,
-    height: 34,
+    cellWidth: 34,
+    cellHeight: 34,
     animations: [
       { id: 0, frameStart: 0, frameEnd: 4 }
     ],
@@ -63,15 +63,13 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
   }
 
   @Sprite({
-    url: './assets/scene-intro/sprites/hat.png',
-    width: 30,
-    height: 22
+    url: './assets/scene-intro/sprites/hat.png'
   }) hat: SpriteConstructor
 
   @Sprite({
     url: './assets/scene-intro/sprites/robocillo.png',
-    width: 34,
-    height: 34,
+    cellWidth: 34,
+    cellHeight: 34,
     animations: [
       { id: RobocilloAnimationIds.STOP_SIDE, delay: 90, frameStart: 0, frameEnd: 0, loop: false },
       { id: RobocilloAnimationIds.PAPER_TAKE, delay: 90, frameStart: 8, frameEnd: 15, loop: false },

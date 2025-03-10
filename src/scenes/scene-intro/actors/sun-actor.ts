@@ -25,9 +25,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
   targetScale: number = 0
 
   @Sprite({
-    url: './assets/scene-intro/sprites/sun.png',
-    width: 270,
-    height: 270
+    url: './assets/scene-intro/sprites/sun.png'
   }) sun: SpriteConstructor
 
   onSpawn() {

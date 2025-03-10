@@ -23,8 +23,8 @@ export class LogoActor extends ActorInterface<SpriteInterface> {
 
   @Sprite({
     url: './assets/scene-intro/sprites/logo.png',
-    width: 402,
-    height: 83,
+    cellWidth: 402,
+    cellHeight: 83,
     numFrames: 90
   }) logo: SpriteConstructor
 

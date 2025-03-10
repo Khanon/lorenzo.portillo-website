@@ -5,7 +5,9 @@ import {
   Logger,
   SceneAction,
   SceneState,
-  SceneStateInterface
+  SceneStateInterface,
+  Sprite,
+  SpriteConstructor
 } from '@khanonjs/engine'
 
 import { EarthActor } from './actors/earth/earth-actor'
