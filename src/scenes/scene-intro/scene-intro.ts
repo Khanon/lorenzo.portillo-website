@@ -2,9 +2,13 @@ import * as BABYLON from '@babylonjs/core'
 import {
   KJS,
   Logger,
+  Particle,
+  ParticleInterface,
   Rect,
   Scene,
-  SceneInterface
+  SceneInterface,
+  Sprite,
+  SpriteConstructor
 } from '@khanonjs/engine'
 
 import { LPWebsite } from '../../app'
