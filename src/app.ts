@@ -24,8 +24,7 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
   name: 'Lorenzo Portillo Website',
   loopUpdate: {
     fps: 165
-  },
-  removeTimeoutsOnStateSwitch: true
+  }
 })
 export class LPWebsite extends AppInterface {
   onStart() {

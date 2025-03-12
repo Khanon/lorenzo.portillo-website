@@ -43,7 +43,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
 
   onEnd(): void {
     if (this.timeout) {
-      KJS.clearTimeout(this.timeout)
+      this.clearTimeout(this.timeout)
       this.timeout = undefined
     }
   }
@@ -52,7 +52,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
     this.actor.playAction(RobocilloActionGoto, {
       gotoAngle: this.ANGLE_SUN,
       onDone: () => {
-        this.timeout = KJS.setTimeout(() => {
+        this.timeout = this.setTimeout(() => {
           this.stopSun()
         }, 500, this)
       }
@@ -61,24 +61,24 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
 
   stopSun(): void {
     this.actor.body.playAnimation(RobocilloAnimationIds.SIDE_TO_FRONT, { loop: false })
-    KJS.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.MOVE_HANDS, { loop: true }), 500, this)
-    KJS.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.STOP_FRONT, { loop: false }), 1000, this)
-    KJS.setTimeout(() => this.goCenter(), 1500, this)
+    this.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.MOVE_HANDS, { loop: true }), 500, this)
+    this.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.STOP_FRONT, { loop: false }), 1000, this)
+    this.setTimeout(() => this.goCenter(), 1500, this)
   }
 
   goCenter(): void {
     this.actor.playAction(RobocilloActionGoto, {
       gotoAngle: this.ANGLE_CENTER,
       onDone: () => {
-        this.timeout = KJS.setTimeout(() => this.stopCenter(), 100, this)
+        this.timeout = this.setTimeout(() => this.stopCenter(), 100, this)
       }
     })
   }
 
   stopCenter(): void {
     this.actor.body.playAnimation(RobocilloAnimationIds.SIDE_TO_FRONT, { loop: false })
-    KJS.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_TAKE, { loop: false }), 500, this)
-    KJS.setTimeout(() => {
+    this.setTimeout(() => this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_TAKE, { loop: false }), 500, this)
+    this.setTimeout(() => {
       this.actionChat = this.actor.playAction(RobocilloActionChat, {})
       this.checkPaper()
     }, 500, this)
@@ -86,7 +86,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
 
   checkPaper(): void {
     if (this.loading || this.loadingSteps < 3) {
-      KJS.setTimeout(
+      this.setTimeout(
         () =>
           this.actor.body.playAnimation(RobocilloAnimationIds.PAPER_CHECK, { loop: false }, () => {
             this.actionChat.spawnChat()
@@ -111,20 +111,20 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
     switch (happiness ?? Helper.Maths.randomInt(HappyState.MOVE_HANDS, HappyState.JUMP)) {
     case HappyState.MOVE_HANDS:
       this.actor.body.playAnimation(RobocilloAnimationIds.MOVE_HANDS)
-      KJS.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this)
+      this.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this)
       break
     case HappyState.RAISE_HANDS:
       this.actor.body.playAnimation(RobocilloAnimationIds.RAISE_HANDS)
-      KJS.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this)
+      this.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this)
       break
     case HappyState.JUMP:
       if (this.actor.physics.onFloor) {
         const vJump = this.actor.earth.t.position.subtract(this.actor.transform.position).negate().normalize().scale(0.9)
         this.actor.body.playAnimation(RobocilloAnimationIds.JUMP_FRONT, { loop: false })
         this.actor.physics.resetVelocity()
-        KJS.setTimeout(() => this.actor.physics.applyForce(vJump), 200, this)
+        this.setTimeout(() => this.actor.physics.applyForce(vJump), 200, this)
       }
-      KJS.setTimeout(() => this.centerEnd(), 1200, this)
+      this.setTimeout(() => this.centerEnd(), 1200, this)
       break
     }
   }
