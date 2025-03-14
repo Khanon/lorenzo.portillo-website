@@ -52,7 +52,9 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     samplingMode: BABYLON.Texture.BILINEAR_SAMPLINGMODE
   }) dust: SpriteConstructor
 
-  @Particle()
+  @Particle({
+    renderOverTheScene: true
+  })
   walkDust(particle: ParticleInterface) {
     particle.setSprite(this.dust)
     particle.setAnimation(0)
@@ -111,7 +113,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     // this.addNode(this.hat, 'hat', { position: new BABYLON.Vector3(0, 7, -1) })
     this.physics = new ActorSimplePhysics(this)
     this.body.scale = 0.78
-    this.attachParticle(this.walkDust, this.particleDust, new BABYLON.Vector3(0, 0, 0))
+    this.attachParticle(this.particleDust, this.walkDust, new BABYLON.Vector3(0, 0, 0))
     this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => this.floorContact())
   }
 
