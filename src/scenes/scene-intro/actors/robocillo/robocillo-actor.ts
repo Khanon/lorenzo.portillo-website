@@ -53,7 +53,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
   }) dust: SpriteConstructor
 
   @Particle({
-    renderOverTheScene: true
+    renderOverScene: true
   })
   walkDust(particle: ParticleInterface) {
     particle.setSprite(this.dust)
@@ -115,6 +115,10 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
     this.body.scale = 0.78
     this.attachParticle(this.particleDust, this.walkDust, {}, new BABYLON.Vector3(0, 0, 0))
     this.body.subscribeToKeyframe(RobocilloKeyFrames.FLOOR_CONTACT, () => this.floorContact())
+
+    this.attachParticle(this.particleDust, this.walkDust, {}, new BABYLON.Vector3(0, 0, 0)) // 8a8f eliminar
+    this.attachParticle(this.particleDust, this.walkDust, {}, new BABYLON.Vector3(0, 0, 0)) // 8a8f eliminar
+    this.attachParticle(this.particleDust, this.walkDust, {}, new BABYLON.Vector3(0, 0, 0)) // 8a8f eliminar
   }
 
   onDestroy(): void {
