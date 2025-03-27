@@ -25,7 +25,7 @@ export class SceneWorldState extends SceneStateInterface {
     url: '/assets/scene-world/meshes/character/character-test-peasant.glb',
     animations: [
       { id: 'Breathe', loop: true },
-      { id: 'Dying', loop: true },
+      { id: 'Dying', loop: false },
       { id: 'Taunt', loop: true },
       { id: 'Thriller', loop: true },
       { id: 'Walking', loop: true }
@@ -62,8 +62,29 @@ export class SceneWorldState extends SceneStateInterface {
     /* const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
       mesh.position.z -= (index + 1) * 0.3
       mesh.playAnimation(index === 0 ? 'Taunt' : 'Dying')
-    })
-    const monster = this.scene.spawn.mesh(this.monster, 2, (mesh, index) => {
+    }) */
+
+    const peasant = this.scene.spawn.mesh(this.peasant)
+    const idleToRandomAnimation = () => {
+      const maxIdleLoops = 3
+      let idleRepeat = Math.ceil(Math.random() * maxIdleLoops)
+      // Play idle in loop
+      peasant.playAnimation('Breathe', { loop: true, speedRatio: 20.0 },
+        () => {
+          --idleRepeat
+          if (idleRepeat === 0) {
+            // When the loop is completed, play from random list
+            peasant.playAnimation('Dying', { speedRatio: 5.0 },
+              () => {
+                // On complete, start again
+                idleToRandomAnimation()
+              })
+          }
+        })
+    }
+    idleToRandomAnimation()
+
+    /* const monster = this.scene.spawn.mesh(this.monster, 2, (mesh, index) => {
       mesh.position.z += (index + 1) * 0.3
       mesh.playAnimation(index === 0 ? 'OldMan' : 'Walking')
     })

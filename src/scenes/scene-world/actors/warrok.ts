@@ -7,7 +7,7 @@ import {
 import { MeshConstructor } from '@khanonjs/engine/decorators/mesh'
 
 @Actor({
-  spawnByReferenceId: 'Warrok'
+  // spawnByReferenceId: 'Warrok'
 })
 export class Warrok extends ActorInterface<MeshInterface> {
   @Mesh({
