@@ -26,7 +26,7 @@
     "url": "https://github.com/Khanon/lorenzo.portillo-website.git"
   },
   "devDependencies": {
-    "@babylonjs/inspector": "~7.50.0",
+    "@babylonjs/inspector": "~8.0.1",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
     "copy-webpack-plugin": "^12.0.2",
@@ -50,12 +50,12 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "@babylonjs/core": "~7.50.0",
-    "@babylonjs/gui": "~7.50.0",
-    "@babylonjs/inspector": "~7.50.0",
-    "@babylonjs/loaders": "~7.50.0",
-    "@babylonjs/materials": "~7.50.0",
-    "@babylonjs/serializers": "~7.50.0",
+    "@babylonjs/core": "~8.0.1",
+    "@babylonjs/gui": "~8.0.1",
+    "@babylonjs/inspector": "~8.0.1",
+    "@babylonjs/loaders": "~8.0.1",
+    "@babylonjs/materials": "~8.0.1",
+    "@babylonjs/serializers": "~8.0.1",
     "@khanonjs/engine": "^0.0.130"
   }
 }
