@@ -25,12 +25,15 @@ export class LogoActor extends ActorInterface<SpriteInterface> {
     url: './assets/scene-intro/sprites/logo.png',
     cellWidth: 402,
     cellHeight: 83,
-    numFrames: 90
+    numFrames: 90,
+    animations: [
+      { id: 'showup', delay: 30, loop: false }
+    ]
   }) logo: SpriteConstructor
 
   onSpawn(): void {
     this.setBody(this.logo)
-    setTimeout(() => this.body.playAnimation({ id: 'showup', delay: 30, loop: false }), 800)
+    setTimeout(() => this.body.playAnimation('showup'), 800)
   }
 
   onLoopUpdate(delta: number): void {

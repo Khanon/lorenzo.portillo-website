@@ -102,7 +102,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
   }) roboti: SpriteConstructor
 
   @Notification({
-    message: Notifications.GRAVITY_FLOOR_CONTACT
+    id: Notifications.GRAVITY_FLOOR_CONTACT
   })
   floorContact() {
     this.startParticle(this.particleDust)
