@@ -4,6 +4,9 @@ import {
   ActorAction,
   ActorInterface,
   Helper,
+  InputEvent,
+  InputEventArgData,
+  InputEventIds,
   KJS,
   Logger,
   Notification,
@@ -103,8 +106,7 @@ export class RobocilloActor extends ActorInterface<SpriteInterface> {
 
   @Notification({
     id: Notifications.GRAVITY_FLOOR_CONTACT
-  })
-  floorContact() {
+  }) floorContact() {
     this.startParticle(this.particleDust)
   }
 

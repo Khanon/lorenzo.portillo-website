@@ -6,6 +6,8 @@ import {
   Rect
 } from '@khanonjs/engine'
 
+import { SceneWorldCameraStateIntro } from './scene-world-camera-state-intro'
+
 @Camera()
 export class SceneWorldCamera extends CameraInterface {
   onInitialize(scene: BABYLON.Scene) {
@@ -18,6 +20,8 @@ export class SceneWorldCamera extends CameraInterface {
 
     camera.inputs.clear()
     // this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
+
+    this.switchState(SceneWorldCameraStateIntro, {})
 
     return camera
   }
