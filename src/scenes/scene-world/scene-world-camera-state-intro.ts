@@ -1,3 +1,4 @@
+import * as BABYLON from '@babylonjs/core'
 /* eslint-disable camelcase */
 import {
   CameraState,
@@ -10,14 +11,9 @@ import {
 @CameraState()
 export class SceneWorldCameraStateIntro extends CameraStateInterface {
   @InputEvent({
-    id: InputEventIds.MOUSE_MOVE
-  }) onMove() {
-    Logger.trace('aki MOUSE_MOVE', this.babylon.scene.isPointerCaptured())
-  }
-
-  @InputEvent({
     id: InputEventIds.DRAG
-  }) onDrag() {
-    Logger.trace('aki onDrag')
+  }) onDrag(event: BABYLON.IPointerEvent) {
+    this.camera.rotation.x += event.movementY * 0.001
+    this.camera.rotation.y += event.movementX * 0.001
   }
 }

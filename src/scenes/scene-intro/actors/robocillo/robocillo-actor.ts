@@ -5,7 +5,6 @@ import {
   ActorInterface,
   Helper,
   InputEvent,
-  InputEventArgData,
   InputEventIds,
   KJS,
   Logger,
