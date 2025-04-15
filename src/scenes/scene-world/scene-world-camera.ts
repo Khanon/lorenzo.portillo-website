@@ -7,6 +7,7 @@ import {
 } from '@khanonjs/engine'
 
 import { SceneWorldCameraStateIntro } from './scene-world-camera-state-intro'
+import { SceneWorldCameraStateMove } from './scene-world-camera-state-move'
 
 @Camera()
 export class SceneWorldCamera extends CameraInterface {
@@ -21,7 +22,7 @@ export class SceneWorldCamera extends CameraInterface {
     camera.inputs.clear()
     // this.camera.minZ = 0.01; // Let it go closer to the earth (reduce distance with near clipping plane)
 
-    this.switchState(SceneWorldCameraStateIntro, {})
+    this.switchState(SceneWorldCameraStateMove, {})
 
     return camera
   }

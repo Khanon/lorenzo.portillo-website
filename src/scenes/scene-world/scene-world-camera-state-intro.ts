@@ -9,11 +9,4 @@ import {
 } from '@khanonjs/engine'
 
 @CameraState()
-export class SceneWorldCameraStateIntro extends CameraStateInterface {
-  @InputEvent({
-    id: InputEventIds.DRAG
-  }) onDrag(event: BABYLON.IPointerEvent) {
-    this.camera.rotation.x += event.movementY * 0.001
-    this.camera.rotation.y += event.movementX * 0.001
-  }
-}
+export class SceneWorldCameraStateIntro extends CameraStateInterface {}
