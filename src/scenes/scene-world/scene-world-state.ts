@@ -21,7 +21,7 @@ import { SceneWorldGUI2 } from './scene-world-gui-2'
   ]
 })
 export class SceneWorldState extends SceneStateInterface {
-  @Mesh({
+  /* @Mesh({
     url: '/assets/scene-world/meshes/character/character-test-peasant.glb',
     animations: [
       { id: 'Breathe', loop: true },
@@ -55,16 +55,18 @@ export class SceneWorldState extends SceneStateInterface {
       }
     ],
     cloneByInstances: true
-  }) monster1: MeshConstructor
+  }) monster1: MeshConstructor */
 
   onStart() {
     this.switchCamera(SceneWorldCamera, {})
+
+    this.spawn.actor(Warrok)
     /* const peasant = this.scene.spawn.mesh(this.peasant, 2, (mesh, index) => {
       mesh.position.z -= (index + 1) * 0.3
       mesh.playAnimation(index === 0 ? 'Taunt' : 'Dying')
     }) */
 
-    const peasant = this.scene.spawn.mesh(this.peasant)
+    /* const peasant = this.scene.spawn.mesh(this.peasant)
     const idleToRandomAnimation = () => {
       const maxIdleLoops = 3
       let idleRepeat = Math.ceil(Math.random() * maxIdleLoops)
@@ -82,7 +84,7 @@ export class SceneWorldState extends SceneStateInterface {
           }
         })
     }
-    idleToRandomAnimation()
+    idleToRandomAnimation() */
 
     /* const monster = this.scene.spawn.mesh(this.monster, 2, (mesh, index) => {
       mesh.position.z += (index + 1) * 0.3
