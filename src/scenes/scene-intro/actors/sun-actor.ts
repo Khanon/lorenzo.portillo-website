@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorInterface,
-  Helper,
+  KJS,
   Logger,
   Sprite,
   SpriteConstructor,
@@ -31,16 +31,16 @@ export class SunActor extends ActorInterface<SpriteInterface> {
   onSpawn() {
     const ratio = getRatio()
     this.setBody(this.sun)
-    this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
+    this.transform.position = KJS.Vectors.dragPoint(ratio, this.paramsRatio0StartPos, this.paramsRatio1StartPos)
   }
 
   onLoopUpdate(delta: number): void {
     const ratio = getRatio()
 
-    this.targetPosition = Helper.Vectors.dragPoint(ratio, this.paramsRatio0EndPos, this.paramsRatio1EndPos)
-    this.targetScale = Helper.Maths.dragValue(ratio, this.paramsRatio0EndScale, this.paramsRatio1EndScale)
+    this.targetPosition = KJS.Vectors.dragPoint(ratio, this.paramsRatio0EndPos, this.paramsRatio1EndPos)
+    this.targetScale = KJS.Maths.dragValue(ratio, this.paramsRatio0EndScale, this.paramsRatio1EndScale)
 
-    const step = Helper.Maths.increaseVectorWithInertia(
+    const step = KJS.Maths.increaseVectorWithInertia(
       [this.transform.position.y, this.transform.position.z],
       [this.targetPosition.y, this.targetPosition.z],
       0.014 * delta,
@@ -48,7 +48,7 @@ export class SunActor extends ActorInterface<SpriteInterface> {
     )
     this.transform.position.y = step[0]
     this.transform.position.z = step[1]
-    const scale = Helper.Maths.increaseValueWithInertia(this.body.scale, this.targetScale, 0.0014 * delta, 1)
+    const scale = KJS.Maths.increaseValueWithInertia(this.body.scale, this.targetScale, 0.0014 * delta, 1)
     this.body.scale = scale
   }
 }

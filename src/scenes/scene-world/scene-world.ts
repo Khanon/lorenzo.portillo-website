@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core'
 import {
+  KJS,
   Logger,
   Mesh,
   MeshConstructor,

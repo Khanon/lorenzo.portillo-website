@@ -5,7 +5,6 @@
 import * as BABYLON from '@babylonjs/core'
 import {
   ActorInterface,
-  Helper,
   KJS,
   Logger,
   SpriteInterface
@@ -91,13 +90,13 @@ export class ActorSimplePhysics {
 
   physicsUpdate(delta: number): void {
     // Set to zero residual vels
-    if (Math.abs(this.velocity.x) < Helper.Maths.MIN_VALUE) {
+    if (Math.abs(this.velocity.x) < KJS.Maths.MIN_VALUE) {
       this.velocity.x = 0
     }
-    if (Math.abs(this.velocity.y) < Helper.Maths.MIN_VALUE) {
+    if (Math.abs(this.velocity.y) < KJS.Maths.MIN_VALUE) {
       this.velocity.y = 0
     }
-    if (Math.abs(this.velocity.z) < Helper.Maths.MIN_VALUE) {
+    if (Math.abs(this.velocity.z) < KJS.Maths.MIN_VALUE) {
       this.velocity.z = 0
     }
 

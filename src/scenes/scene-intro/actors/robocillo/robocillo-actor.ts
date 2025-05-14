@@ -3,7 +3,6 @@ import {
   Actor,
   ActorAction,
   ActorInterface,
-  Helper,
   InputEvent,
   InputEventIds,
   KJS,

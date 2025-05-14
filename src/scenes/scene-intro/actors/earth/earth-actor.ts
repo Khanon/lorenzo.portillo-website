@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorInterface,
-  Helper,
+  KJS,
   Logger,
   MeshInterface
 } from '@khanonjs/engine'
@@ -24,7 +24,7 @@ export class EarthActor extends ActorInterface<MeshInterface> {
     const endMotion = { y: -1110, scale: 1 }
     const speed = 0.01 * delta
     const acc = 2
-    const step = Helper.Maths.increaseVectorWithInertia(
+    const step = KJS.Maths.increaseVectorWithInertia(
       [this.transform.position.y],
       [endMotion.y],
       speed,

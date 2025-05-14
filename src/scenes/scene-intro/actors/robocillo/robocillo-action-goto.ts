@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorAction,
   ActorActionInterface,
-  Helper,
+  KJS,
   Logger
 } from '@khanonjs/engine'
 
@@ -17,7 +17,7 @@ export class RobocilloActionGoto extends ActorActionInterface<{ gotoAngle: numbe
 
   getEarthAngle(): number {
     const vToCenter = this.actor.earth.t.position.subtract(this.actor.transform.position)
-    return Helper.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
+    return KJS.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
   }
 
   onPlay(): void {

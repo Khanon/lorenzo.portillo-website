@@ -2,7 +2,6 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorState,
   ActorStateInterface,
-  Helper,
   KJS,
   Logger
 } from '@khanonjs/engine'
@@ -34,8 +33,8 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
     this.actor.enabled = true
     this.actor.visibility = 1
     this.actor.playAction(RobocilloActionGravity, {})
-    this.actor.physics.setTranslation(Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
-    this.ANGLE_SUN = Helper.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
+    this.actor.physics.setTranslation(KJS.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos))
+    this.ANGLE_SUN = KJS.Maths.dragValue(ratio, this.paramRatio0AngleSun, this.paramRatio1AngleSun)
     this.loading = true
     this.loadingSteps = 0
     this.goIn()
@@ -108,7 +107,7 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
   }
 
   centerEnd(happiness?: HappyState): void {
-    switch (happiness ?? Helper.Maths.randomInt(HappyState.MOVE_HANDS, HappyState.JUMP)) {
+    switch (happiness ?? KJS.Maths.randomInt(HappyState.MOVE_HANDS, HappyState.JUMP)) {
     case HappyState.MOVE_HANDS:
       this.actor.body.playAnimation(RobocilloAnimationIds.MOVE_HANDS)
       this.setTimeout(() => this.centerEnd(), 500 + Math.random() * 1000, this)

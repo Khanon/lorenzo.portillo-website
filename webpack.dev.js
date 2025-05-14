@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
-const common = require('./webpack.config.js');
+const base = require('./webpack.base.js');
 
-module.exports = merge(common, {
+module.exports = merge(base, {
     devServer: {
         host: 'localhost',
         port: 8080, //port that we're using for local host (localhost:8080)

@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorAction,
   ActorActionInterface,
-  Helper,
+  KJS,
   Logger,
   SceneInterface,
   Sprite,
@@ -64,7 +64,7 @@ export class RobocilloActionChat extends ActorActionInterface<any, SceneInterfac
 
   onPlay() {
     this.loopUpdate = false
-    Helper.Arrays.shuffle(this.loadingChats)
+    KJS.Arrays.shuffle(this.loadingChats)
   }
 
   onRemove(): void {

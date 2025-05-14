@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   Actor,
   ActorInterface,
-  Helper,
+  KJS,
   Logger,
   Sprite,
   SpriteConstructor,
@@ -41,9 +41,9 @@ export class LogoActor extends ActorInterface<SpriteInterface> {
     if (ratio < VERTICAL_RATIO_CANVAS) {
       this.transform.position = this.paramsRatio0Pos
     } else {
-      this.transform.position = Helper.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos)
+      this.transform.position = KJS.Vectors.dragPoint(ratio, this.paramsRatio0Pos, this.paramsRatio1Pos)
     }
-    const scale = Helper.Maths.dragValue(ratio, this.paramsRatio0Scale, this.paramsRatio1Scale)
+    const scale = KJS.Maths.dragValue(ratio, this.paramsRatio0Scale, this.paramsRatio1Scale)
     this.body.scale = scale
   }
 }

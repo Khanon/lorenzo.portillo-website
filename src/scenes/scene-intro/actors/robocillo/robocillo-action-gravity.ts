@@ -2,7 +2,6 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorAction,
   ActorActionInterface,
-  Helper,
   KJS,
   Logger
 } from '@khanonjs/engine'
@@ -28,15 +27,15 @@ export class RobocilloActionGravity extends ActorActionInterface<any, any, Roboc
 
   onLoopUpdate(delta: number): void {
     const vToCenter = this.actor.earth.t.position.subtract(this.actor.physics.getTranslation())
-    const hSlowDownVector = Helper.Vectors.vectorialProjectionToPlane(this.actor.physics.getVelocity(), vToCenter).negate()
+    const hSlowDownVector = KJS.Vectors.vectorialProjectionToPlane(this.actor.physics.getVelocity(), vToCenter).negate()
 
     // Horizontal slow down factor
-    if (hSlowDownVector.length() > Helper.Maths.MIN_VALUE) {
+    if (hSlowDownVector.length() > KJS.Maths.MIN_VALUE) {
       this.actor.physics.applyForce(hSlowDownVector.scale(this.HORIZONTAL_DECREASE_FACTOR))
     }
 
     // Check gravity factor
-    if (vToCenter.length() > this.floorLength + Helper.Maths.MIN_VALUE) {
+    if (vToCenter.length() > this.floorLength + KJS.Maths.MIN_VALUE) {
       // Apply gravity
       this.actor.physics.onFloor = false
       vToCenter.normalize()
@@ -47,7 +46,7 @@ export class RobocilloActionGravity extends ActorActionInterface<any, any, Roboc
       this.actor.physics.setTranslation(this.actor.earth.t.position.add(vToCenter.negate().normalize().scale(this.floorLength)))
 
       // Restitution on floor contact
-      const restitutionVector = Helper.Vectors.vectorialProjectionToLine(this.actor.physics.getVelocity(), vToCenter).negate()
+      const restitutionVector = KJS.Vectors.vectorialProjectionToLine(this.actor.physics.getVelocity(), vToCenter).negate()
       const restitutionVectorLength = restitutionVector.length()
       if (restitutionVectorLength > this.RESTITUTION_MIN_FACTOR) {
         this.actor.physics.applyForce(restitutionVector.scale(1.5))
@@ -56,7 +55,7 @@ export class RobocilloActionGravity extends ActorActionInterface<any, any, Roboc
     }
 
     // Rotate the actor according to angle with earth center
-    const earthAngle = Helper.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
+    const earthAngle = KJS.Vectors.angleXBetweenLines(new BABYLON.Vector3(0, -1, 0), vToCenter)
     this.actor.physics.setRotation(earthAngle)
   }
 }
