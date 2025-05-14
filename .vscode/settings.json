@@ -4,5 +4,13 @@
         "**/bower_components": true,
         "**/*.code-search": true,
         "bundle-stats.json": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/dist": false,
     }
 }

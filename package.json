@@ -41,7 +41,7 @@
     "recursive-copy": "^2.0.13",
     "rimraf": "^3.0.2",
     "string-replace-loader": "^3.0.3",
-    "ts-loader": "^9.1.2",
+    "ts-loader": "^9.5.2",
     "typescript": "^5.6.2",
     "webpack": "^5.36.2",
     "webpack-bundle-analyzer": "^4.4.2",
@@ -56,6 +56,6 @@
     "@babylonjs/loaders": "~8.0.1",
     "@babylonjs/materials": "~8.0.1",
     "@babylonjs/serializers": "~8.0.1",
-    "@khanonjs/engine": "^0.0.130"
+    "@khanonjs/engine": "^0.1.54-alpha.0"
   }
 }
