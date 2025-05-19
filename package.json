@@ -6,11 +6,11 @@
   "license": "",
   "main": "index.html",
   "scripts": {
-    "start": "webpack serve --port 8080 --config webpack.dev.js",
-    "start:prod": "webpack serve --port 8080 --config webpack.prod.js",
-    "webpack-bundle-analyze": "webpack --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json",
+    "start": "khanon --start-dev",
+    "start:prod": "khanon --start-prod",
+    "build": "khanon --build-dev",
+    "build:prod": "khanon --build-prod",
     "compile": "tsc --noEmit",
-    "build": "npm run clean && node copy-assets.js && rimraf dist/index.html && webpack --config webpack.prod.js",
     "build:deploy": "npm run build && npm run deploy",
     "link": "cd .. && cd khanon.js && npm run link && cd .. && cd lorenzo.portillo-website && npm link @khanonjs/engine",
     "unlink": "rimraf ./node_modules/@khanonjs && cd .. && cd khanon.js && npm run unlink",
@@ -26,36 +26,27 @@
     "url": "https://github.com/Khanon/lorenzo.portillo-website.git"
   },
   "devDependencies": {
-    "@babylonjs/inspector": "~8.0.1",
+    "@babylonjs/inspector": "~8.8.3",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
-    "copy-webpack-plugin": "^12.0.2",
     "dpdm": "^3.14.0",
     "eslint": "^8.56.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
-    "html-webpack-plugin": "^5.3.1",
     "npm-quick-run": "^1.18.0",
-    "recursive-copy": "^2.0.13",
     "rimraf": "^3.0.2",
-    "string-replace-loader": "^3.0.3",
     "ts-loader": "^9.5.2",
-    "typescript": "^5.6.2",
-    "webpack": "^5.36.2",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-middleware": "^5.3.1",
-    "webpack-dev-server": "^4.8.1"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@babylonjs/core": "~8.0.1",
-    "@babylonjs/gui": "~8.0.1",
-    "@babylonjs/inspector": "~8.0.1",
-    "@babylonjs/loaders": "~8.0.1",
-    "@babylonjs/materials": "~8.0.1",
-    "@babylonjs/serializers": "~8.0.1",
-    "@khanonjs/engine": "^0.1.55-alpha.0"
+    "@babylonjs/core": "~8.8.3",
+    "@babylonjs/gui": "~8.8.3",
+    "@babylonjs/inspector": "~8.8.3",
+    "@babylonjs/loaders": "~8.8.3",
+    "@babylonjs/materials": "~8.8.3",
+    "@babylonjs/serializers": "~8.8.3",
+    "@khanonjs/engine": "^0.1.70-alpha.0"
   }
 }

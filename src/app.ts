@@ -28,6 +28,7 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
 })
 export class LPWebsite extends AppInterface {
   onStart() {
+    Logger.trace('LPWebsite AppStateWorld', AppStateWorld)
     this.switchState(AppStateWorld, {})
     // this.switchState(AppStateIntro, {})
     // this.switchState(AppStateIntro, {}).onComplete.add(() => {
