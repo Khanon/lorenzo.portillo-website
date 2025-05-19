@@ -14,8 +14,6 @@ import { MeshConstructor } from '@khanonjs/engine/decorators/mesh'
   // spawnByReferenceId: 'Warrok'
 })
 export class Warrok extends ActorInterface<MeshInterface> {
-  @Sound({ url: '/assets/sounds/mario-bros tuberia.mp3', spatialEnabled: false, stream: false }) soundTest: SoundConstructor
-
   @Mesh({
     url: '/assets/scene-world/meshes/character/character-test-monster-opt.glb',
     animations: [
@@ -34,11 +32,6 @@ export class Warrok extends ActorInterface<MeshInterface> {
   onSpawn() {
     // this.setBody(this.Mesh)
     // this.body.playAnimation('Walking')
-    KJS.Sound.setVolume(0.1)
-    this.setInterval(() => {
-      Logger.trace('aki SOUND PLAY!')
-      KJS.Sound.play(this.soundTest)
-    }, 3000)
   }
 
   onLoopUpdate(delta: number): void {
