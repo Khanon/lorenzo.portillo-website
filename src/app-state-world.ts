@@ -15,6 +15,7 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
 })
 export class AppStateWorld extends AppStateInterface {
   onStart() {
+    Logger.trace('AppStateWorld onStart')
     KJS.Scene.start(SceneWorld, SceneWorldState, {})
   }
 }

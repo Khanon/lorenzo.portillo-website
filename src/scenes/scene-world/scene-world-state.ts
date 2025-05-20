@@ -7,7 +7,9 @@ import {
   MeshConstructor,
   SceneAction,
   SceneState,
-  SceneStateInterface
+  SceneStateInterface,
+  Sprite,
+  SpriteConstructor
 } from '@khanonjs/engine'
 
 import { Warrok } from './actors/warrok'

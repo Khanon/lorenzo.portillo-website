@@ -28,19 +28,21 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
 })
 export class LPWebsite extends AppInterface {
   onStart() {
-    // this.switchState(AppStateWorld, {})
-    this.switchState(AppStateIntro, {})
+    this.switchState(AppStateWorld, {})
+    // this.switchState(AppStateIntro, {})
     // this.switchState(AppStateIntro, {}).onComplete.add(() => {
     /* setTimeout(() => {
-      KJS.Scene.stop(SceneIntro)
-      KJS.clearAllTimeouts()
+      // KJS.Scene.stop(SceneIntro)
+      this.switchState(AppStateIntro, {})
       setTimeout(() => {
-        KJS.Scene.start(SceneIntro, SceneIntroState, {})
+        this.switchState(AppStateWorld, {})
+        // KJS.Scene.start(SceneIntro, SceneIntroState, {})
         setTimeout(() => {
-          KJS.Scene.stop(SceneIntro)
-          KJS.clearAllTimeouts()
+          this.switchState(AppStateIntro, {})
+          // KJS.Scene.stop(SceneIntro)
           setTimeout(() => {
-            KJS.Scene.start(SceneIntro, SceneIntroState, {})
+            this.switchState(AppStateWorld, {})
+            // KJS.Scene.start(SceneIntro, SceneIntroState, {})
           }, 3000)
         }, 3000)
       }, 3000)
