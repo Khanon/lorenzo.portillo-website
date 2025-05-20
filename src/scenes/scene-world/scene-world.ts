@@ -37,8 +37,4 @@ export class SceneWorld extends SceneInterface {
 
   onStart() {
   }
-
-  onCanvasResize(size: Rect): void {
-    Logger.trace('SceneWorld onCanvasResize', size)
-  }
 }

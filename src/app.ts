@@ -24,16 +24,12 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
   name: 'Lorenzo Portillo Website',
   loopUpdate: {
     fps: 165
-  },
-  engineConfiguration: {
-    adaptToDeviceRatio: true
   }
 })
 export class LPWebsite extends AppInterface {
   onStart() {
-    Logger.trace('LPWebsite AppStateWorld', AppStateWorld)
-    this.switchState(AppStateWorld, {})
-    // this.switchState(AppStateIntro, {})
+    // this.switchState(AppStateWorld, {})
+    this.switchState(AppStateIntro, {})
     // this.switchState(AppStateIntro, {}).onComplete.add(() => {
     /* setTimeout(() => {
       KJS.Scene.stop(SceneIntro)
