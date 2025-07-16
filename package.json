@@ -47,6 +47,6 @@
     "@babylonjs/loaders": "~8.8.3",
     "@babylonjs/materials": "~8.8.3",
     "@babylonjs/serializers": "~8.8.3",
-    "@khanonjs/engine": "^0.1.70-alpha.0"
+    "@khanonjs/engine": "^0.2.14"
   }
 }
