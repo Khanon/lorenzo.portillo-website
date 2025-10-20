@@ -24,12 +24,15 @@ import { SceneWorldState } from './scenes/scene-world/scene-world-state'
   name: 'Lorenzo Portillo Website',
   loopUpdate: {
     fps: 165
+  },
+  engineConfiguration: {
+    mode: 'WebGPU'
   }
 })
 export class LPWebsite extends AppInterface {
   onStart() {
-    this.switchState(AppStateWorld, {})
-    // this.switchState(AppStateIntro, {})
+    // this.switchState(AppStateWorld, {})
+    this.switchState(AppStateIntro, {})
     // this.switchState(AppStateIntro, {}).onComplete.add(() => {
     /* setTimeout(() => {
       // KJS.Scene.stop(SceneIntro)
