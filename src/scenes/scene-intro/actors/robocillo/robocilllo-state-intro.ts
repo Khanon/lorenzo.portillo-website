@@ -2,6 +2,7 @@ import * as BABYLON from '@babylonjs/core'
 import {
   ActorState,
   ActorStateInterface,
+  InputEvent,
   KJS,
   Logger
 } from '@khanonjs/engine'
@@ -15,7 +16,7 @@ import { RobocilloAnimationIds } from './robocillo-animation-ids'
 import { HappyState } from './robocillo-happy-state'
 
 @ActorState()
-export class RobocilloStateIntro extends ActorStateInterface<any, any, RobocilloActor> {
+export class RobocilloStateIntro extends ActorStateInterface<any, RobocilloActor, any> {
   readonly paramsRatio0Pos = new BABYLON.Vector3(-20, 7, -140)
   readonly paramsRatio1Pos = new BABYLON.Vector3(-20, -48, -440)
   readonly paramRatio0AngleSun = -0.055
@@ -26,6 +27,9 @@ export class RobocilloStateIntro extends ActorStateInterface<any, any, Robocillo
   private loading: boolean
   private loadingSteps: number
   private actionChat: RobocilloActionChat
+
+  @InputEvent({ id: 0 })
+  test() {}
 
   onStart(): void {
     const ratio = getRatio()
